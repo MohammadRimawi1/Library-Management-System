@@ -1,4 +1,4 @@
-package library.models;
+package com.exalt.library.models;
 
 import java.util.ArrayList;
 import java.util.List;

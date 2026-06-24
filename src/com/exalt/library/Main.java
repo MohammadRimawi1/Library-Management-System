@@ -1,7 +1,7 @@
-package library;
+package com.exalt.library;
 
-import library.models.Book;
-import library.models.Borrower;
+import com.exalt.library.models.Book;
+import com.exalt.library.models.Borrower;
 
 public class Main {
     public static void main(String[] args) {
