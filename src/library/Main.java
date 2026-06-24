@@ -1,10 +1,15 @@
+package library;
+
+import library.models.Book;
+import library.models.Borrower;
+
 public class Main {
     public static void main(String[] args) {
 //        ==== BOOKS ====
         Book book1 = new Book("Physics", true);
         Book book2 = new Book("Calculas", false);
         Book book3 = new Book("Software Engineer", true);
-        Book book4 = new Book("History", true);
+        Book book4 = new Book("", true);
 //        ==== BOOKS ====
 
 //        ==== BORROWERS ====
@@ -21,12 +26,17 @@ public class Main {
         lib.addBook(book4);
         lib.addBook(new Book("Computer Networks", false));
         lib.addBook(new Book("Compiler Princples", true));
+
+        lib.assignBorrower(borrower1);
+        lib.assignBorrower(borrower2);
+        lib.assignBorrower(borrower3);
 //        ==== LIBRARY ====
 
 //        ==== BORROW BOOKS ====
         borrower1.borrowBook(book1.getId());
         borrower1.borrowBook(book2.getId());
         borrower2.borrowBook(book3.getId());
+        borrower2.borrowBook(book4.getId());
         borrower3.borrowBook(book4.getId());
 //        ==== BORROW BOOKS ====
 
@@ -46,6 +56,33 @@ public class Main {
 
         System.out.println("===== FIND BOOK =====");
         System.out.println(lib.findBook(3));
+
+        System.out.println("====== DOES THE BOOK EXIST? ======");
+        System.out.println(lib.exists(3));
+
+        System.out.println("====== HOW MANY BOOKS ======");
+        System.out.println(lib.listHowMuchBooksExists());
+
+        System.out.println("====== HOW MANY BORROWERS ======");
+        System.out.println(lib.listHowMuchBorrowersExists());
+
+        System.out.println("====== SORTED BOOKS LIST ======");
+        System.out.println(lib.sortBooks());
+
+        System.out.println("====== BOOKS WITH NO TITLE EXISTS OR NOT ======");
+        System.out.println(lib.allBooksHaveTitles());
+
+        System.out.println("====== ARE ALL BOOKS AVAILABLE ======");
+        System.out.println(lib.areALlBooksAvailable());
+
+        System.out.println("====== BORROWER WITH THE HIGHEST BORROWS ======");
+        System.out.println(lib.topBorrower());
+
+        System.out.println("====== BORROWER WITH THE LEAST BORROWS ======");
+        System.out.println(lib.leastBorrower());
+
+        System.out.println("====== SUM OF ALL BOOKS ID ======");
+        System.out.println(lib.sumOfAllBooksId());
 //        ======= PRINTS ======
 
     }
