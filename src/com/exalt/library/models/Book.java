@@ -1,4 +1,4 @@
-package library.models;
+package com.exalt.library.models;
 
 /**
  * A class representing the library book
