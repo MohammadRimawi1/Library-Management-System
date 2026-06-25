@@ -7,9 +7,10 @@ package com.exalt.library.models;
  * @author Mohammad Rimawi
  */
 public class Book {
-    private int id; // Defines the identity number for a book
+    private final int id; // Defines the identity number for a book
     private static int count = 1; // a counter to automatically assigns an id for the book
-    private String title; // Defines the title for a book
+    private final String title; // Defines the title for a book
+    private final Author author; // Defines the author of a specific book
     private boolean isAvailable; // Defines if the book is available or not
 
     /**
@@ -18,9 +19,10 @@ public class Book {
      * @param title
      * @param isAvailable
      */
-    public Book(String title, boolean isAvailable) {
+    public Book(String title, Author author , boolean isAvailable) {
         this.id = count;
         this.title = title;
+        this.author = author;
         this.isAvailable = isAvailable;
         count++;
     }
@@ -28,7 +30,7 @@ public class Book {
 
     /**
      * a method for getting the id value
-     * @return
+     * @return the id
      */
     public int getId() {
         return id;
@@ -36,7 +38,7 @@ public class Book {
 
     /**
      * a method for getting the title
-     * @return
+     * @return the title
      */
     public String getTitle() {
         return title;
@@ -44,12 +46,20 @@ public class Book {
 
     /**
      * a method for getting the value of isAvailable
-     * @return
+     * @return if they are available or not
      */
     public boolean isAvailable() {
         return isAvailable;
     }
-//    ==== GETTERS ====
+
+    /**
+     * a method for getting the value of the author
+     * @return the author
+     */
+    public Author getAuthor() {
+        return author;
+    }
+    //    ==== GETTERS ====
 
 //    ==== SETTERS ====
 
@@ -64,9 +74,11 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book: {ID = " + id + ", " +
-                "title = '" + title +
-                ", isAvailable = " + isAvailable +
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", isAvailable=" + isAvailable +
                 '}';
     }
 }
