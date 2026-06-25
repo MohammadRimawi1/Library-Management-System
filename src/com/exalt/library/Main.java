@@ -1,15 +1,25 @@
 package com.exalt.library;
 
+import com.exalt.library.models.Author;
 import com.exalt.library.models.Book;
 import com.exalt.library.models.Borrower;
 
+import java.util.ArrayList;
+
 public class Main {
     public static void main(String[] args) {
+//        ===== AUTHOR =====
+        Author authorOne = new Author( "Tahseen", "Palestine");
+        Author authorTwo = new Author("Malik", "Jordan");
+        Author authorThree = new Author("Amer", "Suadi Arabia");
+        Author authorFour = new Author("Lieth", "Syria");
+//        ===== AUTHOR =====
+
 //        ==== BOOKS ====
-        Book book1 = new Book("Physics", true);
-        Book book2 = new Book("Calculas", false);
-        Book book3 = new Book("Software Engineer", true);
-        Book book4 = new Book("", true);
+        Book book1 = new Book("Physics", authorOne ,true);
+        Book book2 = new Book("Calculas", authorTwo ,false);
+        Book book3 = new Book("Software Engineer", authorFour ,true);
+        Book book4 = new Book("",  authorThree,true);
 //        ==== BOOKS ====
 
 //        ==== BORROWERS ====
@@ -19,71 +29,75 @@ public class Main {
 //        ==== BORROWERS ====
 
 //        ==== LIBRARY ====
-        Library lib = new Library();
+        Library lib = new Library(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         lib.addBook(book1);
         lib.addBook(book2);
         lib.addBook(book3);
         lib.addBook(book4);
-        lib.addBook(new Book("Computer Networks", false));
-        lib.addBook(new Book("Compiler Princples", true));
+
+        lib.addBook(new Book("Computer Networks", authorFour ,false));
+        lib.addBook(new Book("Compiler Princples",  authorFour,true));
 
         lib.assignBorrower(borrower1);
         lib.assignBorrower(borrower2);
         lib.assignBorrower(borrower3);
+
+        lib.borrowBook(2, 1);
+        lib.borrowBook(3, 1);
+        lib.borrowBook(1, 3);
 //        ==== LIBRARY ====
 
-//        ==== BORROW BOOKS ====
-        borrower1.borrowBook(book1.getId());
-        borrower1.borrowBook(book2.getId());
-        borrower2.borrowBook(book3.getId());
-        borrower2.borrowBook(book4.getId());
-        borrower3.borrowBook(book4.getId());
-//        ==== BORROW BOOKS ====
-
-//        ======= PRINTS ======
-        System.out.println("======= BOOKS ======= ");
-        System.out.println(book1.toString());
-        System.out.println(book2.toString());
-        System.out.println(book3.toString());
-
-        System.out.println("======= BORROWED BOOKS ======= ");
-        System.out.println(borrower1.toString());
-        System.out.println(borrower2.toString());
-        System.out.println(borrower3.toString());
-
-        System.out.println("====== ALL BOOKS ======");
+//        ========== PRINTS ==========
+        System.out.println("==== ALL BOOKS ====");
         lib.listAllBooks();
 
-        System.out.println("===== FIND BOOK =====");
-        System.out.println(lib.findBook(3));
+        System.out.println("==============");
 
-        System.out.println("====== DOES THE BOOK EXIST? ======");
-        System.out.println(lib.exists(3));
+        System.out.println("==== FINDING STUFF ====");
+        System.out.println(lib.findBook(2));
+        System.out.println(lib.findBorrower(2));
+        System.out.println(lib.findLoan(2));
 
-        System.out.println("====== HOW MANY BOOKS ======");
-        System.out.println(lib.listHowMuchBooksExists());
+        System.out.println("==============");
 
-        System.out.println("====== HOW MANY BORROWERS ======");
-        System.out.println(lib.listHowMuchBorrowersExists());
+        System.out.println("==== GET LOANS ====");
+        System.out.println(lib.getLoans());
 
-        System.out.println("====== SORTED BOOKS LIST ======");
-        System.out.println(lib.sortBooks());
+        System.out.println("==============");
 
-        System.out.println("====== BOOKS WITH NO TITLE EXISTS OR NOT ======");
+        System.out.println("==== RETURN LOANS ====");
+        System.out.println(lib.returnBook(3, 1));
+
+        System.out.println("==============");
+
+        System.out.println("==== ARE BOOKS WITH TITLES? ====");
         System.out.println(lib.allBooksHaveTitles());
 
-        System.out.println("====== ARE ALL BOOKS AVAILABLE ======");
+        System.out.println("==============");
+
+        System.out.println("==== ARE ALL BOOKS AVAILABLE? ====");
         System.out.println(lib.areALlBooksAvailable());
 
-        System.out.println("====== BORROWER WITH THE HIGHEST BORROWS ======");
-        System.out.println(lib.topBorrower());
+        System.out.println("==============");
 
-        System.out.println("====== BORROWER WITH THE LEAST BORROWS ======");
-        System.out.println(lib.leastBorrower());
+        System.out.println("==== BOOK EXISTS? ====");
+        System.out.println(lib.bookExists(2));
 
-        System.out.println("====== SUM OF ALL BOOKS ID ======");
+        System.out.println("==============");
+
+        System.out.println("==== SORTED BOOKS BY TITLE ====");
+        System.out.println(lib.sortBooks());
+
+        System.out.println("==============");
+
+        System.out.println("==== SUM OF ALL BOOKS ID's ====");
         System.out.println(lib.sumOfAllBooksId());
-//        ======= PRINTS ======
 
+        System.out.println("==============");
+
+        System.out.println("==== LIST HOW MUCH EXISTS ====");
+        System.out.println("Borrowers: " + lib.listHowMuchBorrowersExists());
+        System.out.println("Books: " + lib.listHowMuchBooksExists());
+//        ========== PRINTS ==========
     }
 }
