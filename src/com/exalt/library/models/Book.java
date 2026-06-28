@@ -7,24 +7,20 @@ package com.exalt.library.models;
  * @author Mohammad Rimawi
  */
 public class Book {
-    private final int id; // Defines the identity number for a book
-    private static int count = 1; // a counter to automatically assigns an id for the book
-    private final String title; // Defines the title for a book
-    private final Author author; // Defines the author of a specific book
+    private int id; // Defines the identity number for a book
+    // #TODO: a counter to automatically assigns an id for the book, ITS THE JOB OF THE DB
+    private static int count = 1; // Defines the counter that we will increment #TODO: Update Later
+    private String title; // Defines the title for a book
+    private Author author; // Defines the author of a specific book
     private boolean isAvailable; // Defines if the book is available or not
 
     /**
-     * A parameterized constructor that takes title and isAvailable attributes
-     * automatically increments the counter for the id
-     * @param title
-     * @param isAvailable
+     * A Default constructor
+     * automatically increments the counter for the id and sets the availability to true
      */
-    public Book(String title, Author author , boolean isAvailable) {
-        this.id = count;
-        this.title = title;
-        this.author = author;
-        this.isAvailable = isAvailable;
-        count++;
+    public Book() {
+        this.id = generate();
+        this.isAvailable = true;
     }
 //    ==== GETTERS ====
 
@@ -62,6 +58,21 @@ public class Book {
     //    ==== GETTERS ====
 
 //    ==== SETTERS ====
+    /**
+     * a method for setting the title
+     * @param title
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * a method for setting the author
+     * @param author
+     */
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
 
     /**
      * a method for setting the value of isAvailable
@@ -71,6 +82,14 @@ public class Book {
         isAvailable = available;
     }
 //    ==== SETTERS ====
+
+    /**
+     * A synchronized generator so we get no duplicates
+     * @return - an int representing the value of the current counter
+     */
+    public static synchronized int generate() {
+        return count++;
+    }
 
     @Override
     public String toString() {
