@@ -3,13 +3,9 @@
  */
 package com.exalt.library;
 
-import com.exalt.library.exceptions.BookNotFoundException;
-import com.exalt.library.exceptions.BookUnavailableException;
-import com.exalt.library.exceptions.LoanNotFoundException;
 import com.exalt.library.models.Book;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.Loan;
-import com.exalt.library.utils.LibraryStreams;
 
 import java.util.List;
 
@@ -29,7 +25,6 @@ public class Library {
     public Library() { }
 
 //    ==== GETTERS ====
-
     /**
      * a method for getting the books
      * @return
@@ -83,156 +78,4 @@ public class Library {
     }
 
 //    ==== SETTERS ====
-
-    /**
-     * addBook method is used to add a book of type Book to the books list
-     * @param book
-     */
-    public void addBook(Book book) {
-        books.add(book);
-    }
-
-    /**
-     * assignBorrower method is used to assign a borrower of type Borrower to the borrowers list
-     * @param borrower
-     */
-    public void assignBorrower(Borrower borrower) {
-        borrowers.add(borrower);
-    }
-
-    /**
-     * a method used to print all the books inside the books list
-     */
-    public void listAllBooks() {
-        LibraryStreams.prinAllBooks(books);
-    }
-
-    /**
-     * a method used to find a specific book based on its id
-     * @param id - represents the book id
-     * @return - returns a Book if it exists
-     * @throws BookNotFoundException if the book doesn't exist
-     */
-    public Book findBook(int id) {
-        return LibraryStreams.findBookById(books, id);
-    }
-
-    /**
-     * a method used to find a specific borrower based on his/her id
-     * @param id - represents the borrower id
-     * @return - return a borrower if he/she exists
-     * @throws BookNotFoundException if the borrower doesn't exist
-     */
-    public Borrower findBorrower(int id) {
-        return LibraryStreams.findBorrowerById(borrowers, id);
-    }
-
-    /**
-     * a method for letting a borrower to loan a book
-     * @param borrowerId
-     * @param bookId
-     * @return a loam
-     * @throws BookUnavailableException if the book isn't available
-     */
-    public Loan borrowBook(int borrowerId, int bookId) {
-        Book book = findBook(bookId);
-
-        if(book.isAvailable() == false) {
-            throw new BookUnavailableException("Book isn't available");
-        }
-
-        Borrower borrower = findBorrower(borrowerId);
-
-
-        Loan loan = new Loan();
-        loan.setBook(book);
-        loan.setBorrower(borrower);
-        loans.add(loan);
-        book.setAvailable(false);
-
-        return loan;
-    }
-
-    /**
-     * a method which returns a borrowed book and closes its active loan
-     * if he did - then close the loan
-     * if he didn't - return false
-     * @param borrowerId
-     * @param bookId
-     * @return true if the loan was closed
-     * @throws LoanNotFoundException if the loan is not found
-     */
-    public boolean returnBook(int borrowerId, int bookId) {
-        Loan loan = LibraryStreams.findActiveLoan(loans, borrowerId, bookId);
-        loan.closeLoan();
-
-        loans.remove(loan);
-        return true;
-    }
-
-    /**
-     * a method used to find a specific loan based on its id
-     * @param loanId - represents the loan id
-     * @return - return a loan if it exists
-     * @throws LoanNotFoundException if the loan wasn't found
-     */
-    public Loan findLoan(int loanId) {
-        return LibraryStreams.findLoanById(loans, loanId);
-    }
-
-    /**
-     * a method for checking if the book exists or not
-     * @param id - represents the book id
-     * @return - returns true or false based if it exists in the list or not
-     */
-    public boolean bookExists(int id) {
-        return LibraryStreams.bookExists(books, id);
-    }
-
-    /**
-     * a method for checking how many books exists in the books list
-     * @return - the size as long
-     */
-    public int listHowMuchBooksExists() {
-        return books.size();
-    }
-    /**
-     * a method for checking how many borrowers exists in the borrowers list
-     * @return - the size as long
-     */
-    public int listHowMuchBorrowersExists() {
-        return borrowers.size();
-    }
-
-    /**
-     * a method for sorting the books based on alphabetical ascending order
-     * @return a list of sorted books
-     */
-    public List<Book> sortBooks() {
-        return LibraryStreams.sortBooksByTitle(books);
-    }
-
-    /**
-     * a method for checking all books if they have titles or not
-     * @return - true if ALL books have titles, false if AT LEAST one doesn't have
-     */
-    public boolean allBooksHaveTitles() {
-        return LibraryStreams.allBooksHaveTitles(books);
-    }
-
-    /**
-     * a method for checking if all the books are available or not
-     * @return - true if all are available, false if AT LEAST one isn't
-     */
-    public boolean areALlBooksAvailable() {
-        return LibraryStreams.areAllBookAvailable(books);
-    }
-
-    /**
-     * a method that returns the sum of all books id's
-     * @return the sum of all IDs
-     */
-    public int sumOfAllBooksId() {
-        return LibraryStreams.sumOfAllBooksIds(books);
-    }
 }
