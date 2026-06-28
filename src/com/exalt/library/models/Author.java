@@ -7,7 +7,7 @@ package com.exalt.library.models;
  */
 public class Author {
     private final int id; // Represents the id for an author
-    // #TODO: a counter to automatically assigns an id for the book, ITS THE JOB OF THE DB
+    // #TODO: a counter to automatically assigns an id for the author, ITS THE JOB OF THE DB
     private static int count = 1; // Defines the counter that we will increment #TODO: Update Later
     private String name; // represents the name of the author
     private String nationality; // represents the nationality of the author

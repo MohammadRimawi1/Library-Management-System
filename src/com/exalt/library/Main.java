@@ -13,8 +13,8 @@ public class Main {
         author1.setNationality("Palestine");
 
         Author author2 = new Author();
-        author1.setName("Kareem");
-        author1.setNationality("Syria");
+        author2.setName("Kareem");
+        author2.setNationality("Syria");
 
         Book book1 = new Book();
         book1.setTitle("Computer Networks");
@@ -22,20 +22,20 @@ public class Main {
         book1.setAvailable(true);
 
         Book book2 = new Book();
-        book1.setTitle("Computer Principles");
-        book1.setAuthor(author1);
-        book1.setAvailable(true);
+        book2.setTitle("Computer Principles");
+        book2.setAuthor(author1);
+        book2.setAvailable(true);
 
         Book book3 = new Book();
-        book1.setTitle("Software Engineering");
-        book1.setAuthor(author2);
-        book1.setAvailable(true);
+        book3.setTitle("Software Engineering");
+        book3.setAuthor(author2);
+        book3.setAvailable(true);
 
         Borrower borrower1 = new Borrower();
         borrower1.setName("Murse");
 
         Borrower borrower2 = new Borrower();
-        borrower1.setName("Malik");
+        borrower2.setName("Malik");
 
         Library lib = new Library();
         lib.setBooks(new ArrayList<>());

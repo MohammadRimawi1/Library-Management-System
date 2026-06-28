@@ -6,7 +6,7 @@ package com.exalt.library.models;
  */
 public class Borrower {
     private final int id; // Defines the identity number for a borrower
-    // #TODO: a counter to automatically assigns an id for the book, ITS THE JOB OF THE DB
+    // #TODO: a counter to automatically assigns an id for the borrower, ITS THE JOB OF THE DB
     private static int count = 1; // Defines the counter that we will increment #TODO: Update Later
     private String name; // Defines the name of the borrower
 
