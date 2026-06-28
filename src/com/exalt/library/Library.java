@@ -10,6 +10,7 @@ import com.exalt.library.exceptions.LoanNotFoundException;
 import com.exalt.library.models.Book;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.Loan;
+import com.exalt.library.utils.LibraryStreams;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -58,9 +59,7 @@ public class Library {
      * a method used to print all the books inside the books list
      */
     public void listAllBooks() {
-        books.stream()
-                .map(Book::toString)
-                .forEach(System.out::println);
+        LibraryStreams.prinAllBooks(books);
     }
 
     /**
@@ -70,10 +69,7 @@ public class Library {
      * @throws BookNotFoundException if the book doesn't exist
      */
     public Book findBook(int id) {
-        return books.stream()
-                .filter(book -> book.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new BookNotFoundException("Book was not Found!"));
+        return LibraryStreams.findBookById(books, id);
     }
 
     /**
@@ -83,10 +79,7 @@ public class Library {
      * @throws BookNotFoundException if the borrower doesn't exist
      */
     public Borrower findBorrower(int id) {
-        return borrowers.stream()
-                .filter(borrower -> borrower.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new BorrowerNotFoundException("Borrower was not Found"));
+        return LibraryStreams.findBorrowerById(borrowers, id);
     }
 
     /**
@@ -98,6 +91,10 @@ public class Library {
      */
     public Loan borrowBook(int borrowerId, int bookId) {
         Book book = findBook(bookId);
+
+        if(book.isAvailable() == false) {
+            throw new BookUnavailableException("Book isn't available");
+        }
 
         Borrower borrower = findBorrower(borrowerId);
 
@@ -118,16 +115,11 @@ public class Library {
      * @throws LoanNotFoundException if the loan is not found
      */
     public boolean returnBook(int borrowerId, int bookId) {
-        return loans.stream()
-                .filter(loan -> loan.isActive())
-                .filter(loan -> loan.getBorrower().getId() == borrowerId)
-                .filter(loan -> loan.getBook().getId() == bookId)
-                .findFirst()
-                .map(loan -> {
-                    loan.closeLoan();
-                    return true;
-                })
-                .orElseThrow(() -> new LoanNotFoundException("Loan doesn't exist"));
+        Loan loan = LibraryStreams.findActiveLoan(loans, borrowerId, bookId);
+        loan.closeLoan();
+
+        loans.remove(loan);
+        return true;
     }
 
     /**
@@ -145,10 +137,7 @@ public class Library {
      * @throws LoanNotFoundException if the loan wasn't found
      */
     public Loan findLoan(int loanId) {
-        return loans.stream()
-                .filter(loan -> loan.getId() == loanId)
-                .findFirst()
-                .orElseThrow(() -> new LoanNotFoundException("Loan was not Found"));
+        return LibraryStreams.findLoanById(loans, loanId);
     }
 
     /**
@@ -157,8 +146,7 @@ public class Library {
      * @return - returns true or false based if it exists in the list or not
      */
     public boolean bookExists(int id) {
-        return books.stream()
-                .anyMatch(book -> book.getId() == id);
+        return LibraryStreams.bookExists(books, id);
     }
 
     /**
@@ -181,9 +169,7 @@ public class Library {
      * @return a list of sorted books
      */
     public List<Book> sortBooks() {
-        return books.stream()
-                .sorted(Comparator.comparing(Book::getTitle))
-                .collect(Collectors.toList());
+        return LibraryStreams.sortBooksByTitle(books);
     }
 
     /**
@@ -191,8 +177,7 @@ public class Library {
      * @return - true if ALL books have titles, false if AT LEAST one doesn't have
      */
     public boolean allBooksHaveTitles() {
-        return books.stream()
-                .noneMatch(book -> book.getTitle().equals("") && book.getTitle() == null);
+        return LibraryStreams.allBooksHaveTitles(books);
     }
 
     /**
@@ -200,8 +185,7 @@ public class Library {
      * @return - true if all are available, false if AT LEAST one isn't
      */
     public boolean areALlBooksAvailable() {
-        return books.stream()
-                .allMatch(book -> book.isAvailable());
+        return LibraryStreams.areAllBookAvailable(books);
     }
 
     /**
@@ -209,8 +193,6 @@ public class Library {
      * @return the sum of all IDs
      */
     public int sumOfAllBooksId() {
-        return books.stream()
-                .map(book -> book.getId())
-                .reduce(0, Integer::sum);
+        return LibraryStreams.sumOfAllBooksIds(books);
     }
 }
