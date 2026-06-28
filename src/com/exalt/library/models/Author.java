@@ -7,21 +7,17 @@ package com.exalt.library.models;
  */
 public class Author {
     private final int id; // Represents the id for an author
-    private static int count = 1; // a counter to automatically assigns an id for the author
-    private final String name; // represents the name of the author
+    // #TODO: a counter to automatically assigns an id for the book, ITS THE JOB OF THE DB
+    private static int count = 1; // Defines the counter that we will increment #TODO: Update Later
+    private String name; // represents the name of the author
     private String nationality; // represents the nationality of the author
 
     /**
      * A parameterized constructor that takes name and nationality attributes
      * automatically increments the counter for the id
-     * @param name
-     * @param nationality
      */
-    public Author(String name, String nationality) {
-        this.id = count;
-        this.name = name;
-        this.nationality = nationality;
-        count++;
+    public Author() {
+        this.id = generate();
     }
 
 //    ==== GETTERS ====
@@ -49,6 +45,34 @@ public class Author {
         return nationality;
     }
 //    ==== GETTERS ====
+
+//    ==== SETTERS ====
+
+    /**
+     * a method for setting the name of the author
+     * @param name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * a method for setting the nationality of the author
+     * @param nationality
+     */
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+//    ==== SETTERS ====
+
+    /**
+     * A synchronized generator so we get no duplicates
+     * @return - an int representing the value of the current counter
+     */
+    public static synchronized int generate() {
+        return count++;
+    }
 
     @Override
     public String toString() {

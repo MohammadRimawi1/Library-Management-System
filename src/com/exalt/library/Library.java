@@ -5,17 +5,13 @@ package com.exalt.library;
 
 import com.exalt.library.exceptions.BookNotFoundException;
 import com.exalt.library.exceptions.BookUnavailableException;
-import com.exalt.library.exceptions.BorrowerNotFoundException;
 import com.exalt.library.exceptions.LoanNotFoundException;
 import com.exalt.library.models.Book;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.Loan;
 import com.exalt.library.utils.LibraryStreams;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * a class representing the library itself
@@ -28,16 +24,65 @@ public class Library {
     private List<Loan> loans; // Defines a list containing the loans
 
     /**
-     * A parameterized constructor that takes the books and the borrowers attributes
+     * A Default constructor
+     */
+    public Library() { }
+
+//    ==== GETTERS ====
+
+    /**
+     * a method for getting the books
+     * @return
+     */
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    /**
+     * a method for returning the borrowers
+     * @return
+     */
+    public List<Borrower> getBorrowers() {
+        return borrowers;
+    }
+
+    /**
+     * a method for returning all the loans
+     * @return a list of loans
+     */
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+//    ==== GETTERS ====
+
+//    ==== SETTERS ====
+
+    /**
+     * a method for setting the books
      * @param books
+     */
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    /**
+     * a method for setting the borrowers
      * @param borrowers
+     */
+    public void setBorrowers(List<Borrower> borrowers) {
+        this.borrowers = borrowers;
+    }
+
+    /**
+     * a method for setting the loans
      * @param loans
      */
-    public Library(List<Book> books, List<Borrower> borrowers, List<Loan> loans) {
-        this.books = books;
-        this.borrowers = borrowers;
+    public void setLoans(List<Loan> loans) {
         this.loans = loans;
     }
+
+//    ==== SETTERS ====
 
     /**
      * addBook method is used to add a book of type Book to the books list
@@ -98,9 +143,12 @@ public class Library {
 
         Borrower borrower = findBorrower(borrowerId);
 
-        book.setAvailable(false);
-        Loan loan = new Loan(book, borrower);
+
+        Loan loan = new Loan();
+        loan.setBook(book);
+        loan.setBorrower(borrower);
         loans.add(loan);
+        book.setAvailable(false);
 
         return loan;
     }
@@ -120,14 +168,6 @@ public class Library {
 
         loans.remove(loan);
         return true;
-    }
-
-    /**
-     * a method for returning all the loans
-     * @return a list of loans
-     */
-    public List<Loan> getLoans() {
-        return loans;
     }
 
     /**

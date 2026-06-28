@@ -7,23 +7,19 @@ package com.exalt.library.models;
  */
 public class Loan {
     private final int id; // Defines the identity number for a loan
-    private static int count = 1; // a counter to automatically assigns an id for the loan
+    // #TODO: a counter to automatically assigns an id for the book, ITS THE JOB OF THE DB
+    private static int count = 1; // Defines the counter that we will increment #TODO: Update Later
     private Book book; // Represents the book that will be borrowed
     private Borrower borrower; // represents the borrower who is going to borrow a book
     private boolean isActive; // represents if the loan is active or not
 
     /**
-     * A parameterized constructor that takes a book and a borrower attributes
+     * A default constructor
      * automatically increments the counter for the id
-     * @param book
-     * @param borrower
      */
-    public Loan(Book book, Borrower borrower) {
-        this.id = count;
-        this.book = book;
-        this.borrower = borrower;
+    public Loan() {
+        this.id = generate();
         isActive = true;
-        count++;
     }
 
 //    ==== GETTERS ====
@@ -61,6 +57,26 @@ public class Loan {
 
     //    ==== GETTERS ====
 
+//    ==== SETTERS ====
+
+    /**
+     * a method for setting the book for the loan
+     * @param book
+     */
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    /**
+     * a method for setting the borrower for the loan
+     * @param borrower
+     */
+    public void setBorrower(Borrower borrower) {
+        this.borrower = borrower;
+    }
+
+//    ==== SETTERS ====
+
     /**
      * a method to close a specific loan so the book becomes available again
      */
@@ -69,12 +85,20 @@ public class Loan {
         book.setAvailable(true);
     }
 
+    /**
+     * A synchronized generator so we get no duplicates
+     * @return - an int representing the value of the current counter
+     */
+    public static synchronized int generate() {
+        return count++;
+    }
+
     @Override
     public String toString() {
         return "Loan{" +
-                "id=" + id +
+                "id=" + id + "\n" +
                 ", book=" + book +
                 ", borrower=" + borrower +
-                '}';
+                '}' + "\n";
     }
 }
