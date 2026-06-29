@@ -23,6 +23,7 @@ public class BorrowerServices implements BorrowerOperations {
      * @param borrowers
      * @param borrower
      */
+    @Override
     public void assignBorrower(List<Borrower> borrowers, Borrower borrower) {
         borrowers.add(borrower); //This adds the borrower to the borrowers list
     }
@@ -31,6 +32,7 @@ public class BorrowerServices implements BorrowerOperations {
      * a method used to print all the borrowers inside the borrower list
      * @param borrowers
      */
+    @Override
     public void printAllBorrowers(List<Borrower> borrowers) {
         borrowers.stream() // this turns the borrowers into a stream
                 .forEach(borrower -> System.out.println(borrower)); //terminal operation for performing an action on each element of the stream
@@ -43,6 +45,7 @@ public class BorrowerServices implements BorrowerOperations {
      * @return return a borrower if he/she exists
      * @throws BookNotFoundException if the borrower doesn't exist
      */
+    @Override
     public Borrower findBorrowerById(List<Borrower> borrowers, int id) {
         return borrowers.stream() // this turns the borrowers into a stream
                 .filter(borrower -> borrower.getId() == id) // This filters the stream and gets what matches the condition
@@ -56,6 +59,7 @@ public class BorrowerServices implements BorrowerOperations {
      * @param id - represents the borrower id
      * @return - returns true or false based if it exists in the list or not
      */
+    @Override
     public boolean borrowerExists(List<Borrower> borrowers, int id) {
         return borrowers.stream() // this turns the borrowers into a stream
                 .anyMatch(borrower -> borrower.getId() == id); //check if any element in the stream matches the condition
@@ -66,7 +70,8 @@ public class BorrowerServices implements BorrowerOperations {
      * @param borrowers
      * @return - the size as long
      */
-    public int listHowMuchBorrowersExists(List<Borrower> borrowers) {
+    @Override
+    public int getBorrowerCount(List<Borrower> borrowers) {
         return borrowers.size(); //Gets the size of the list
-    } //TODO: This is basically the count inside your books list, fix the name for something better
+    } //Fixed
 }

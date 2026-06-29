@@ -17,9 +17,9 @@ import java.util.List;
  * @author Mohammad Rimawi
  */
 public class LoanServices implements LoanOperations {
-    // TODO: What are these attributes for?? Do some documentation
-    private BookOperations bookOperations;
-    private BorrowerOperations borrowerOperations;
+    // Fixed
+    private BookOperations bookOperations; // defines the book operation dependency
+    private BorrowerOperations borrowerOperations; // defines the book operation dependency
 
     /**
      * a default constructor for instantiation
@@ -52,6 +52,7 @@ public class LoanServices implements LoanOperations {
      * @return - return a loan if it exists
      * @throws LoanNotFoundException if the loan wasn't found
      */
+    @Override
     public Loan findLoanById(List<Loan> loans, int id) {
         return loans.stream() // this turns the loans into a stream
                 .filter(loan -> loan.getId() == id)// This filters the stream and gets what matches the condition
@@ -67,6 +68,7 @@ public class LoanServices implements LoanOperations {
      * @return the active loan
      * @throws LoanNotFoundException if the loan doesn't exist
      */
+    @Override
     public Loan findActiveLoan(List<Loan> loans, int borrowerId, int bookId) {
         return loans.stream()// this turns the loans into a stream
                 .filter(loan -> (loan.isActive()) &&
@@ -77,6 +79,54 @@ public class LoanServices implements LoanOperations {
     }
 
     /**
+     * a method for checking if the book exists and if it is available
+     * @param books
+     * @param bookId
+     * @return a book if found
+     * @throws com.exalt.library.exceptions.BookNotFoundException
+     * @throws BookUnavailableException
+     */
+    @Override
+    public Book checkForBook(List<Book> books, int bookId) {
+        Book book = bookOperations.findBookById(books, bookId);
+
+        if(!book.isAvailable()) { //Fixed
+            throw new BookUnavailableException("Book isn't available");
+        }
+
+        return book;
+    }
+
+    /**
+     * a method for checking for the borrower if he exists or not
+     * @param borrowers
+     * @param borrowerId
+     * @return borrower if found
+     * @throws com.exalt.library.exceptions.BorrowerNotFoundException if not found
+     */
+    @Override
+    public Borrower checkForBorrower(List<Borrower> borrowers, int borrowerId) {
+        return borrowerOperations.findBorrowerById(borrowers, borrowerId);
+    }
+
+    /**
+     * a method for creating a new loan object, and set its attributes.
+     * @param loans
+     * @param book
+     * @param borrower
+     * @return the created loan
+     */
+    @Override
+    public Loan createLoan(List<Loan> loans, Book book, Borrower borrower) {
+        Loan loan = new Loan(); //Create a loan
+        loan.setBook(book); //Set the book
+        loan.setBorrower(borrower); // Set the borrower
+        loans.add(loan); // add the loan to the loans list
+        book.setAvailable(false); // Change the book availibity - its taken now
+
+        return loan;
+    }
+    /**
      * a method for letting a borrower to loan a book
      * @param loans
      * @param books
@@ -86,29 +136,19 @@ public class LoanServices implements LoanOperations {
      * @return a loam
      * @throws BookUnavailableException if the book isn't available
      */
-    public Loan borrowBook(List<Loan> loans, List<Book> books, List<Borrower> borrowers, int borrowerId, int bookId) { //TODO: Check if there is a way to reduce the amount of the parameters
-        //TODO: This method is doing too much, split it into 2 methods
-        Book book = bookOperations.findBookById(books, bookId);
+    @Override
+    public Loan borrowBook(List<Loan> loans, List<Book> books, List<Borrower> borrowers, int borrowerId, int bookId) { //I'm keeping it
+        //Fixed
+        Book book = checkForBook(books, bookId);
+        Borrower borrower = checkForBorrower(borrowers, borrowerId);
 
-        if(book.isAvailable() == false) { //TODO: update the condition and use the modern way
-            throw new BookUnavailableException("Book isn't available");
-        }
-
-        Borrower borrower = borrowerOperations.findBorrowerById(borrowers, borrowerId);
-
-
-        Loan loan = new Loan(); //Create a loan
-        loan.setBook(book); //Set the book
-        loan.setBorrower(borrower); // Set the borrower
-        loans.add(loan); // add the loan to the loans list
-        book.setAvailable(false); // Change the book availibity - its taken now
-
-        return loan;
+        return createLoan(loans, book, borrower);
     }
 
     /**
      * a method to close a specific loan so the book becomes available again
      */
+    @Override
     public void closeLoan(Loan loan, Book book) {
         loan.setActive(false);
         book.setAvailable(true);
@@ -124,6 +164,7 @@ public class LoanServices implements LoanOperations {
      * @return true if the loan was closed
      * @throws LoanNotFoundException if the loan is not found
      */
+    @Override
     public boolean returnBook(List<Loan> loans, Book book, Borrower borrower) {
         Loan loan = findActiveLoan(loans, borrower.getId(), book.getId()); //Find the active loan
         closeLoan(loan, book); // Close the current loan
