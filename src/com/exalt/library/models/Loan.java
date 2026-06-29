@@ -75,15 +75,15 @@ public class Loan {
         this.borrower = borrower;
     }
 
-//    ==== SETTERS ====
-
     /**
-     * a method to close a specific loan so the book becomes available again
+     * a method for setting the activity of a loan
+     * @param active
      */
-    public void closeLoan() {
-        isActive = false;
-        book.setAvailable(true);
+    public void setActive(boolean active) {
+        isActive = active;
     }
+
+    //    ==== SETTERS ====
 
     /**
      * A synchronized generator so we get no duplicates

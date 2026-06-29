@@ -3,9 +3,9 @@ package com.exalt.library;
 import com.exalt.library.models.Author;
 import com.exalt.library.models.Book;
 import com.exalt.library.models.Borrower;
-import com.exalt.library.operations.BookOperations;
-import com.exalt.library.operations.BorrowerOperations;
-import com.exalt.library.operations.LoanOperations;
+import com.exalt.library.services.BookServices;
+import com.exalt.library.services.BorrowerServices;
+import com.exalt.library.services.LoanServices;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ public class Main {
         book1.setAvailable(true);
 
         Book book2 = new Book();
-        book2.setTitle("Computer Principles");
+        book2.setTitle("Compiler Principles");
         book2.setAuthor(author1);
         book2.setAvailable(true);
 
@@ -47,59 +47,70 @@ public class Main {
 
 //        ======== BOOK SERVICE ========
         System.out.println("{ ========== BOOK SERVICE ========== }");
-        BookOperations bookOperations = new BookOperations();
+        BookServices bookService = new BookServices();
 
-        bookOperations.addBook(lib.getBooks(), book1);
-        bookOperations.addBook(lib.getBooks(), book2);
-        bookOperations.addBook(lib.getBooks(), book3);
-
+        bookService.addBook(lib.getBooks(), book1);
+        bookService.addBook(lib.getBooks(), book2);
+        bookService.addBook(lib.getBooks(), book3);
+//
         System.out.println("All Books:");
-        bookOperations.printAllBooks(lib.getBooks());
+        bookService.printAllBooks(lib.getBooks());
 
         System.out.println("===========");
 
         System.out.println("Find book");
-        System.out.println(bookOperations.findBookById(lib.getBooks(), 2));
+        System.out.println(bookService.findBookById(lib.getBooks(), 2));
 
         System.out.println("===========");
 
         System.out.println("Book With id 3 exists?");
-        System.out.println(bookOperations.bookExists(lib.getBooks(), 3));
+        System.out.println(bookService.bookExists(lib.getBooks(), 3));
 //       { ======== BOOK SERVICE ======== }
 
 //        ======== BORROWER SERVICE ========
         System.out.println("{ ========== BORROWER SERVICE ========== }");
-        BorrowerOperations borrowerOperations = new BorrowerOperations();
+        BorrowerServices borrowerService = new BorrowerServices();
 
-        borrowerOperations.assignBorrower(lib.getBorrowers(), borrower1);
-        borrowerOperations.assignBorrower(lib.getBorrowers(), borrower2);
-
+        borrowerService.assignBorrower(lib.getBorrowers(), borrower1);
+        borrowerService.assignBorrower(lib.getBorrowers(), borrower2);
+//
         System.out.println("All Borrowers:");
-        borrowerOperations.printAllBorrowers(lib.getBorrowers());
+        borrowerService.printAllBorrowers(lib.getBorrowers());
 
         System.out.println("===========");
 
         System.out.println("Find borrower");
-        System.out.println(borrowerOperations.findBorrowerById(lib.getBorrowers(), 2));
+        System.out.println(borrowerService.findBorrowerById(lib.getBorrowers(), 2));
 
         System.out.println("===========");
 
         System.out.println("Borrower With id 3 exists?");
-        System.out.println(borrowerOperations.borrowerExists(lib.getBorrowers(), 3));
+        System.out.println(borrowerService.borrowerExists(lib.getBorrowers(), 3));
 //       { ======== BORROWER SERVICE ======== }
-
+//
 //        ======== LOAN SERVICE ========
         System.out.println("{ ========== LOAN SERVICE ========== }");
-        LoanOperations loanOperations = new LoanOperations();
+        LoanServices loanService = new LoanServices();
+
+        loanService.setBookOperations(new BookServices());
+        loanService.setBorrowerOperations(new BorrowerServices());
 
         System.out.println("Loan a book");
-        loanOperations.borrowBook(lib.getLoans(), lib.getBooks(), lib.getBorrowers(), 1, 1);
+        loanService.borrowBook(lib.getLoans(), lib.getBooks(), lib.getBorrowers(), 1, 1);
+        loanService.borrowBook(lib.getLoans(), lib.getBooks(), lib.getBorrowers(), 2, 3);
 
         System.out.println("===========");
 
         System.out.println("Get Loans");
         System.out.println(lib.getLoans());
 
+        System.out.println("===========");
+
+        System.out.println("Return Book 3");
+        loanService.returnBook(lib.getLoans(), book3, borrower2);
+
+        System.out.println("Get Loans Again");
+        System.out.println(lib.getLoans());
 //       { ======== LOAN SERVICE ======== }
     }
 }
