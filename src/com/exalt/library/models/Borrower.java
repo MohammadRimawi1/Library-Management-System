@@ -1,7 +1,7 @@
 package com.exalt.library.models;
 /**
  * A class representing the library borrower
- * Each borrower has a unique id, they also have names, and a list of borrowed books
+ * Each borrower has a unique id, they also have names
  * @author Mohammad Rimawi
  */
 public class Borrower {
@@ -15,7 +15,7 @@ public class Borrower {
      * automatically increments the counter for the id
      */
     public Borrower() {
-        this.id = generate();
+        this.id = generate(); // TODO: To assign the ID value from the DB
     }
 
 //    ==== GETTERS ====
@@ -53,7 +53,7 @@ public class Borrower {
      */
     public static synchronized int generate() {
         return count++;
-    }
+    } //TODO: Delete this method when working with the DB, also, it violates SRP
 
     @Override
     public String toString() {

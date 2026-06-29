@@ -3,9 +3,9 @@ package com.exalt.library.operations;
 import com.exalt.library.exceptions.BookNotFoundException;
 import com.exalt.library.models.Book;
 
-import java.util.Comparator;
+import java.util.Comparator; //TODO: Unused import, delete it
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Collectors; //TODO: Unused import, delete it
 
 /**
  * an interface representing the operations for a book in a library
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * @author Mohammad Rimawi
  */
 public interface BookOperations {
-
+    //TODO: There was no point of writing public for the methods, interfaces are public final static by default
     /**
      * addBook method is used to add a book of type Book to the books list
      * implemented inside BookServices
@@ -78,7 +78,7 @@ public interface BookOperations {
      * @param books
      * @return the sum of all IDs
      */
-    public int sumOfAllBooksIds(List<Book> books);
+    public int sumOfAllBooksIds(List<Book> books); //TODO: check if there is actual point of this method?
 
     /**
      * a method for checking how many books exists in the books list
@@ -86,5 +86,5 @@ public interface BookOperations {
      * @param books
      * @return - the size as long
      */
-    public int listHowMuchBooksExists(List<Book> books);
+    public int listHowMuchBooksExists(List<Book> books); //TODO: This is basically the count inside your books list, fix the name for something better
 }

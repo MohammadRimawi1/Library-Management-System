@@ -13,7 +13,7 @@ import java.util.List;
  * @author Mohammad Rimawi
  */
 public interface LoanOperations {
-
+    //TODO: There was no point of writing public for the methods, interfaces are public final static by default
     /**
      * a method used to find a specific loan based on its id
      * implemented inside LoanServices
@@ -46,7 +46,7 @@ public interface LoanOperations {
      * @return a loam
      * @throws BookUnavailableException if the book isn't available
      */
-    public Loan borrowBook(List<Loan> loans, List<Book> books, List<Borrower> borrowers, int borrowerId, int bookId);
+    public Loan borrowBook(List<Loan> loans, List<Book> books, List<Borrower> borrowers, int borrowerId, int bookId); //TODO: Check if there is a way to reduce the amount of the parameters
 
     /**
      * a method which returns a borrowed book and closes its active loan

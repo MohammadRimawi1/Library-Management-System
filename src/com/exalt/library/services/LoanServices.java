@@ -17,6 +17,7 @@ import java.util.List;
  * @author Mohammad Rimawi
  */
 public class LoanServices implements LoanOperations {
+    // TODO: What are these attributes for?? Do some documentation
     private BookOperations bookOperations;
     private BorrowerOperations borrowerOperations;
 
@@ -52,10 +53,10 @@ public class LoanServices implements LoanOperations {
      * @throws LoanNotFoundException if the loan wasn't found
      */
     public Loan findLoanById(List<Loan> loans, int id) {
-        return loans.stream()
-                .filter(loan -> loan.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new LoanNotFoundException("loan was not found!"));
+        return loans.stream() // this turns the loans into a stream
+                .filter(loan -> loan.getId() == id)// This filters the stream and gets what matches the condition
+                .findFirst() // This returns an optional describing the first element of the stream
+                .orElseThrow(() -> new LoanNotFoundException("loan was not found!")); // This should throw an exception if there was loan found
     }
 
     /**
@@ -67,12 +68,12 @@ public class LoanServices implements LoanOperations {
      * @throws LoanNotFoundException if the loan doesn't exist
      */
     public Loan findActiveLoan(List<Loan> loans, int borrowerId, int bookId) {
-        return loans.stream()
+        return loans.stream()// this turns the loans into a stream
                 .filter(loan -> (loan.isActive()) &&
                         (loan.getBorrower().getId() == borrowerId) &&
-                        (loan.getBook().getId() == bookId))
-                .findFirst()
-                .orElseThrow(() -> new LoanNotFoundException("Loan doesn't exist"));
+                        (loan.getBook().getId() == bookId)) // This filters the stream and gets what matches the conditions
+                .findFirst() // This returns an optional describing the first element of the stream
+                .orElseThrow(() -> new LoanNotFoundException("Loan doesn't exist")); // This should throw an exception if there was no loan found
     }
 
     /**
@@ -85,21 +86,22 @@ public class LoanServices implements LoanOperations {
      * @return a loam
      * @throws BookUnavailableException if the book isn't available
      */
-    public Loan borrowBook(List<Loan> loans, List<Book> books, List<Borrower> borrowers, int borrowerId, int bookId) {
+    public Loan borrowBook(List<Loan> loans, List<Book> books, List<Borrower> borrowers, int borrowerId, int bookId) { //TODO: Check if there is a way to reduce the amount of the parameters
+        //TODO: This method is doing too much, split it into 2 methods
         Book book = bookOperations.findBookById(books, bookId);
 
-        if(book.isAvailable() == false) {
+        if(book.isAvailable() == false) { //TODO: update the condition and use the modern way
             throw new BookUnavailableException("Book isn't available");
         }
 
         Borrower borrower = borrowerOperations.findBorrowerById(borrowers, borrowerId);
 
 
-        Loan loan = new Loan();
-        loan.setBook(book);
-        loan.setBorrower(borrower);
-        loans.add(loan);
-        book.setAvailable(false);
+        Loan loan = new Loan(); //Create a loan
+        loan.setBook(book); //Set the book
+        loan.setBorrower(borrower); // Set the borrower
+        loans.add(loan); // add the loan to the loans list
+        book.setAvailable(false); // Change the book availibity - its taken now
 
         return loan;
     }
@@ -123,8 +125,8 @@ public class LoanServices implements LoanOperations {
      * @throws LoanNotFoundException if the loan is not found
      */
     public boolean returnBook(List<Loan> loans, Book book, Borrower borrower) {
-        Loan loan = findActiveLoan(loans, borrower.getId(), book.getId());
-        closeLoan(loan, book);
+        Loan loan = findActiveLoan(loans, borrower.getId(), book.getId()); //Find the active loan
+        closeLoan(loan, book); // Close the current loan
 
         loans.remove(loan); //#TODO: Remember to delete this after adding a DB, so we can keep track of the loans history
         return true;

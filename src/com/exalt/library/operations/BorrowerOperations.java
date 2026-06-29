@@ -1,7 +1,7 @@
 package com.exalt.library.operations;
 
 import com.exalt.library.exceptions.BookNotFoundException;
-import com.exalt.library.exceptions.BorrowerNotFoundException;
+import com.exalt.library.exceptions.BorrowerNotFoundException; //TODO: Unused import, delete it
 import com.exalt.library.models.Borrower;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * @author Mohammad Rimawi
  */
 public interface BorrowerOperations {
-
+    //TODO: There was no point of writing public for the methods, interfaces are public final static by default
     /**
      * assignBorrower method is used to assign a borrower of type Borrower to the borrowers list
      * implemented inside BorrowerServices
@@ -52,5 +52,5 @@ public interface BorrowerOperations {
      * @param borrowers
      * @return - the size as long
      */
-    public int listHowMuchBorrowersExists(List<Borrower> borrowers);
+    public int listHowMuchBorrowersExists(List<Borrower> borrowers); //TODO: This is basically the count inside your borrowers list, fix the name for something better
 }

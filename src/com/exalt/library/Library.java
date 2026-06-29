@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * a class representing the library itself
- * Contains a list of books and borrowers
+ * Contains a list of books, borrowers, and loans
  * @author Mohammad Rimawi
  */
 public class Library {

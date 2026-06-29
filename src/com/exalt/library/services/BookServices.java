@@ -25,7 +25,7 @@ public class BookServices implements BookOperations {
      * @param book
      */
     public void addBook(List<Book> books, Book book) {
-        books.add(book);
+        books.add(book); //This adds a book to the books list
     }
 
     /**
@@ -33,8 +33,8 @@ public class BookServices implements BookOperations {
      * @param books
      */
     public void printAllBooks(List<Book> books) {
-        books.stream()
-                .forEach(book -> System.out.println(book));
+        books.stream() // this turns the books into a stream
+                .forEach(book -> System.out.println(book)); //terminal operation for performing an action on each element of the stream
     }
 
     /**
@@ -45,10 +45,10 @@ public class BookServices implements BookOperations {
      * @throws BookNotFoundException if the book doesn't exist
      */
     public Book findBookById(List<Book> books, int id) {
-        return books.stream()
-                .filter(book -> book.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new BookNotFoundException("Book was not found!"));
+        return books.stream() // this turns the books into a stream
+                .filter(book -> book.getId() == id)// This filters the stream and gets what matches the condition
+                .findFirst() // This returns an optional describing the first element of the stream
+                .orElseThrow(() -> new BookNotFoundException("Book was not found!")); // This should throw an exception if there was no book found
     }
 
     /**
@@ -58,8 +58,8 @@ public class BookServices implements BookOperations {
      * @return - returns true or false based if it exists in the list or not
      */
     public boolean bookExists(List<Book> books, int id) {
-        return books.stream()
-                .anyMatch(book -> book.getId() == id);
+        return books.stream() // this turns the books into a stream
+                .anyMatch(book -> book.getId() == id); //check if any element in the stream matches the condition
     }
 
     /**
@@ -68,8 +68,8 @@ public class BookServices implements BookOperations {
      * @return - true if ALL books have titles, false if AT LEAST one doesn't have
      */
     public boolean allBooksHaveTitles(List<Book> books) {
-        return books.stream()
-                .noneMatch(book -> book.getTitle() == null || book.getTitle().equals(""));
+        return books.stream() // this turns the books into a stream
+                .noneMatch(book -> book.getTitle() == null || book.getTitle().equals("")); //TODO: This logic isn't enough for some cases, fix it
     }
 
     /**
@@ -78,9 +78,9 @@ public class BookServices implements BookOperations {
      * @return a list of sorted books
      */
     public List<Book> sortBooksByTitle(List<Book> books) {
-        return books.stream()
-                .sorted(Comparator.comparing(Book::getTitle))
-                .collect(Collectors.toList());
+        return books.stream() // this turns the books into a stream
+                .sorted(Comparator.comparing(Book::getTitle)) //create a new sorted stream
+                .collect(Collectors.toList()); //terminal operation to accumulate elements from a stream into a mutable container
     }
 
     /**
@@ -89,8 +89,8 @@ public class BookServices implements BookOperations {
      * @return true if all are available, false if AT LEAST one isn't
      */
     public boolean areAllBookAvailable(List<Book> books) {
-        return books.stream()
-                .allMatch(book -> book.isAvailable());
+        return books.stream() // this turns the books into a stream
+                .allMatch(book -> book.isAvailable()); //check if all elements in the stream matches the condition
     }
 
     /**
@@ -99,10 +99,10 @@ public class BookServices implements BookOperations {
      * @return the sum of all IDs
      */
     public int sumOfAllBooksIds(List<Book> books) {
-        return books.stream()
-                .map(book -> book.getId())
-                .reduce(0, Integer::sum);
-    }
+        return books.stream() // this turns the books into a stream
+                .map(book -> book.getId()) //returns a stream after applying the function
+                .reduce(0, Integer::sum);//combine all elements of a stream into a single result, then sum the id's
+    } //TODO: check if there is actual point of this method?
 
     /**
      * a method for checking how many books exists in the books list
@@ -110,6 +110,6 @@ public class BookServices implements BookOperations {
      * @return - the size as long
      */
     public int listHowMuchBooksExists(List<Book> books) {
-        return books.size();
-    }
+        return books.size(); //Gets the size of the list
+    } //TODO: This is basically the count inside your books list, fix the name for something better
 }
