@@ -24,7 +24,7 @@ public class BorrowerServices implements BorrowerOperations {
      * @param borrower
      */
     public void assignBorrower(List<Borrower> borrowers, Borrower borrower) {
-        borrowers.add(borrower);
+        borrowers.add(borrower); //This adds the borrower to the borrowers list
     }
 
     /**
@@ -32,8 +32,8 @@ public class BorrowerServices implements BorrowerOperations {
      * @param borrowers
      */
     public void printAllBorrowers(List<Borrower> borrowers) {
-        borrowers.stream()
-                .forEach(borrower -> System.out.println(borrower));
+        borrowers.stream() // this turns the borrowers into a stream
+                .forEach(borrower -> System.out.println(borrower)); //terminal operation for performing an action on each element of the stream
     }
 
     /**
@@ -44,10 +44,10 @@ public class BorrowerServices implements BorrowerOperations {
      * @throws BookNotFoundException if the borrower doesn't exist
      */
     public Borrower findBorrowerById(List<Borrower> borrowers, int id) {
-        return borrowers.stream()
-                .filter(borrower -> borrower.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new BorrowerNotFoundException("Borrower was not found!"));
+        return borrowers.stream() // this turns the borrowers into a stream
+                .filter(borrower -> borrower.getId() == id) // This filters the stream and gets what matches the condition
+                .findFirst() // This returns an optional describing the first element of the stream
+                .orElseThrow(() -> new BorrowerNotFoundException("Borrower was not found!")); // This should throw an exception if there was no borrower found
     }
 
     /**
@@ -57,8 +57,8 @@ public class BorrowerServices implements BorrowerOperations {
      * @return - returns true or false based if it exists in the list or not
      */
     public boolean borrowerExists(List<Borrower> borrowers, int id) {
-        return borrowers.stream()
-                .anyMatch(borrower -> borrower.getId() == id);
+        return borrowers.stream() // this turns the borrowers into a stream
+                .anyMatch(borrower -> borrower.getId() == id); //check if any element in the stream matches the condition
     }
 
     /**
@@ -67,6 +67,6 @@ public class BorrowerServices implements BorrowerOperations {
      * @return - the size as long
      */
     public int listHowMuchBorrowersExists(List<Borrower> borrowers) {
-        return borrowers.size();
-    }
+        return borrowers.size(); //Gets the size of the list
+    } //TODO: This is basically the count inside your books list, fix the name for something better
 }

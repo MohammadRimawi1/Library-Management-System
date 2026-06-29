@@ -13,11 +13,11 @@ public class Author {
     private String nationality; // represents the nationality of the author
 
     /**
-     * A parameterized constructor that takes name and nationality attributes
+     * A default constructor
      * automatically increments the counter for the id
      */
     public Author() {
-        this.id = generate();
+        this.id = generate(); // TODO: To assign the ID value from the DB
     }
 
 //    ==== GETTERS ====
@@ -72,7 +72,7 @@ public class Author {
      */
     public static synchronized int generate() {
         return count++;
-    }
+    } //TODO: Delete this method when working with the DB, also, it violates SRP
 
     @Override
     public String toString() {

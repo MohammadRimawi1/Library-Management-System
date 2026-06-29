@@ -19,7 +19,7 @@ public class Book {
      * automatically increments the counter for the id and sets the availability to true
      */
     public Book() {
-        this.id = generate();
+        this.id = generate(); // TODO: To assign the ID value from the DB
         this.isAvailable = true;
     }
 //    ==== GETTERS ====
@@ -89,7 +89,7 @@ public class Book {
      */
     public static synchronized int generate() {
         return count++;
-    }
+    } //TODO: Delete this method when working with the DB, also, it violates SRP
 
     @Override
     public String toString() {

@@ -18,7 +18,7 @@ public class Loan {
      * automatically increments the counter for the id
      */
     public Loan() {
-        this.id = generate();
+        this.id = generate(); // TODO: To assign the ID value from the DB
         isActive = true;
     }
 
@@ -91,7 +91,7 @@ public class Loan {
      */
     public static synchronized int generate() {
         return count++;
-    }
+    } //TODO: Delete this method when working with the DB, also, it violates SRP
 
     @Override
     public String toString() {
