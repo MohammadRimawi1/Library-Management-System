@@ -34,6 +34,11 @@ public class Main {
         book3.setAuthor(author2);
         book3.setAvailable(true);
 
+        Book book4 = new Book();
+        book4.setTitle("Image Processing");
+        book4.setAuthor(author2);
+        book4.setAvailable(true);
+
         Borrower borrower1 = new Borrower();
         borrower1.setName("Murse");
 
@@ -52,6 +57,7 @@ public class Main {
         bookService.addBook(lib.getBooks(), book1);
         bookService.addBook(lib.getBooks(), book2);
         bookService.addBook(lib.getBooks(), book3);
+        bookService.addBook(lib.getBooks(), book4);
 //
         System.out.println("All Books:");
         bookService.printAllBooks(lib.getBooks());
@@ -65,6 +71,11 @@ public class Main {
 
         System.out.println("Book With id 3 exists?");
         System.out.println(bookService.bookExists(lib.getBooks(), 3));
+
+        System.out.println("===========");
+
+        System.out.println("Do all books have title?");
+        System.out.println(bookService.allBooksHaveTitles(lib.getBooks()));
 //       { ======== BOOK SERVICE ======== }
 
 //        ======== BORROWER SERVICE ========

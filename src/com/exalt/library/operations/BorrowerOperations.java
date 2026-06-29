@@ -1,7 +1,6 @@
 package com.exalt.library.operations;
 
 import com.exalt.library.exceptions.BookNotFoundException;
-import com.exalt.library.exceptions.BorrowerNotFoundException; //TODO: Unused import, delete it
 import com.exalt.library.models.Borrower;
 
 import java.util.List;
@@ -11,21 +10,21 @@ import java.util.List;
  * @author Mohammad Rimawi
  */
 public interface BorrowerOperations {
-    //TODO: There was no point of writing public for the methods, interfaces are public final static by default
+    //Fixed
     /**
      * assignBorrower method is used to assign a borrower of type Borrower to the borrowers list
      * implemented inside BorrowerServices
      * @param borrowers
      * @param borrower
      */
-    public void assignBorrower(List<Borrower> borrowers, Borrower borrower);
+     void assignBorrower(List<Borrower> borrowers, Borrower borrower);
 
     /**
      * a method used to print all the borrowers inside the borrower list
      * implemented inside BorrowerServices
      * @param borrowers
      */
-    public void printAllBorrowers(List<Borrower> borrowers);
+     void printAllBorrowers(List<Borrower> borrowers);
 
     /**
      * a method used to find a specific borrower based on his/her id
@@ -35,7 +34,7 @@ public interface BorrowerOperations {
      * @return return a borrower if he/she exists
      * @throws BookNotFoundException if the borrower doesn't exist
      */
-    public Borrower findBorrowerById(List<Borrower> borrowers, int id);
+     Borrower findBorrowerById(List<Borrower> borrowers, int id);
 
     /**
      * a method for checking if the borrower exists or not
@@ -44,7 +43,7 @@ public interface BorrowerOperations {
      * @param id - represents the borrower id
      * @return - returns true or false based if it exists in the list or not
      */
-    public boolean borrowerExists(List<Borrower> borrowers, int id);
+     boolean borrowerExists(List<Borrower> borrowers, int id);
 
     /**
      * a method for checking how many borrowers exists in the borrowers list
@@ -52,5 +51,5 @@ public interface BorrowerOperations {
      * @param borrowers
      * @return - the size as long
      */
-    public int listHowMuchBorrowersExists(List<Borrower> borrowers); //TODO: This is basically the count inside your borrowers list, fix the name for something better
+     int getBorrowerCount(List<Borrower> borrowers); //Fixed
 }
