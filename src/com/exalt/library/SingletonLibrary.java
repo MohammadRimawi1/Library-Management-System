@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.exalt.library;
 
 import com.exalt.library.models.Book;
@@ -14,7 +11,8 @@ import java.util.List;
  * Contains a list of books, borrowers, and loans
  * @author Mohammad Rimawi
  */
-public class Library {
+public class SingletonLibrary {
+    private static volatile SingletonLibrary instance; // Defines the single shared instance of the library
     private List<Book> books; // Defines a list containing books
     private List<Borrower> borrowers; // Defines a list containing the borrowers
     private List<Loan> loans; // Defines a list containing the loans
@@ -22,7 +20,7 @@ public class Library {
     /**
      * A Default constructor
      */
-    public Library() { }
+    private SingletonLibrary() { }
 
 //    ==== GETTERS ====
     /**
@@ -78,4 +76,23 @@ public class Library {
     }
 
 //    ==== SETTERS ====
+
+    /**
+     * a method for getting the instance of the library
+     * if there is an existing one, then you can't create another following the singleton design pattern principle
+     * it is multi-thread safe
+     * @return a single instance from the SingletonLibrary
+     */
+    public static SingletonLibrary getInstance() {
+        SingletonLibrary result = instance;
+        if(result == null) {
+            synchronized (SingletonLibrary.class) {
+                result = instance;
+                if (result == null) {
+                    instance = result = new SingletonLibrary();
+                }
+            }
+        }
+        return result;
+    }
 }
