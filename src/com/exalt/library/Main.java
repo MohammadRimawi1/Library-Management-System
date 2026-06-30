@@ -45,7 +45,7 @@ public class Main {
         Borrower borrower2 = new Borrower();
         borrower2.setName("Malik");
 
-        Library lib = new Library();
+        SingletonLibrary lib = SingletonLibrary.getInstance();
         lib.setBooks(new ArrayList<>());
         lib.setBorrowers(new ArrayList<>());
         lib.setLoans(new ArrayList<>());
@@ -58,7 +58,7 @@ public class Main {
         bookService.addBook(lib.getBooks(), book2);
         bookService.addBook(lib.getBooks(), book3);
         bookService.addBook(lib.getBooks(), book4);
-//
+
         System.out.println("All Books:");
         bookService.printAllBooks(lib.getBooks());
 
@@ -77,14 +77,14 @@ public class Main {
         System.out.println("Do all books have title?");
         System.out.println(bookService.allBooksHaveTitles(lib.getBooks()));
 //       { ======== BOOK SERVICE ======== }
-
+//
 //        ======== BORROWER SERVICE ========
         System.out.println("{ ========== BORROWER SERVICE ========== }");
         BorrowerServices borrowerService = new BorrowerServices();
 
         borrowerService.assignBorrower(lib.getBorrowers(), borrower1);
         borrowerService.assignBorrower(lib.getBorrowers(), borrower2);
-//
+
         System.out.println("All Borrowers:");
         borrowerService.printAllBorrowers(lib.getBorrowers());
 
@@ -98,7 +98,7 @@ public class Main {
         System.out.println("Borrower With id 3 exists?");
         System.out.println(borrowerService.borrowerExists(lib.getBorrowers(), 3));
 //       { ======== BORROWER SERVICE ======== }
-//
+
 //        ======== LOAN SERVICE ========
         System.out.println("{ ========== LOAN SERVICE ========== }");
         LoanServices loanService = new LoanServices();
