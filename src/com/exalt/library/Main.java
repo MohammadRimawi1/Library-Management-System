@@ -3,9 +3,10 @@ package com.exalt.library;
 import com.exalt.library.models.Author;
 import com.exalt.library.models.Book;
 import com.exalt.library.models.Borrower;
-import com.exalt.library.services.BookServices;
-import com.exalt.library.services.BorrowerServices;
-import com.exalt.library.services.LoanServices;
+import com.exalt.library.controllers.services.BookServices;
+import com.exalt.library.controllers.services.BorrowerServices;
+import com.exalt.library.controllers.services.LoanServices;
+import com.exalt.library.models.SingletonLibrary;
 
 import java.util.ArrayList;
 

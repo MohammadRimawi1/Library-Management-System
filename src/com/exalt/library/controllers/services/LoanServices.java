@@ -1,13 +1,13 @@
-package com.exalt.library.services;
+package com.exalt.library.controllers.services;
 
 import com.exalt.library.exceptions.BookUnavailableException;
 import com.exalt.library.exceptions.LoanNotFoundException;
 import com.exalt.library.models.Book;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.Loan;
-import com.exalt.library.operations.BookOperations;
-import com.exalt.library.operations.BorrowerOperations;
-import com.exalt.library.operations.LoanOperations;
+import com.exalt.library.controllers.operations.BookOperations;
+import com.exalt.library.controllers.operations.BorrowerOperations;
+import com.exalt.library.controllers.operations.LoanOperations;
 
 import java.util.List;
 

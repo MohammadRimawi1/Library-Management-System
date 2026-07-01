@@ -1,8 +1,4 @@
-package com.exalt.library;
-
-import com.exalt.library.models.Book;
-import com.exalt.library.models.Borrower;
-import com.exalt.library.models.Loan;
+package com.exalt.library.models;
 
 import java.util.List;
 
