@@ -1,15 +1,17 @@
 package com.exalt.library.models;
 
+import com.exalt.library.models.libraryitems.LibraryItem;
+
 import java.util.List;
 
 /**
  * a class representing the library itself
- * Contains a list of books, borrowers, and loans
+ * Contains a list of library items, borrowers, and loans
  * @author Mohammad Rimawi
  */
 public class SingletonLibrary {
     private static volatile SingletonLibrary instance; // Defines the single shared instance of the library
-    private List<Book> books; // Defines a list containing books
+    private List<LibraryItem> items; // Defines a list containing library items
     private List<Borrower> borrowers; // Defines a list containing the borrowers
     private List<Loan> loans; // Defines a list containing the loans
 
@@ -20,11 +22,11 @@ public class SingletonLibrary {
 
 //    ==== GETTERS ====
     /**
-     * a method for getting the books
+     * a method for getting the library items
      * @return
      */
-    public List<Book> getBooks() {
-        return books;
+    public List<LibraryItem> getLibraryItems() {
+        return items;
     }
 
     /**
@@ -48,11 +50,11 @@ public class SingletonLibrary {
 //    ==== SETTERS ====
 
     /**
-     * a method for setting the books
-     * @param books
+     * a method for setting the items
+     * @param items
      */
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setLibraryItems(List<LibraryItem> items) {
+        this.items = items;
     }
 
     /**

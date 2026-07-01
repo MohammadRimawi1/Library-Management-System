@@ -1,16 +1,17 @@
 package com.exalt.library.exceptions;
+
 //Fixed
 
 /**
- * a class that throws an unchecked exception if the book was unavailable
+ * a class that throws an unchecked exception if there was no item found
  * @author Mohammad Rimawi
  */
-public class BookUnavailableException extends RuntimeException {
+public class ItemNotFoundException extends RuntimeException {
     /**
      * a parameterized constructor to define the message that comes from the parent class
      * @param message
      */
-    public BookUnavailableException(String message) {
+    public ItemNotFoundException(String message) {
         super(message);
     }
 }
