@@ -1,6 +1,7 @@
 package com.exalt.library.controllers.services;
 
 import com.exalt.library.controllers.operations.LibraryItemOperations;
+import com.exalt.library.controllers.strategies.BorrowStrategy;
 import com.exalt.library.exceptions.ItemUnavailableException;
 import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.exceptions.LoanNotFoundException;
@@ -21,6 +22,7 @@ public class LoanServices implements LoanOperations {
     // Fixed
     private LibraryItemOperations libraryItemOperations; // defines the item operation dependency
     private BorrowerOperations borrowerOperations; // defines the book operation dependency
+    private BorrowStrategy borrowStrategy;
 
     /**
      * a default constructor for instantiation
@@ -44,7 +46,11 @@ public class LoanServices implements LoanOperations {
     public void setBorrowerOperations(BorrowerOperations borrowerOperations) {
         this.borrowerOperations = borrowerOperations;
     }
-//    ==== SETTERS ====
+
+    public void setBorrowStrategy(BorrowStrategy borrowStrategy) {
+        this.borrowStrategy = borrowStrategy;
+    }
+    //    ==== SETTERS ====
 
     /**
      * a method used to find a specific loan based on its id
@@ -111,23 +117,6 @@ public class LoanServices implements LoanOperations {
     }
 
     /**
-     * a method for creating a new loan object, and set its attributes.
-     * @param loans
-     * @param libraryItem
-     * @param borrower
-     * @return the created loan
-     */
-    @Override
-    public Loan createLoan(List<Loan> loans, LibraryItem libraryItem, Borrower borrower) {
-        Loan loan = new Loan(); //Create a loan
-        loan.setLibraryItem(libraryItem); //Set the libraryItem
-        loan.setBorrower(borrower); // Set the borrower
-        loans.add(loan); // add the loan to the loans list
-        libraryItem.setAvailable(false); // Change the libraryItem availibity - its taken now
-
-        return loan;
-    }
-    /**
      * a method for letting a borrower to loan a libraryItem
      * @param loans
      * @param libraryItems
@@ -139,11 +128,10 @@ public class LoanServices implements LoanOperations {
      */
     @Override
     public Loan borrowLibraryItem(List<Loan> loans, List<LibraryItem> libraryItems, List<Borrower> borrowers, int borrowerId, int itemId) { //I'm keeping it
-        //Fixed
         LibraryItem libraryItem = checkForLibraryItem(libraryItems, itemId);
         Borrower borrower = checkForBorrower(borrowers, borrowerId);
 
-        return createLoan(loans, libraryItem, borrower);
+        return borrowStrategy.borrow(loans, libraryItem, borrower);
     }
 
     /**

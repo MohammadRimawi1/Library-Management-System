@@ -1,6 +1,7 @@
 package com.exalt.library;
 
 import com.exalt.library.controllers.services.LibraryItemServices;
+import com.exalt.library.controllers.strategies.OnlineBorrowStrategy;
 import com.exalt.library.models.*;
 import com.exalt.library.controllers.services.BorrowerServices;
 import com.exalt.library.controllers.services.LoanServices;
@@ -115,6 +116,7 @@ public class Main {
 
         loanService.setLibraryItemOperations(new LibraryItemServices());
         loanService.setBorrowerOperations(new BorrowerServices());
+        loanService.setBorrowStrategy(new OnlineBorrowStrategy());
 
         System.out.println("Loan a book");
         loanService.borrowLibraryItem(lib.getLoans(), lib.getLibraryItems(), lib.getBorrowers(), 1, 1);
