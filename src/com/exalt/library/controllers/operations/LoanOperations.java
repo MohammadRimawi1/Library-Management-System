@@ -58,16 +58,6 @@ public interface LoanOperations {
      Borrower checkForBorrower(List<Borrower> borrowers, int borrowerId);
 
     /**
-     * a method for creating a new loan object, and set its attributes.
-     * implemented inside LoanServices
-     * @param loans
-     * @param item
-     * @param borrower
-     * @return the created loan
-     */
-     Loan createLoan(List<Loan> loans, LibraryItem item, Borrower borrower);
-
-    /**
      * a method for letting a borrower to loan an item
      * implemented inside LoanServices
      * @param loans
