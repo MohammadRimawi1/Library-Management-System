@@ -1,9 +1,9 @@
-package com.exalt.library.services;
+package com.exalt.library.controllers.services;
 
 import com.exalt.library.exceptions.BookNotFoundException;
 import com.exalt.library.exceptions.BorrowerNotFoundException;
 import com.exalt.library.models.Borrower;
-import com.exalt.library.operations.BorrowerOperations;
+import com.exalt.library.controllers.operations.BorrowerOperations;
 
 import java.util.List;
 

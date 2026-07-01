@@ -1,8 +1,8 @@
-package com.exalt.library.services;
+package com.exalt.library.controllers.services;
 
 import com.exalt.library.exceptions.BookNotFoundException;
 import com.exalt.library.models.Book;
-import com.exalt.library.operations.BookOperations;
+import com.exalt.library.controllers.operations.BookOperations;
 
 import java.util.Comparator;
 import java.util.List;
