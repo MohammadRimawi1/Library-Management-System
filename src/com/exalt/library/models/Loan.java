@@ -1,16 +1,18 @@
 package com.exalt.library.models;
 
+import com.exalt.library.models.libraryitems.LibraryItem;
+
 /**
- * a class representing a loan to which the borrower can borrow a book
- * it usees the books, borrowers
+ * a class representing a loan to which the borrower can borrow a library item
+ * it usees the library items, borrowers
  * @author Mohammad Rimawi
  */
 public class Loan {
     private final int id; // Defines the identity number for a loan
-    // #TODO: a counter to automatically assigns an id for the book, ITS THE JOB OF THE DB
+    // #TODO: a counter to automatically assigns an id for the library item, ITS THE JOB OF THE DB
     private static int count = 1; // Defines the counter that we will increment #TODO: Update Later
-    private Book book; // Represents the book that will be borrowed
-    private Borrower borrower; // represents the borrower who is going to borrow a book
+    private LibraryItem libraryItem; // Represents the library item that will be borrowed
+    private Borrower borrower; // represents the borrower who is going to borrow a library item
     private boolean isActive; // represents if the loan is active or not
 
     /**
@@ -32,11 +34,11 @@ public class Loan {
     }
 
     /**
-     * a method for getting the book
-     * @return the book
+     * a method for getting the libraryItem
+     * @return the libraryItem
      */
-    public Book getBook() {
-        return book;
+    public LibraryItem getLibraryItem() {
+        return libraryItem;
     }
 
     /**
@@ -60,11 +62,11 @@ public class Loan {
 //    ==== SETTERS ====
 
     /**
-     * a method for setting the book for the loan
-     * @param book
+     * a method for setting the libraryItem for the loan
+     * @param libraryItem
      */
-    public void setBook(Book book) {
-        this.book = book;
+    public void setLibraryItem(LibraryItem libraryItem) {
+        this.libraryItem = libraryItem;
     }
 
     /**
@@ -97,7 +99,7 @@ public class Loan {
     public String toString() {
         return "Loan{" +
                 "id=" + id + "\n" +
-                ", book=" + book +
+                ", library item=" + libraryItem +
                 ", borrower=" + borrower +
                 '}' + "\n";
     }

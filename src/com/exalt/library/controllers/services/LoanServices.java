@@ -1,11 +1,12 @@
 package com.exalt.library.controllers.services;
 
-import com.exalt.library.exceptions.BookUnavailableException;
+import com.exalt.library.controllers.operations.LibraryItemOperations;
+import com.exalt.library.exceptions.ItemUnavailableException;
+import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.exceptions.LoanNotFoundException;
-import com.exalt.library.models.Book;
 import com.exalt.library.models.Borrower;
+import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.Loan;
-import com.exalt.library.controllers.operations.BookOperations;
 import com.exalt.library.controllers.operations.BorrowerOperations;
 import com.exalt.library.controllers.operations.LoanOperations;
 
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public class LoanServices implements LoanOperations {
     // Fixed
-    private BookOperations bookOperations; // defines the book operation dependency
+    private LibraryItemOperations libraryItemOperations; // defines the item operation dependency
     private BorrowerOperations borrowerOperations; // defines the book operation dependency
 
     /**
@@ -30,10 +31,10 @@ public class LoanServices implements LoanOperations {
 
     /**
      * a method for setting the book operations
-     * @param bookOperations
+     * @param libraryItemOperations
      */
-    public void setBookOperations(BookOperations bookOperations) {
-        this.bookOperations = bookOperations;
+    public void setLibraryItemOperations(LibraryItemOperations libraryItemOperations) {
+        this.libraryItemOperations = libraryItemOperations;
     }
 
     /**
@@ -64,37 +65,37 @@ public class LoanServices implements LoanOperations {
      * Finds an active loan matching the borrower and the books ids
      * @param loans
      * @param borrowerId
-     * @param bookId
+     * @param itemId
      * @return the active loan
      * @throws LoanNotFoundException if the loan doesn't exist
      */
     @Override
-    public Loan findActiveLoan(List<Loan> loans, int borrowerId, int bookId) {
+    public Loan findActiveLoan(List<Loan> loans, int borrowerId, int itemId) {
         return loans.stream()// this turns the loans into a stream
                 .filter(loan -> (loan.isActive()) &&
                         (loan.getBorrower().getId() == borrowerId) &&
-                        (loan.getBook().getId() == bookId)) // This filters the stream and gets what matches the conditions
+                        (loan.getLibraryItem().getId() == itemId)) // This filters the stream and gets what matches the conditions
                 .findFirst() // This returns an optional describing the first element of the stream
                 .orElseThrow(() -> new LoanNotFoundException("Loan doesn't exist")); // This should throw an exception if there was no loan found
     }
 
     /**
-     * a method for checking if the book exists and if it is available
-     * @param books
-     * @param bookId
-     * @return a book if found
-     * @throws com.exalt.library.exceptions.BookNotFoundException
-     * @throws BookUnavailableException
+     * a method for checking if the library item exists and if it is available
+     * @param items
+     * @param itemId
+     * @return a library item if found
+     * @throws ItemNotFoundException
+     * @throws ItemUnavailableException
      */
     @Override
-    public Book checkForBook(List<Book> books, int bookId) {
-        Book book = bookOperations.findBookById(books, bookId);
+    public LibraryItem checkForLibraryItem(List<LibraryItem> items, int itemId) {
+        LibraryItem libraryItem = libraryItemOperations.findItemById(items, itemId);
 
-        if(!book.isAvailable()) { //Fixed
-            throw new BookUnavailableException("Book isn't available");
+        if(!libraryItem.isAvailable()) { //Fixed
+            throw new ItemUnavailableException("LibraryItem isn't available");
         }
 
-        return book;
+        return libraryItem;
     }
 
     /**
@@ -112,62 +113,62 @@ public class LoanServices implements LoanOperations {
     /**
      * a method for creating a new loan object, and set its attributes.
      * @param loans
-     * @param book
+     * @param libraryItem
      * @param borrower
      * @return the created loan
      */
     @Override
-    public Loan createLoan(List<Loan> loans, Book book, Borrower borrower) {
+    public Loan createLoan(List<Loan> loans, LibraryItem libraryItem, Borrower borrower) {
         Loan loan = new Loan(); //Create a loan
-        loan.setBook(book); //Set the book
+        loan.setLibraryItem(libraryItem); //Set the libraryItem
         loan.setBorrower(borrower); // Set the borrower
         loans.add(loan); // add the loan to the loans list
-        book.setAvailable(false); // Change the book availibity - its taken now
+        libraryItem.setAvailable(false); // Change the libraryItem availibity - its taken now
 
         return loan;
     }
     /**
-     * a method for letting a borrower to loan a book
+     * a method for letting a borrower to loan a libraryItem
      * @param loans
-     * @param books
+     * @param libraryItems
      * @param borrowers
      * @param borrowerId
-     * @param bookId
+     * @param itemId
      * @return a loam
-     * @throws BookUnavailableException if the book isn't available
+     * @throws ItemUnavailableException if the libraryItem isn't available
      */
     @Override
-    public Loan borrowBook(List<Loan> loans, List<Book> books, List<Borrower> borrowers, int borrowerId, int bookId) { //I'm keeping it
+    public Loan borrowLibraryItem(List<Loan> loans, List<LibraryItem> libraryItems, List<Borrower> borrowers, int borrowerId, int itemId) { //I'm keeping it
         //Fixed
-        Book book = checkForBook(books, bookId);
+        LibraryItem libraryItem = checkForLibraryItem(libraryItems, itemId);
         Borrower borrower = checkForBorrower(borrowers, borrowerId);
 
-        return createLoan(loans, book, borrower);
+        return createLoan(loans, libraryItem, borrower);
     }
 
     /**
-     * a method to close a specific loan so the book becomes available again
+     * a method to close a specific loan so the libraryItem becomes available again
      */
     @Override
-    public void closeLoan(Loan loan, Book book) {
+    public void closeLoan(Loan loan, LibraryItem libraryItem) {
         loan.setActive(false);
-        book.setAvailable(true);
+        libraryItem.setAvailable(true);
     }
 
     /**
-     * a method which returns a borrowed book and closes its active loan
+     * a method which returns a borrowed libraryItem and closes its active loan
      * if he did - then close the loan
      * if he didn't - return false
      * @param loans
-     * @param book
+     * @param libraryItem
      * @param borrower
      * @return true if the loan was closed
      * @throws LoanNotFoundException if the loan is not found
      */
     @Override
-    public boolean returnBook(List<Loan> loans, Book book, Borrower borrower) {
-        Loan loan = findActiveLoan(loans, borrower.getId(), book.getId()); //Find the active loan
-        closeLoan(loan, book); // Close the current loan
+    public boolean returnLibraryItem(List<Loan> loans, LibraryItem libraryItem, Borrower borrower) {
+        Loan loan = findActiveLoan(loans, borrower.getId(), libraryItem.getId()); //Find the active loan
+        closeLoan(loan, libraryItem); // Close the current loan
 
         loans.remove(loan); //#TODO: Remember to delete this after adding a DB, so we can keep track of the loans history
         return true;

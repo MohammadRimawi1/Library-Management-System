@@ -1,6 +1,6 @@
 package com.exalt.library.controllers.services;
 
-import com.exalt.library.exceptions.BookNotFoundException;
+import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.exceptions.BorrowerNotFoundException;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.controllers.operations.BorrowerOperations;
@@ -43,7 +43,7 @@ public class BorrowerServices implements BorrowerOperations {
      * @param borrowers
      * @param id
      * @return return a borrower if he/she exists
-     * @throws BookNotFoundException if the borrower doesn't exist
+     * @throws ItemNotFoundException if the borrower doesn't exist
      */
     @Override
     public Borrower findBorrowerById(List<Borrower> borrowers, int id) {

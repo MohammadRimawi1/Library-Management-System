@@ -1,9 +1,10 @@
 package com.exalt.library.controllers.operations;
 
-import com.exalt.library.exceptions.BookUnavailableException;
+import com.exalt.library.exceptions.ItemUnavailableException;
+import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.exceptions.LoanNotFoundException;
-import com.exalt.library.models.Book;
 import com.exalt.library.models.Borrower;
+import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.Loan;
 
 import java.util.List;
@@ -25,26 +26,26 @@ public interface LoanOperations {
      Loan findLoanById(List<Loan> loans, int id);
 
     /**
-     * Finds an active loan matching the borrower and the books ids
+     * Finds an active loan matching the borrower and the library items ids
      * implemented inside LoanServices
      * @param loans
      * @param borrowerId
-     * @param bookId
+     * @param itemId
      * @return the active loan
      * @throws LoanNotFoundException if the loan doesn't exist
      */
-     Loan findActiveLoan(List<Loan> loans, int borrowerId, int bookId);
+     Loan findActiveLoan(List<Loan> loans, int borrowerId, int itemId);
 
     /**
-     * a method for checking if the book exists and if it is available
+     * a method for checking if the item exists and if it is available
      * implemented inside LoanServices
-     * @param books
-     * @param bookId
-     * @return a book if found
-     * @throws com.exalt.library.exceptions.BookNotFoundException
-     * @throws BookUnavailableException
+     * @param items
+     * @param itemId
+     * @return an item if found
+     * @throws ItemNotFoundException
+     * @throws ItemUnavailableException
      */
-     Book checkForBook(List<Book> books, int bookId);
+     LibraryItem checkForLibraryItem(List<LibraryItem> items, int itemId);
 
     /**
      * a method for checking for the borrower if he exists or not
@@ -60,40 +61,40 @@ public interface LoanOperations {
      * a method for creating a new loan object, and set its attributes.
      * implemented inside LoanServices
      * @param loans
-     * @param book
+     * @param item
      * @param borrower
      * @return the created loan
      */
-     Loan createLoan(List<Loan> loans, Book book, Borrower borrower);
+     Loan createLoan(List<Loan> loans, LibraryItem item, Borrower borrower);
 
     /**
-     * a method for letting a borrower to loan a book
+     * a method for letting a borrower to loan an item
      * implemented inside LoanServices
      * @param loans
-     * @param books
+     * @param items
      * @param borrowers
      * @param borrowerId
-     * @param bookId
+     * @param itemId
      * @return a loam
-     * @throws BookUnavailableException if the book isn't available
+     * @throws ItemUnavailableException if the item isn't available
      */
-     Loan borrowBook(List<Loan> loans, List<Book> books, List<Borrower> borrowers, int borrowerId, int bookId); //I'm keeping it
+     Loan borrowLibraryItem(List<Loan> loans, List<LibraryItem> items, List<Borrower> borrowers, int borrowerId, int itemId); //I'm keeping it
 
     /**
-     * a method to close a specific loan so the book becomes available again
+     * a method to close a specific loan so the item becomes available again
      */
-     void closeLoan(Loan loan, Book book);
+     void closeLoan(Loan loan, LibraryItem item);
 
     /**
-     * a method which returns a borrowed book and closes its active loan
+     * a method which returns a borrowed item and closes its active loan
      * if he did - then close the loan
      * if he didn't - return false
      * implemented inside LoanServices
      * @param loans
-     * @param book
+     * @param item
      * @param borrower
      * @return true if the loan was closed
      * @throws LoanNotFoundException if the loan is not found
      */
-     boolean returnBook(List<Loan> loans, Book book, Borrower borrower);
+     boolean returnLibraryItem(List<Loan> loans, LibraryItem item, Borrower borrower);
 }
