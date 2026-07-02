@@ -31,4 +31,10 @@ public interface BorrowStrategy {
      * @return created loan
      */
     Loan borrow(List<Loan> loans, LibraryItem libraryItem, Borrower borrower);
+
+    /**
+     * a method for returning the item
+     * @param libraryItem
+     */
+    void returnItem(LibraryItem libraryItem);
 }

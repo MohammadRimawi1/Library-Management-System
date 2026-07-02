@@ -2,6 +2,7 @@ package com.exalt.library.controllers.services;
 
 import com.exalt.library.controllers.operations.LibraryItemOperations;
 import com.exalt.library.controllers.strategies.BorrowStrategy;
+import com.exalt.library.controllers.strategies.BorrowStrategyFactory;
 import com.exalt.library.exceptions.ItemUnavailableException;
 import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.exceptions.LoanNotFoundException;
@@ -22,7 +23,7 @@ public class LoanServices implements LoanOperations {
     // Fixed
     private LibraryItemOperations libraryItemOperations; // defines the item operation dependency
     private BorrowerOperations borrowerOperations; // defines the book operation dependency
-    private BorrowStrategy borrowStrategy;
+    private BorrowStrategyFactory borrowStrategyFactory; // defines the borrow strategy factory
 
     /**
      * a default constructor for instantiation
@@ -47,8 +48,12 @@ public class LoanServices implements LoanOperations {
         this.borrowerOperations = borrowerOperations;
     }
 
-    public void setBorrowStrategy(BorrowStrategy borrowStrategy) {
-        this.borrowStrategy = borrowStrategy;
+    /**
+     * a method for setting the borrower strategy factory
+     * @param borrowStrategyFactory
+     */
+    public void setBorrowStrategyFactory(BorrowStrategyFactory borrowStrategyFactory) {
+        this.borrowStrategyFactory = borrowStrategyFactory;
     }
     //    ==== SETTERS ====
 
@@ -97,7 +102,7 @@ public class LoanServices implements LoanOperations {
     public LibraryItem checkForLibraryItem(List<LibraryItem> items, int itemId) {
         LibraryItem libraryItem = libraryItemOperations.findItemById(items, itemId);
 
-        if(!libraryItem.isAvailable()) { //Fixed
+        if(!libraryItem.isAvailable()) {
             throw new ItemUnavailableException("LibraryItem isn't available");
         }
 
@@ -131,6 +136,7 @@ public class LoanServices implements LoanOperations {
         LibraryItem libraryItem = checkForLibraryItem(libraryItems, itemId);
         Borrower borrower = checkForBorrower(borrowers, borrowerId);
 
+        BorrowStrategy borrowStrategy = borrowStrategyFactory.resolve(libraryItem);
         return borrowStrategy.borrow(loans, libraryItem, borrower);
     }
 
@@ -140,7 +146,7 @@ public class LoanServices implements LoanOperations {
     @Override
     public void closeLoan(Loan loan, LibraryItem libraryItem) {
         loan.setActive(false);
-        libraryItem.setAvailable(true);
+        borrowStrategyFactory.resolve(libraryItem).returnItem(libraryItem);
     }
 
     /**

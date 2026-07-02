@@ -1,13 +1,10 @@
 package com.exalt.library;
 
-import com.exalt.library.controllers.services.LibraryItemServices;
-import com.exalt.library.controllers.strategies.OnlineBorrowStrategy;
+import com.exalt.library.controllers.services.*;
+import com.exalt.library.controllers.strategies.BorrowStrategyFactory;
 import com.exalt.library.models.*;
-import com.exalt.library.controllers.services.BorrowerServices;
-import com.exalt.library.controllers.services.LoanServices;
-import com.exalt.library.models.libraryitems.Book;
-import com.exalt.library.models.libraryitems.LibraryItem;
-import com.exalt.library.models.libraryitems.Story;
+import com.exalt.library.models.libraryitems.onlineitems.BookOnline;
+import com.exalt.library.models.libraryitems.physicalitems.BookPhysical;
 
 import java.util.ArrayList;
 
@@ -25,115 +22,75 @@ public class Main {
         author3.setName("Whoever");
         author3.setNationality("Japan");
 
-        LibraryItem book1 = new Book();
-        book1.setTitle("Computer Networks");
-        book1.setAuthor(author1);
-        book1.setAvailable(true);
+        BookPhysical physicalBook1 = new BookPhysical();
+        physicalBook1.setTitle("Physical Book1");
+        physicalBook1.setAuthor(author1);
+        physicalBook1.setNumOfCopies(3);
 
-        LibraryItem book2 = new Book();
-        book2.setTitle("Compiler Principles");
-        book2.setAuthor(author1);
-        book2.setAvailable(true);
+        BookPhysical physicalBook2 = new BookPhysical();
+        physicalBook2.setTitle("Physical Book2");
+        physicalBook2.setAuthor(author1);
+        physicalBook2.setNumOfCopies(1);
 
-        LibraryItem book3 = new Book();
-        book3.setTitle("Software Engineering");
-        book3.setAuthor(author2);
-        book3.setAvailable(true);
+        BookOnline onlineBook1 = new BookOnline();
+        onlineBook1.setTitle("Online Book1");
+        onlineBook1.setAuthor(author2);
 
-        LibraryItem story1 = new Story();
-        story1.setTitle("Demon Slayer");
-        story1.setAuthor(author3);
-        story1.setAvailable(true);
-
-        LibraryItem story2 = new Story();
-        story2.setTitle("Demon Slayer");
-        story2.setAuthor(author3);
-        story2.setAvailable(true);
+        BookOnline onlineBook2 = new BookOnline();
+        onlineBook1.setTitle("Online Book2");
+        onlineBook1.setAuthor(author2);
 
         Borrower borrower1 = new Borrower();
-        borrower1.setName("Murse");
+        borrower1.setName("Ahmad");
 
         Borrower borrower2 = new Borrower();
-        borrower2.setName("Malik");
+        borrower2.setName("Murse");
 
+//        =================================================
         SingletonLibrary lib = SingletonLibrary.getInstance();
         lib.setLibraryItems(new ArrayList<>());
         lib.setBorrowers(new ArrayList<>());
         lib.setLoans(new ArrayList<>());
 
-//        ======== BOOK SERVICE ========
-        System.out.println("{ ========== BOOK SERVICE ========== }");
-        LibraryItemServices libraryItemService = new LibraryItemServices();
+//        ===============================================================
+        LibraryItemServices libServ = new LibraryItemServices();
+        libServ.addItem(lib.getLibraryItems(), physicalBook1);
+        libServ.addItem(lib.getLibraryItems(), physicalBook2);
 
-        libraryItemService.addItem(lib.getLibraryItems(), book1);
-        libraryItemService.addItem(lib.getLibraryItems(), book2);
-        libraryItemService.addItem(lib.getLibraryItems(), book3);
-        libraryItemService.addItem(lib.getLibraryItems(), story1);
+        libServ.addItem(lib.getLibraryItems(), onlineBook1);
+        libServ.addItem(lib.getLibraryItems(), onlineBook2);
 
-        System.out.println("All Books:");
-        libraryItemService.printAllItems(lib.getLibraryItems());
+//        ===============================================================
+        BorrowerServices borrowerServices = new BorrowerServices();
+        borrowerServices.assignBorrower(lib.getBorrowers(), borrower1);
+        borrowerServices.assignBorrower(lib.getBorrowers(), borrower2);
 
-        System.out.println("===========");
+//        ====================================================================
+        InHandBorrowStrategyService inHandStrategy = new InHandBorrowStrategyService();
+        OnlineBorrowStrategyService onlineStrategy = new OnlineBorrowStrategyService();
 
-        System.out.println("Find book");
-        System.out.println(libraryItemService.findItemById(lib.getLibraryItems(), 2));
+        BorrowStrategyFactory borrowStrategyFactory = new BorrowStrategyFactory();
+        borrowStrategyFactory.setInHandStrategy(inHandStrategy);
+        borrowStrategyFactory.setOnlineStrategy(onlineStrategy);
 
-        System.out.println("===========");
+        LoanServices loanServices = new LoanServices();
+        loanServices.setLibraryItemOperations(new LibraryItemServices());
+        loanServices.setBorrowerOperations(new BorrowerServices());
+        loanServices.setBorrowStrategyFactory(borrowStrategyFactory);
 
-        System.out.println("Book With id 3 exists?");
-        System.out.println(libraryItemService.itemExists(lib.getLibraryItems(), 3));
+        System.out.println("Before: " + physicalBook2);
+        loanServices.borrowLibraryItem(lib.getLoans(), lib.getLibraryItems(), lib.getBorrowers(), borrower1.getId(), physicalBook2.getId());
+        System.out.println("After 1 borrow (numOfCopies was 1): " + physicalBook2);
 
-        System.out.println("===========");
+        System.out.println("=============");
 
-        System.out.println("Do all items have title?");
-        System.out.println(libraryItemService.allItemsHaveTitles(lib.getLibraryItems()));
-//       { ======== BOOK SERVICE ======== }
-//
-//        ======== BORROWER SERVICE ========
-        System.out.println("{ ========== BORROWER SERVICE ========== }");
-        BorrowerServices borrowerService = new BorrowerServices();
+        loanServices.borrowLibraryItem(lib.getLoans(), lib.getLibraryItems(), lib.getBorrowers(), borrower1.getId(), onlineBook1.getId());
+        loanServices.borrowLibraryItem(lib.getLoans(), lib.getLibraryItems(), lib.getBorrowers(), borrower2.getId(), onlineBook1.getId());
+        System.out.println("Online book after 2 borrows: " + onlineBook1);
 
-        borrowerService.assignBorrower(lib.getBorrowers(), borrower1);
-        borrowerService.assignBorrower(lib.getBorrowers(), borrower2);
+        System.out.println("===============");
 
-        System.out.println("All Borrowers:");
-        borrowerService.printAllBorrowers(lib.getBorrowers());
-
-        System.out.println("===========");
-
-        System.out.println("Find borrower");
-        System.out.println(borrowerService.findBorrowerById(lib.getBorrowers(), 2));
-
-        System.out.println("===========");
-
-        System.out.println("Borrower With id 3 exists?");
-        System.out.println(borrowerService.borrowerExists(lib.getBorrowers(), 3));
-//       { ======== BORROWER SERVICE ======== }
-//
-//        ======== LOAN SERVICE ========
-        System.out.println("{ ========== LOAN SERVICE ========== }");
-        LoanServices loanService = new LoanServices();
-
-        loanService.setLibraryItemOperations(new LibraryItemServices());
-        loanService.setBorrowerOperations(new BorrowerServices());
-        loanService.setBorrowStrategy(new OnlineBorrowStrategy());
-
-        System.out.println("Loan a book");
-        loanService.borrowLibraryItem(lib.getLoans(), lib.getLibraryItems(), lib.getBorrowers(), 1, 1);
-        loanService.borrowLibraryItem(lib.getLoans(), lib.getLibraryItems(), lib.getBorrowers(), 2, 4);
-
-        System.out.println("===========");
-
-        System.out.println("Get Loans");
         System.out.println(lib.getLoans());
 
-        System.out.println("===========");
-
-        System.out.println("Return Book 3");
-        loanService.returnLibraryItem(lib.getLoans(), story1, borrower2);
-
-        System.out.println("Get Loans Again");
-        System.out.println(lib.getLoans());
-//       { ======== LOAN SERVICE ======== }
     }
 }
