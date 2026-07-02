@@ -1,23 +1,23 @@
-package com.exalt.library.models.libraryitems;
+package com.exalt.library.models.libraryitems.onlineitems;
+
+import com.exalt.library.models.libraryitems.LibraryItem;
 
 /**
- * A class representing the library book
- * Each book has a unique id
- * Each book can have a title and be available or not
+ * A class representing the online item that exists in the library as an online object
  * @author Mohammad Rimawi
  */
-public class Book extends LibraryItem {
+public class OnlineItem extends LibraryItem {
 
     /**
      * A Default constructor that calls the LibraryItem constructor
      */
-    public Book() {
+    public OnlineItem() {
         super();
     }
 
     @Override
     public String toString() {
-        return "Book{" +
+        return "Online Item {" +
                 "id=" + getId() +
                 ", title='" + getTitle() + '\'' +
                 ", author=" + getAuthor() +

@@ -1,5 +1,6 @@
-package com.exalt.library.controllers.strategies;
+package com.exalt.library.controllers.services;
 
+import com.exalt.library.controllers.strategies.BorrowStrategy;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.Loan;
 import com.exalt.library.models.libraryitems.LibraryItem;
@@ -7,11 +8,10 @@ import com.exalt.library.models.libraryitems.LibraryItem;
 import java.util.List;
 
 /**
- * Strategy borrowing in hand
+ * strategy borrowing online
  * @author Mohammad Rimawi
  */
-public class InHandBorrowStrategy implements BorrowStrategy {
-
+public class OnlineBorrowStrategyService implements BorrowStrategy {
     /**
      * a method for creating a new loan object, and set its attributes.
      * @param loans
@@ -24,7 +24,6 @@ public class InHandBorrowStrategy implements BorrowStrategy {
         loan.setLibraryItem(libraryItem); //Set the libraryItem
         loan.setBorrower(borrower); // Set the borrower
         loans.add(loan); // add the loan to the loans list
-        libraryItem.setAvailable(false); // Change the libraryItem availibity - its taken now
 
         return loan;
     }
@@ -41,5 +40,14 @@ public class InHandBorrowStrategy implements BorrowStrategy {
         Loan loan = createLoan(loans, libraryItem, borrower);
 
         return loan;
+    }
+
+    /**
+     * a method for returning an item
+     * @param libraryItem
+     */
+    @Override
+    public void returnItem(LibraryItem libraryItem) {
+        // Always available
     }
 }
