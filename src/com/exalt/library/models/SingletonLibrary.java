@@ -1,6 +1,7 @@
 package com.exalt.library.models;
 
 import com.exalt.library.models.libraryitems.LibraryItem;
+import com.exalt.library.models.reservation.Reservation;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class SingletonLibrary {
     private List<LibraryItem> items; // Defines a list containing library items
     private List<Borrower> borrowers; // Defines a list containing the borrowers
     private List<Loan> loans; // Defines a list containing the loans
+    private List<Reservation> reservations; // Defines a list containing the reservations
 
     /**
      * A Default constructor
@@ -45,10 +47,16 @@ public class SingletonLibrary {
         return loans;
     }
 
-//    ==== GETTERS ====
+    /**
+     * a method for returning all the reservations
+     * @return a list of loans
+     */
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+    //    ==== GETTERS ====
 
 //    ==== SETTERS ====
-
     /**
      * a method for setting the items
      * @param items
@@ -73,7 +81,14 @@ public class SingletonLibrary {
         this.loans = loans;
     }
 
-//    ==== SETTERS ====
+    /**
+     * a method for setting the reservations
+     * @param reservations
+     */
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+    //    ==== SETTERS ====
 
     /**
      * a method for getting the instance of the library
