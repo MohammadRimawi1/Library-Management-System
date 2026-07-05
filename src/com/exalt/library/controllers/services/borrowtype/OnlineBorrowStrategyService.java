@@ -1,4 +1,4 @@
-package com.exalt.library.controllers.services;
+package com.exalt.library.controllers.services.borrowtype;
 
 import com.exalt.library.controllers.strategies.BorrowStrategy;
 import com.exalt.library.models.Borrower;

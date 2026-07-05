@@ -3,6 +3,7 @@ package com.exalt.library.controllers.services;
 import com.exalt.library.controllers.operations.LibraryItemOperations;
 import com.exalt.library.controllers.strategies.BorrowStrategy;
 import com.exalt.library.controllers.strategies.BorrowStrategyFactory;
+import com.exalt.library.controllers.strategies.Reservable;
 import com.exalt.library.exceptions.ItemUnavailableException;
 import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.exceptions.LoanNotFoundException;
@@ -11,7 +12,9 @@ import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.Loan;
 import com.exalt.library.controllers.operations.BorrowerOperations;
 import com.exalt.library.controllers.operations.LoanOperations;
+import com.exalt.library.models.reservation.Reservation;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,10 +23,10 @@ import java.util.List;
  * @author Mohammad Rimawi
  */
 public class LoanServices implements LoanOperations {
-    // Fixed
     private LibraryItemOperations libraryItemOperations; // defines the item operation dependency
     private BorrowerOperations borrowerOperations; // defines the book operation dependency
     private BorrowStrategyFactory borrowStrategyFactory; // defines the borrow strategy factory
+    private ReservationServices reservationServices; // defines the reservation services
 
     /**
      * a default constructor for instantiation
@@ -31,7 +34,6 @@ public class LoanServices implements LoanOperations {
     public LoanServices() { }
 
 //    ==== SETTERS ====
-
     /**
      * a method for setting the book operations
      * @param libraryItemOperations
@@ -54,6 +56,14 @@ public class LoanServices implements LoanOperations {
      */
     public void setBorrowStrategyFactory(BorrowStrategyFactory borrowStrategyFactory) {
         this.borrowStrategyFactory = borrowStrategyFactory;
+    }
+
+    /**
+     * a method for setting the reservation services
+     * @param reservationServices
+     */
+    public void setReservationServices(ReservationServices reservationServices) {
+        this.reservationServices = reservationServices;
     }
     //    ==== SETTERS ====
 
@@ -142,11 +152,23 @@ public class LoanServices implements LoanOperations {
 
     /**
      * a method to close a specific loan so the libraryItem becomes available again
+     * @param loan
+     * @param libraryItem
+     * @param reservations
      */
     @Override
-    public void closeLoan(Loan loan, LibraryItem libraryItem) {
+    public void closeLoan(Loan loan, LibraryItem libraryItem, List<Reservation> reservations) {
         loan.setActive(false);
         borrowStrategyFactory.resolve(libraryItem).returnItem(libraryItem);
+
+        Reservation next = reservationServices.findNextWaitingReservation(reservations, libraryItem);
+        if (next != null) {
+            BorrowStrategy strategy = borrowStrategyFactory.resolve(libraryItem);
+            if (strategy instanceof Reservable reservable) {
+                reservable.holdItem(libraryItem);
+            }
+            next.setAvailableFrom(new Date());
+        }
     }
 
     /**
@@ -156,13 +178,14 @@ public class LoanServices implements LoanOperations {
      * @param loans
      * @param libraryItem
      * @param borrower
+     * @param reservations
      * @return true if the loan was closed
      * @throws LoanNotFoundException if the loan is not found
      */
     @Override
-    public boolean returnLibraryItem(List<Loan> loans, LibraryItem libraryItem, Borrower borrower) {
+    public boolean returnLibraryItem(List<Loan> loans, LibraryItem libraryItem, Borrower borrower, List<Reservation> reservations) {
         Loan loan = findActiveLoan(loans, borrower.getId(), libraryItem.getId()); //Find the active loan
-        closeLoan(loan, libraryItem); // Close the current loan
+        closeLoan(loan, libraryItem, reservations); // Close the current loan
 
         loans.remove(loan); //#TODO: Remember to delete this after adding a DB, so we can keep track of the loans history
         return true;

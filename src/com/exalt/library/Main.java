@@ -1,6 +1,8 @@
 package com.exalt.library;
 
 import com.exalt.library.controllers.services.*;
+import com.exalt.library.controllers.services.borrowtype.InHandBorrowStrategyService;
+import com.exalt.library.controllers.services.borrowtype.OnlineBorrowStrategyService;
 import com.exalt.library.controllers.strategies.BorrowStrategyFactory;
 import com.exalt.library.models.*;
 import com.exalt.library.models.libraryitems.onlineitems.BookOnline;
@@ -52,6 +54,7 @@ public class Main {
         lib.setLibraryItems(new ArrayList<>());
         lib.setBorrowers(new ArrayList<>());
         lib.setLoans(new ArrayList<>());
+        lib.setReservations(new ArrayList<>());
 
 //        ===============================================================
         LibraryItemServices libServ = new LibraryItemServices();
@@ -79,19 +82,46 @@ public class Main {
         loanServices.setBorrowerOperations(new BorrowerServices());
         loanServices.setBorrowStrategyFactory(borrowStrategyFactory);
 
-        System.out.println("Before: " + physicalBook2);
-        loanServices.borrowLibraryItem(lib.getLoans(), lib.getLibraryItems(), lib.getBorrowers(), borrower1.getId(), physicalBook2.getId());
-        System.out.println("After 1 borrow (numOfCopies was 1): " + physicalBook2);
+//        ====================================================================
+        ReservationServices reservationServices = new ReservationServices();
+        reservationServices.setLibraryItemOperations(new LibraryItemServices());
+        reservationServices.setBorrowerOperations(new BorrowerServices());
+        reservationServices.setBorrowStrategyFactory(borrowStrategyFactory);
 
-        System.out.println("=============");
+//        ====================================================================
+        System.out.println("Before reservation: " + physicalBook1);
 
-        loanServices.borrowLibraryItem(lib.getLoans(), lib.getLibraryItems(), lib.getBorrowers(), borrower1.getId(), onlineBook1.getId());
-        loanServices.borrowLibraryItem(lib.getLoans(), lib.getLibraryItems(), lib.getBorrowers(), borrower2.getId(), onlineBook1.getId());
-        System.out.println("Online book after 2 borrows: " + onlineBook1);
+        Reservation r1 = reservationServices.reserve(
+                lib.getReservations(), lib.getLibraryItems(), lib.getBorrowers(),
+                borrower1.getId(), physicalBook1.getId());
 
-        System.out.println("===============");
+        System.out.println("After reservation: " + physicalBook1);
+        System.out.println("Reservation status: " + r1.getStatus());
+        System.out.println("Reservation endDate: " + r1.getEndDate());
 
-        System.out.println(lib.getLoans());
+//        ====================================================================
+        loanServices.borrowLibraryItem(
+                lib.getLoans(), lib.getLibraryItems(), lib.getBorrowers(),
+                borrower1.getId(), physicalBook2.getId());
+
+        System.out.println("\nphysicalBook2 after being borrowed: " + physicalBook2);
+
+        Reservation r2 = reservationServices.reserve(
+                lib.getReservations(), lib.getLibraryItems(), lib.getBorrowers(),
+                borrower2.getId(), physicalBook2.getId());
+
+        System.out.println("Reservation r2 status (expect WAITING): " + r2.getStatus());
+        System.out.println("Reservation r2 availableFrom (expect null): " + r2.getAvailableFrom());
+
+//        ====================================================================
+        try {
+            reservationServices.reserve(
+                    lib.getReservations(), lib.getLibraryItems(), lib.getBorrowers(),
+                    borrower1.getId(), onlineBook1.getId());
+        } catch (IllegalArgumentException e) {
+            System.out.println("\nExpected failure reserving online item: " + e.getMessage());
+        }
+
 //        ====================================================================
 
     }

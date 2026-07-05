@@ -33,6 +33,14 @@ public class Reservation {
 
 //    ==== GETTERS ====
     /**
+     * a method for getting the id of the reservation
+     * @return
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
      * a method for getting the library item that will be reserved
      * @return
      */
@@ -72,7 +80,15 @@ public class Reservation {
     public Date getEndDate() {
         return endDate;
     }
-//    ==== GETTERS ====
+
+    /**
+     * a method for getting the status of the reservation
+     * @return
+     */
+    public ReservationStatus getStatus() {
+        return status;
+    }
+    //    ==== GETTERS ====
 
 //    ==== SETTERS ====
     /**
@@ -108,7 +124,15 @@ public class Reservation {
         this.endDate = new Date(getAvailableFrom().getTime() + 3L * 24 * 60 * 60 * 1000); // 3 days
         this.status = ReservationStatus.READY;
     }
-//    ==== SETTERS ====
+
+    /**
+     * a method for setting the status of a reservation
+     * @param status
+     */
+    public void setStatus(ReservationStatus status) {
+        this.status = status;
+    }
+    //    ==== SETTERS ====
 
     /**
      * A synchronized generator so we get no duplicates
