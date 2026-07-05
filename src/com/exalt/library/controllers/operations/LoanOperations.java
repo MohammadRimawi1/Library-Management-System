@@ -6,6 +6,7 @@ import com.exalt.library.exceptions.LoanNotFoundException;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.Loan;
+import com.exalt.library.models.reservation.Reservation;
 
 import java.util.List;
 
@@ -72,8 +73,11 @@ public interface LoanOperations {
 
     /**
      * a method to close a specific loan so the item becomes available again
+     * @param loan
+     * @param item
+     * @param reservations
      */
-     void closeLoan(Loan loan, LibraryItem item);
+     void closeLoan(Loan loan, LibraryItem item, List<Reservation> reservations);
 
     /**
      * a method which returns a borrowed item and closes its active loan
@@ -83,8 +87,9 @@ public interface LoanOperations {
      * @param loans
      * @param item
      * @param borrower
+     * @param reservations
      * @return true if the loan was closed
      * @throws LoanNotFoundException if the loan is not found
      */
-     boolean returnLibraryItem(List<Loan> loans, LibraryItem item, Borrower borrower);
+     boolean returnLibraryItem(List<Loan> loans, LibraryItem item, Borrower borrower, List<Reservation> reservations);
 }
