@@ -3,6 +3,7 @@ package com.exalt.library.controllers;
 import com.exalt.library.models.Author;
 import com.exalt.library.models.SingletonLibrary;
 import com.exalt.library.models.libraryitems.LibraryItem;
+import com.exalt.library.models.libraryitems.physicalitems.PhysicalItem;
 import com.exalt.library.services.LibraryItemServices;
 import com.exalt.library.services.factory.LibraryItemFactory;
 import com.exalt.library.util.Json;
@@ -91,14 +92,24 @@ public class LibraryItemController implements HttpHandler {
         Author author = new Author();
 
         String type = (String) request.get("type");
+        if (type == null) {
+            Json.sendJSON(exchange, 400, gson.toJson(Map.of("error", "Missing required field: type")));
+            return;
+        }
+
         String title = (String) request.get("title");
+
+        LibraryItem libraryItem = LibraryItemFactory.create(type);
+        libraryItem.setTitle(title);
+
+        if (libraryItem instanceof PhysicalItem physicalItem && request.get("numOfCopies") != null) {
+            int numOfCopies = ((Double) request.get("numOfCopies")).intValue();
+            physicalItem.setNumOfCopies(numOfCopies);
+        }
 
         author.setName((String) authorMap.get("name"));
         author.setNationality((String) authorMap.get("nationality"));
 
-        LibraryItem libraryItem = LibraryItemFactory.create(type);
-
-        libraryItem.setTitle(title);
         libraryItem.setAuthor(author);
 
         libraryItemServices.addItem(SingletonLibrary.getInstance().getLibraryItems(), libraryItem);
