@@ -1,5 +1,6 @@
 package com.exalt.library.controllers;
 
+import com.exalt.library.exceptions.LoanNotFoundException;
 import com.exalt.library.models.Loan;
 import com.exalt.library.models.SingletonLibrary;
 import com.exalt.library.services.BorrowerServices;
@@ -9,6 +10,7 @@ import com.exalt.library.services.ReservationServices;
 import com.exalt.library.services.borrowtype.InHandBorrowStrategyService;
 import com.exalt.library.services.borrowtype.OnlineBorrowStrategyService;
 import com.exalt.library.services.factory.BorrowStrategyFactory;
+import com.exalt.library.util.ApiResponse;
 import com.exalt.library.util.Json;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
@@ -74,6 +76,10 @@ public class LoanController implements HttpHandler {
             } else {
                 Json.sendJSON(exchange, 404, gson.toJson(Map.of("error", "no such route")));
             }
+        } catch (LoanNotFoundException e) {
+            Json.sendJSON(exchange, 404, gson.toJson(ApiResponse.error(404, "Not Found", e.getMessage())));
+        } catch (IllegalArgumentException e) {
+            Json.sendJSON(exchange, 400, gson.toJson(ApiResponse.error(400, "Bad Request", e.getMessage())));
         } catch (Exception e) {
             Json.sendJSON(exchange, 500, gson.toJson(Map.of("error", "something broke: " + e.getMessage())));
         }
@@ -86,8 +92,7 @@ public class LoanController implements HttpHandler {
      */
     private void handleGetAll(HttpExchange exchange) throws IOException{
         List<Loan> loans = SingletonLibrary.getInstance().getLoans();
-        String json = gson.toJson(loans);
-        Json.sendJSON(exchange, 200, json);
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, loans)));
     }
 
     /**
@@ -99,7 +104,7 @@ public class LoanController implements HttpHandler {
     private void handleGetOne(HttpExchange exchange, String path) throws IOException {
         int id = Integer.parseInt(path.substring(path.lastIndexOf('/') + 1));
         Loan loan = loanServices.findLoanById(SingletonLibrary.getInstance().getLoans(), id);
-        Json.sendJSON(exchange, 200, gson.toJson(loan));
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, loan)));
     }
 
     /**
@@ -121,6 +126,6 @@ public class LoanController implements HttpHandler {
                 itemId
         );
 
-        Json.sendJSON(exchange, 201, gson.toJson(loan));
+        Json.sendJSON(exchange, 201, gson.toJson(ApiResponse.success(201, loan)));
     }
 }

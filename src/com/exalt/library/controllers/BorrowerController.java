@@ -1,8 +1,10 @@
 package com.exalt.library.controllers;
 
+import com.exalt.library.exceptions.BorrowerNotFoundException;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.SingletonLibrary;
 import com.exalt.library.services.BorrowerServices;
+import com.exalt.library.util.ApiResponse;
 import com.exalt.library.util.Json;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
@@ -24,8 +26,12 @@ public class BorrowerController implements HttpHandler {
     /**
      * CONSTANTS FOR DEFINING API ENDPOINTS
      */
+//    === FOR GET METHODS ====
     private final String GET_ALL_API_BORROWERS = "/api/borrowers";
     private final String GET_API_BORROWERS_ID = "/api/borrowers/";
+    private final String GET_API_BORROWERS_COUNT = "/api/borrowers/count";
+
+//    === FOR POST METHODS ====
     private final String POST_API_BORROWERS = "/api/borrowers";
 
     /**
@@ -42,13 +48,19 @@ public class BorrowerController implements HttpHandler {
         try {
             if("GET".equalsIgnoreCase(method) && path.equals(GET_ALL_API_BORROWERS)) {
                 handleGetAll(exchange);
+            } else if("GET".equalsIgnoreCase(method) && path.equals(GET_API_BORROWERS_COUNT)) {
+                handleBorrowerCount(exchange);
             } else if("GET".equalsIgnoreCase(method) && path.startsWith(GET_API_BORROWERS_ID)) {
                 handleGetOne(exchange, path);
-            } else if("POST".equalsIgnoreCase(method) && path.equals(POST_API_BORROWERS)) {
+            }  else if("POST".equalsIgnoreCase(method) && path.equals(POST_API_BORROWERS)) {
                 handleCreate(exchange);
             } else {
                 Json.sendJSON(exchange, 404, gson.toJson(Map.of("error", "no such route")));
             }
+        } catch (BorrowerNotFoundException e) {
+            Json.sendJSON(exchange, 404, gson.toJson(ApiResponse.error(404, "Not Found", e.getMessage())));
+        } catch (IllegalArgumentException e) {
+            Json.sendJSON(exchange, 400, gson.toJson(ApiResponse.error(400, "Bad Request", e.getMessage())));
         } catch (Exception e) {
             Json.sendJSON(exchange, 500, gson.toJson(Map.of("error", "something broke: " + e.getMessage())));
         }
@@ -61,8 +73,7 @@ public class BorrowerController implements HttpHandler {
      */
     private void handleGetAll(HttpExchange exchange) throws IOException{
         List<Borrower> borrowers = SingletonLibrary.getInstance().getBorrowers();
-        String json = gson.toJson(borrowers);
-        Json.sendJSON(exchange, 200, json);
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, borrowers)));
     }
 
     /**
@@ -74,7 +85,17 @@ public class BorrowerController implements HttpHandler {
     private void handleGetOne(HttpExchange exchange, String path) throws IOException {
         int id = Integer.parseInt(path.substring(path.lastIndexOf('/') + 1));
         Borrower borrower = borrowerServices.findBorrowerById(SingletonLibrary.getInstance().getBorrowers(), id);
-        Json.sendJSON(exchange, 200, gson.toJson(borrower));
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, borrower)));
+    }
+
+    /**
+     * a method for fetching the borrowers count
+     * @param exchange
+     * @throws IOException
+     */
+    private void handleBorrowerCount(HttpExchange exchange) throws IOException {
+        int count = borrowerServices.getBorrowerCount(SingletonLibrary.getInstance().getBorrowers());
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, count)));
     }
 
     /**
@@ -92,6 +113,6 @@ public class BorrowerController implements HttpHandler {
         borrower.setName(name);
         borrowerServices.assignBorrower(SingletonLibrary.getInstance().getBorrowers(), borrower);
 
-        Json.sendJSON(exchange, 201, gson.toJson(borrower));
+        Json.sendJSON(exchange, 201, gson.toJson(ApiResponse.success(201, borrower)));
     }
 }
