@@ -1,17 +1,17 @@
-package com.exalt.library.controllers.services;
+package com.exalt.library.services;
 
-import com.exalt.library.controllers.operations.LibraryItemOperations;
-import com.exalt.library.controllers.strategies.BorrowStrategy;
-import com.exalt.library.controllers.strategies.BorrowStrategyFactory;
-import com.exalt.library.controllers.strategies.Reservable;
+import com.exalt.library.services.operations.LibraryItemOperations;
+import com.exalt.library.services.strategies.BorrowStrategy;
+import com.exalt.library.services.factory.BorrowStrategyFactory;
+import com.exalt.library.services.strategies.Reservable;
 import com.exalt.library.exceptions.ItemUnavailableException;
 import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.exceptions.LoanNotFoundException;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.Loan;
-import com.exalt.library.controllers.operations.BorrowerOperations;
-import com.exalt.library.controllers.operations.LoanOperations;
+import com.exalt.library.services.operations.BorrowerOperations;
+import com.exalt.library.services.operations.LoanOperations;
 import com.exalt.library.models.reservation.Reservation;
 
 import java.util.Date;

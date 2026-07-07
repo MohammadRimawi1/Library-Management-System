@@ -1,11 +1,11 @@
-package com.exalt.library.controllers.services;
+package com.exalt.library.services;
 
-import com.exalt.library.controllers.operations.BorrowerOperations;
-import com.exalt.library.controllers.operations.LibraryItemOperations;
-import com.exalt.library.controllers.operations.ReservationOperations;
-import com.exalt.library.controllers.strategies.BorrowStrategy;
-import com.exalt.library.controllers.strategies.BorrowStrategyFactory;
-import com.exalt.library.controllers.strategies.Reservable;
+import com.exalt.library.services.operations.BorrowerOperations;
+import com.exalt.library.services.operations.LibraryItemOperations;
+import com.exalt.library.services.operations.ReservationOperations;
+import com.exalt.library.services.strategies.BorrowStrategy;
+import com.exalt.library.services.factory.BorrowStrategyFactory;
+import com.exalt.library.services.strategies.Reservable;
 import com.exalt.library.exceptions.ReservationNotFoundException;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.libraryitems.LibraryItem;
