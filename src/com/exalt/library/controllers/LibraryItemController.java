@@ -1,11 +1,13 @@
 package com.exalt.library.controllers;
 
+import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.models.Author;
 import com.exalt.library.models.SingletonLibrary;
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.libraryitems.physicalitems.PhysicalItem;
 import com.exalt.library.services.LibraryItemServices;
 import com.exalt.library.services.factory.LibraryItemFactory;
+import com.exalt.library.util.ApiResponse;
 import com.exalt.library.util.Json;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
@@ -52,6 +54,10 @@ public class LibraryItemController implements HttpHandler {
             } else {
                 Json.sendJSON(exchange, 404, gson.toJson(Map.of("error", "no such route")));
             }
+        } catch (ItemNotFoundException e) {
+            Json.sendJSON(exchange, 404, gson.toJson(ApiResponse.error(404, "Not Found", e.getMessage())));
+        } catch (IllegalArgumentException e) {
+            Json.sendJSON(exchange, 400, gson.toJson(ApiResponse.error(400, "Bad Request", e.getMessage())));
         } catch (Exception e) {
             Json.sendJSON(exchange, 500, gson.toJson(Map.of("error", "something broke: " + e.getMessage())));
         }
@@ -64,8 +70,7 @@ public class LibraryItemController implements HttpHandler {
      */
     private void handleGetAll(HttpExchange exchange) throws IOException{
         List<LibraryItem> libraryItems = SingletonLibrary.getInstance().getLibraryItems();
-        String json = gson.toJson(libraryItems);
-        Json.sendJSON(exchange, 200, json);
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, libraryItems)));
     }
 
     /**
@@ -77,7 +82,7 @@ public class LibraryItemController implements HttpHandler {
     private void handleGetOne(HttpExchange exchange, String path) throws IOException {
         int id = Integer.parseInt(path.substring(path.lastIndexOf('/') + 1));
         LibraryItem libraryItem = libraryItemServices.findItemById(SingletonLibrary.getInstance().getLibraryItems(), id);
-        Json.sendJSON(exchange, 200, gson.toJson(libraryItem));
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, libraryItem)));
     }
 
     /**
@@ -88,12 +93,10 @@ public class LibraryItemController implements HttpHandler {
     private void handleCreate(HttpExchange exchange) throws IOException {
         String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         Map<String, Object> request = gson.fromJson(body, Map.class);
-        Map<String, Object> authorMap = (Map<String, Object>) request.get("author");
-        Author author = new Author();
 
         String type = (String) request.get("type");
         if (type == null) {
-            Json.sendJSON(exchange, 400, gson.toJson(Map.of("error", "Missing required field: type")));
+            Json.sendJSON(exchange, 400, gson.toJson(ApiResponse.error(400, "Bad Request", "Missing required field: type")));
             return;
         }
 
@@ -107,6 +110,9 @@ public class LibraryItemController implements HttpHandler {
             physicalItem.setNumOfCopies(numOfCopies);
         }
 
+        Map<String, Object> authorMap = (Map<String, Object>) request.get("author");
+        Author author = new Author();
+
         author.setName((String) authorMap.get("name"));
         author.setNationality((String) authorMap.get("nationality"));
 
@@ -114,6 +120,6 @@ public class LibraryItemController implements HttpHandler {
 
         libraryItemServices.addItem(SingletonLibrary.getInstance().getLibraryItems(), libraryItem);
 
-        Json.sendJSON(exchange, 201, gson.toJson(libraryItem));
+        Json.sendJSON(exchange, 201, gson.toJson(ApiResponse.success(201, libraryItem)));
     }
 }
