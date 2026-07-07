@@ -1,9 +1,9 @@
-package com.exalt.library.controllers.services;
+package com.exalt.library.services;
 
 import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.exceptions.BorrowerNotFoundException;
 import com.exalt.library.models.Borrower;
-import com.exalt.library.controllers.operations.BorrowerOperations;
+import com.exalt.library.services.operations.BorrowerOperations;
 
 import java.util.List;
 

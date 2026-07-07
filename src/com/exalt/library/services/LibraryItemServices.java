@@ -1,6 +1,6 @@
-package com.exalt.library.controllers.services;
+package com.exalt.library.services;
 
-import com.exalt.library.controllers.operations.LibraryItemOperations;
+import com.exalt.library.services.operations.LibraryItemOperations;
 import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.models.libraryitems.LibraryItem;
 

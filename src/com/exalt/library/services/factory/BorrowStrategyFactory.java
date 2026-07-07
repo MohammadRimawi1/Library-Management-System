@@ -1,7 +1,8 @@
-package com.exalt.library.controllers.strategies;
+package com.exalt.library.services.factory;
 
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.libraryitems.onlineitems.OnlineItem;
+import com.exalt.library.services.strategies.BorrowStrategy;
 
 /**
  * a class representing the borrow strategy factory which uses the factory design pattern
