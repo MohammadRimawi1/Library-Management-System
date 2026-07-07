@@ -84,10 +84,12 @@ public class BorrowerController implements HttpHandler {
      */
     private void handleCreate(HttpExchange exchange) throws IOException {
         String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-        Borrower req = gson.fromJson(body, Borrower.class);
+        Map<String, Object> req = gson.fromJson(body, Map.class);
+
+        String name = (String) req.get("name");
 
         Borrower borrower = new Borrower();
-        borrower.setName(req.getName());
+        borrower.setName(name);
         borrowerServices.assignBorrower(SingletonLibrary.getInstance().getBorrowers(), borrower);
 
         Json.sendJSON(exchange, 201, gson.toJson(borrower));
