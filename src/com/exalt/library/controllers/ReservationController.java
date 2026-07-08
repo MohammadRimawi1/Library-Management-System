@@ -1,7 +1,9 @@
 package com.exalt.library.controllers;
 
 import com.exalt.library.exceptions.ReservationNotFoundException;
+import com.exalt.library.models.Borrower;
 import com.exalt.library.models.SingletonLibrary;
+import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.reservation.Reservation;
 import com.exalt.library.services.BorrowerServices;
 import com.exalt.library.services.LibraryItemServices;
@@ -49,9 +51,16 @@ public class ReservationController implements HttpHandler {
     /**
      * CONSTANTS FOR DEFINING API ENDPOINTS
      */
+//    ==== GET ====
     private final String GET_ALL_API_RESERVATIONS = "/api/reservations";
     private final String GET_API_RESERVATIONS_ID = "/api/reservations/";
+
+//    === POST ====
     private final String POST_API_RESERVATIONS = "/api/reservations";
+
+//    ==== SUFFIX ====
+    private final String RETURN = "/return";
+    private final String CLAIM = "/claim";
 
     /**
      * a method for handling the type of request
@@ -67,16 +76,25 @@ public class ReservationController implements HttpHandler {
         try {
             if("GET".equalsIgnoreCase(method) && path.equals(GET_ALL_API_RESERVATIONS)) {
                 handleGetAll(exchange);
-            } else if("GET".equalsIgnoreCase(method) && path.startsWith(GET_API_RESERVATIONS_ID)) {
+            } else if("GET".equalsIgnoreCase(method) && path.startsWith(GET_API_RESERVATIONS_ID)
+                    && !path.endsWith(RETURN) && !path.endsWith(CLAIM)) {
                 handleGetOne(exchange, path);
             } else if("POST".equalsIgnoreCase(method) && path.equals(POST_API_RESERVATIONS)) {
                 handleCreate(exchange);
+            } else if("POST".equalsIgnoreCase(method) && path.startsWith(GET_API_RESERVATIONS_ID) && path.endsWith(RETURN)) {
+                handleReturn(exchange, path);
+            } else if("POST".equalsIgnoreCase(method) && path.startsWith(GET_API_RESERVATIONS_ID) && path.endsWith(CLAIM)) {
+                handleClaim(exchange, path);
+            } else if("DELETE".equalsIgnoreCase(method) && path.startsWith(GET_API_RESERVATIONS_ID)) {
+                handleCancel(exchange, path);
             } else {
                 Json.sendJSON(exchange, 404, gson.toJson(Map.of("error", "no such route")));
             }
         } catch (ReservationNotFoundException e) {
             Json.sendJSON(exchange, 404, gson.toJson(ApiResponse.error(404, "Not Found", e.getMessage())));
-        } catch (IllegalArgumentException e) {
+        } catch (NumberFormatException e) {
+            Json.sendJSON(exchange, 400, gson.toJson(ApiResponse.error(400, "Bad Request", "Invalid reservation id")));
+        } catch (IllegalArgumentException | IllegalStateException e) {
             Json.sendJSON(exchange, 400, gson.toJson(ApiResponse.error(400, "Bad Request", e.getMessage())));
         } catch (Exception e) {
             Json.sendJSON(exchange, 500, gson.toJson(Map.of("error", "something broke: " + e.getMessage())));
@@ -124,5 +142,57 @@ public class ReservationController implements HttpHandler {
                 itemId);
 
         Json.sendJSON(exchange, 201, gson.toJson(ApiResponse.success(201, reservation)));
+    }
+
+    /**
+     * a method for handling a borrower returning an item tied to an active reservation
+     * @param exchange
+     * @param path
+     * @throws IOException
+     */
+    private void handleReturn(HttpExchange exchange, String path) throws IOException {
+        String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+        Map<String, Double> request = gson.fromJson(body, Map.class);
+
+        int borrowerId = request.get("borrowerId").intValue();
+        int itemId = request.get("itemId").intValue();
+
+        LibraryItem item = reservationServices.checkForLibraryItem(SingletonLibrary.getInstance().getLibraryItems(), itemId);
+        Borrower borrower = reservationServices.checkForBorrower(SingletonLibrary.getInstance().getBorrowers(), borrowerId);
+
+        boolean closed = reservationServices.returnItem(SingletonLibrary.getInstance().getReservations(), item, borrower);
+
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, Map.of("returned", closed))));
+    }
+
+    /**
+     * a method for handling a borrower claiming a READY reservation
+     * @param exchange
+     * @param path
+     * @throws IOException
+     */
+    private void handleClaim(HttpExchange exchange, String path) throws IOException {
+        int id = Integer.parseInt(path.substring(GET_API_RESERVATIONS_ID.length(), path.indexOf(CLAIM)));
+        Reservation reservation = reservationServices.findReservationById(SingletonLibrary.getInstance().getReservations(), id);
+
+        Reservation claimed = reservationServices.claimReservation(reservation);
+
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, claimed)));
+    }
+
+    /**
+     * a method for cancelling a reservation, e.g. DELETE /api/reservations/5
+     * @param exchange
+     * @param path
+     * @throws IOException
+     */
+    private void handleCancel(HttpExchange exchange, String path) throws IOException {
+        int id = Integer.parseInt(path.substring(path.lastIndexOf('/') + 1));
+        List<Reservation> reservations = SingletonLibrary.getInstance().getReservations();
+
+        Reservation reservation = reservationServices.findReservationById(reservations, id);
+        boolean cancelled = reservationServices.cancelReservation(reservations, reservation);
+
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, Map.of("cancelled", cancelled))));
     }
 }

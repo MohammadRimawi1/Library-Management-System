@@ -186,6 +186,10 @@ public class ReservationServices implements ReservationOperations {
      */
     @Override
     public boolean cancelReservation(List<Reservation> reservations, Reservation reservation) {
+        if (reservation.getStatus() != ReservationStatus.WAITING && reservation.getStatus() != ReservationStatus.READY) {
+            throw new IllegalStateException("Only WAITING or READY reservations can be cancelled");
+        }
+
         reservation.setStatus(ReservationStatus.CANCELLED);
         return reservations.remove(reservation);
     }

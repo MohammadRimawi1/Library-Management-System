@@ -39,7 +39,12 @@ public class InHandBorrowStrategyService implements BorrowStrategy, Reservable {
      */
     @Override
     public Reservation activate(Reservation reservation) {
-        decrementCopy(reservation.getLibraryItem());
+        LibraryItem item = reservation.getLibraryItem();
+
+        if (item.isAvailable()) {
+            decrementCopy(item);
+        }
+
         reservation.setStatus(ReservationStatus.ACTIVE);
 
         return reservation;

@@ -29,8 +29,14 @@ public class LibraryItemController implements HttpHandler {
     /**
      * CONSTANTS FOR DEFINING API ENDPOINTS
      */
+//    ==== GET ====
     private final String GET_ALL_API_LIBRARYITEMS = "/api/library-items";
     private final String GET_API_LIBRARYITEMS_ID = "/api/library-items/";
+    private final String GET_SORTED_BY_TITLE = "/api/library-items/sorted";
+    private final String GET_ALL_AVAILABLE = "/api/library-items/available";
+    private final String GET_API_LIBRARYITEMS_COUNT = "/api/library-items/count";
+
+//    ==== POST ====
     private final String POST_API_LIBRARYITEMS = "/api/library-items";
 
     /**
@@ -47,6 +53,12 @@ public class LibraryItemController implements HttpHandler {
         try {
             if("GET".equalsIgnoreCase(method) && path.equals(GET_ALL_API_LIBRARYITEMS)) {
                 handleGetAll(exchange);
+            } else if("GET".equalsIgnoreCase(method) && path.startsWith(GET_SORTED_BY_TITLE)) {
+                handleSort(exchange);
+            } else if("GET".equalsIgnoreCase(method) && path.startsWith(GET_ALL_AVAILABLE)) {
+                handleCheckAvailble(exchange);
+            } else if("GET".equalsIgnoreCase(method) && path.startsWith(GET_API_LIBRARYITEMS_COUNT)) {
+                  handleItemsCount(exchange);
             } else if("GET".equalsIgnoreCase(method) && path.startsWith(GET_API_LIBRARYITEMS_ID)) {
                 handleGetOne(exchange, path);
             } else if("POST".equalsIgnoreCase(method) && path.equals(POST_API_LIBRARYITEMS)) {
@@ -71,6 +83,38 @@ public class LibraryItemController implements HttpHandler {
     private void handleGetAll(HttpExchange exchange) throws IOException{
         List<LibraryItem> libraryItems = SingletonLibrary.getInstance().getLibraryItems();
         Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, libraryItems)));
+    }
+
+    /**
+     * a method for fetching the items sorted based on its title
+     * @param exchange
+     * @throws IOException
+     */
+    private void handleSort(HttpExchange exchange) throws IOException {
+        List<LibraryItem> libraryItems = SingletonLibrary.getInstance().getLibraryItems();
+        libraryItemServices.sortItemsByTitle(libraryItems);
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, libraryItems)));
+    }
+
+    /**
+     * a method for checking if all the items are available and fetching the response
+     * @param exchange
+     * @throws IOException
+     */
+    private void handleCheckAvailble(HttpExchange exchange) throws IOException {
+        List<LibraryItem> libraryItems = SingletonLibrary.getInstance().getLibraryItems();
+        libraryItemServices.areAllItemsAvailable(libraryItems);
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, libraryItems)));
+    }
+
+    /**
+     * a method for fetching the library items count
+     * @param exchange
+     * @throws IOException
+     */
+    private void handleItemsCount(HttpExchange exchange) throws IOException {
+        int count = libraryItemServices.getItemCount(SingletonLibrary.getInstance().getLibraryItems());
+        Json.sendJSON(exchange, 200, gson.toJson(ApiResponse.success(200, count)));
     }
 
     /**
