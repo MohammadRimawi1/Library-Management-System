@@ -5,7 +5,6 @@ import com.exalt.library.services.operations.LibraryItemOperations;
 import com.exalt.library.services.operations.ReservationOperations;
 import com.exalt.library.services.strategies.BorrowStrategy;
 import com.exalt.library.services.factory.BorrowStrategyFactory;
-import com.exalt.library.services.strategies.Reservable;
 import com.exalt.library.exceptions.ReservationNotFoundException;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.libraryitems.LibraryItem;
@@ -75,18 +74,60 @@ public class ReservationServices implements ReservationOperations {
     }
 
     /**
-     * a method used to let a borrower reserve a specific item regardless of its availability
+     * Finds an active reservation matching the borrower and the item ids
+     * @param reservations
+     * @param borrowerId
+     * @param itemId
+     * @return the active reservation
+     * @throws ReservationNotFoundException if it doesn't exist
+     */
+    @Override
+    public Reservation findActiveReservation(List<Reservation> reservations, int borrowerId, int itemId) {
+        return reservations.stream()
+                .filter(reservation -> reservation.getStatus() == ReservationStatus.ACTIVE &&
+                        reservation.getBorrower().getId() == borrowerId &&
+                        reservation.getLibraryItem().getId() == itemId)
+                .findFirst()
+                .orElseThrow(() -> new ReservationNotFoundException("Active reservation doesn't exist"));
+    }
+
+    /**
+     * a method for checking if the library item exists
+     * @param items
+     * @param itemId
+     * @return a library item if found
+     */
+    @Override
+    public LibraryItem checkForLibraryItem(List<LibraryItem> items, int itemId) {
+        return libraryItemOperations.findItemById(items, itemId);
+    }
+
+    /**
+     * a method for checking for the borrower if he exists or not
+     * @param borrowers
+     * @param borrowerId
+     * @return borrower if found
+     */
+    @Override
+    public Borrower checkForBorrower(List<Borrower> borrowers, int borrowerId) {
+        return borrowerOperations.findBorrowerById(borrowers, borrowerId);
+    }
+
+    /**
+     * a method used to let a borrower reserve a specific item.
+     * if the item is available, the reservation is activated immediately (this replaces the old "loan" path)
+     * if not, the reservation is queued as WAITING until the item comes back
      * @param reservations
      * @param items
      * @param borrowers
      * @param borrowerId
      * @param itemId
-     * @return
+     * @return the created reservation
      */
     @Override
     public Reservation reserve(List<Reservation> reservations, List<LibraryItem> items, List<Borrower> borrowers, int borrowerId, int itemId) {
-        LibraryItem item = libraryItemOperations.findItemById(items, itemId);
-        Borrower borrower = borrowerOperations.findBorrowerById(borrowers, borrowerId);
+        LibraryItem item = checkForLibraryItem(items, itemId);
+        Borrower borrower = checkForBorrower(borrowers, borrowerId);
 
         if (item instanceof OnlineItem) {
             throw new IllegalArgumentException("Online items cannot be reserved — they are always available");
@@ -97,14 +138,13 @@ public class ReservationServices implements ReservationOperations {
         reservation.setBorrower(borrower);
         reservation.setStartDate(new Date());
 
+        reservations.add(reservation);
+
+        BorrowStrategy strategy = borrowStrategyFactory.resolve(item);
         if (item.isAvailable()) {
-            BorrowStrategy strategy = borrowStrategyFactory.resolve(item);
-            if (strategy instanceof Reservable reservableStrategy) {
-                reservableStrategy.holdItem(item);
-            }
+            strategy.activate(reservation);
         }
 
-        reservations.add(reservation);
         return reservation;
     }
 
@@ -148,5 +188,67 @@ public class ReservationServices implements ReservationOperations {
     public boolean cancelReservation(List<Reservation> reservations, Reservation reservation) {
         reservation.setStatus(ReservationStatus.CANCELLED);
         return reservations.remove(reservation);
+    }
+
+    /**
+     * a method to close an active reservation so the item becomes available again,
+     * and promote the next waiting reservation (if any) into READY status
+     * @param reservation
+     * @param libraryItem
+     * @param reservations
+     */
+    @Override
+    public void closeReservation(Reservation reservation, LibraryItem libraryItem, List<Reservation> reservations) {
+        reservation.setStatus(ReservationStatus.RETURNED);
+        borrowStrategyFactory.resolve(libraryItem).returnItem(libraryItem);
+
+        Reservation next = findNextWaitingReservationOrNull(reservations, libraryItem);
+        if (next != null) {
+            BorrowStrategy strategy = borrowStrategyFactory.resolve(libraryItem);
+            strategy.activate(next);
+            next.setAvailableFrom(new Date());
+        }
+    }
+
+    /**
+     * a method which returns a borrowed item and closes its active reservation
+     * @param reservations
+     * @param libraryItem
+     * @param borrower
+     * @return true if the reservation was closed
+     * @throws ReservationNotFoundException if no active reservation is found
+     */
+    @Override
+    public boolean returnItem(List<Reservation> reservations, LibraryItem libraryItem, Borrower borrower) {
+        Reservation reservation = findActiveReservation(reservations, borrower.getId(), libraryItem.getId());
+        closeReservation(reservation, libraryItem, reservations);
+
+        return true;
+    }
+
+    /**
+     * a method for a borrower to claim their READY reservation - actually picking up
+     * the item that was being held for them
+     */
+    @Override
+    public Reservation claimReservation(Reservation reservation) {
+        if (reservation.getStatus() != ReservationStatus.READY) {
+            throw new IllegalStateException("Reservation is not ready to be claimed");
+        }
+
+        borrowStrategyFactory.resolve(reservation.getLibraryItem()).activate(reservation);
+        return reservation;
+    }
+
+    /**
+     * helper so findNextWaitingReservation's throwing behavior doesn't blow up closeReservation
+     * when there's simply nobody waiting
+     */
+    private Reservation findNextWaitingReservationOrNull(List<Reservation> reservations, LibraryItem item) {
+        try {
+            return findNextWaitingReservation(reservations, item);
+        } catch (ReservationNotFoundException e) {
+            return null;
+        }
     }
 }

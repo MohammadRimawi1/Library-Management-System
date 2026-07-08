@@ -1,10 +1,7 @@
 package com.exalt.library.services.strategies;
 
-import com.exalt.library.models.Borrower;
-import com.exalt.library.models.Loan;
 import com.exalt.library.models.libraryitems.LibraryItem;
-
-import java.util.List;
+import com.exalt.library.models.reservation.Reservation;
 
 /**
  * a strategy interface representing the different ways library items can be borrowed
@@ -13,24 +10,19 @@ import java.util.List;
 public interface BorrowStrategy {
 
     /**
-     * a method for creating a new loan object, and set its attributes.
-     * Implemented in c
-     * @param loans
-     * @param libraryItem
-     * @param borrower
-     * @return the created loan
+     * a method for activating an existing reservation - i.e. handing the item
+     * over to the borrower and marking the reservation as active
+     * @param reservation the reservation to activate
+     * @return the activated reservation
      */
-    Loan createLoan(List<Loan> loans, LibraryItem libraryItem, Borrower borrower);
+    Reservation activate(Reservation reservation);
 
     /**
      * The borrowing strategy for a type of borrowing
-     * Implemented in The borrowing strategy for a type of borrowing
-     * @param loans
-     * @param libraryItem
-     * @param borrower
-     * @return created loan
+     * @param reservation the reservation to activate
+     * @return the activated reservation
      */
-    Loan borrow(List<Loan> loans, LibraryItem libraryItem, Borrower borrower);
+    Reservation borrow(Reservation reservation);
 
     /**
      * a method for returning the item

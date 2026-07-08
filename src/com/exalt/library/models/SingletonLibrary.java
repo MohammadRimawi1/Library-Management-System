@@ -14,7 +14,6 @@ public class SingletonLibrary {
     private static volatile SingletonLibrary instance; // Defines the single shared instance of the library
     private List<LibraryItem> items; // Defines a list containing library items
     private List<Borrower> borrowers; // Defines a list containing the borrowers
-    private List<Loan> loans; // Defines a list containing the loans
     private List<Reservation> reservations; // Defines a list containing the reservations
 
     /**
@@ -37,14 +36,6 @@ public class SingletonLibrary {
      */
     public List<Borrower> getBorrowers() {
         return borrowers;
-    }
-
-    /**
-     * a method for returning all the loans
-     * @return a list of loans
-     */
-    public List<Loan> getLoans() {
-        return loans;
     }
 
     /**
@@ -71,14 +62,6 @@ public class SingletonLibrary {
      */
     public void setBorrowers(List<Borrower> borrowers) {
         this.borrowers = borrowers;
-    }
-
-    /**
-     * a method for setting the loans
-     * @param loans
-     */
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
     }
 
     /**
