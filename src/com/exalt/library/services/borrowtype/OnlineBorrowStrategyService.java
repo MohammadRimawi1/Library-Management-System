@@ -1,11 +1,9 @@
 package com.exalt.library.services.borrowtype;
 
+import com.exalt.library.models.reservation.Reservation;
+import com.exalt.library.models.reservation.ReservationStatus;
 import com.exalt.library.services.strategies.BorrowStrategy;
-import com.exalt.library.models.Borrower;
-import com.exalt.library.models.Loan;
 import com.exalt.library.models.libraryitems.LibraryItem;
-
-import java.util.List;
 
 /**
  * strategy borrowing online
@@ -13,33 +11,26 @@ import java.util.List;
  */
 public class OnlineBorrowStrategyService implements BorrowStrategy {
     /**
-     * a method for creating a new loan object, and set its attributes.
-     * @param loans
-     * @param libraryItem
-     * @param borrower
-     * @return the created loan
+     * a method for activating an existing reservation - online items are
+     * always available, so this is just a status flip
+     * @param reservation
+     * @return the activated reservation
      */
-    public Loan createLoan(List<Loan> loans, LibraryItem libraryItem, Borrower borrower) {
-        Loan loan = new Loan(); //Create a loan
-        loan.setLibraryItem(libraryItem); //Set the libraryItem
-        loan.setBorrower(borrower); // Set the borrower
-        loans.add(loan); // add the loan to the loans list
+    @Override
+    public Reservation activate(Reservation reservation) {
+        reservation.setStatus(ReservationStatus.ACTIVE);
 
-        return loan;
+        return reservation;
     }
 
     /**
      * The borrowing strategy for a type of borrowing
-     * @param loans
-     * @param libraryItem
-     * @param borrower
-     * @return created loan
+     * @param reservation
+     * @return the activated reservation
      */
     @Override
-    public Loan borrow(List<Loan> loans, LibraryItem libraryItem, Borrower borrower) {
-        Loan loan = createLoan(loans, libraryItem, borrower);
-
-        return loan;
+    public Reservation borrow(Reservation reservation) {
+        return activate(reservation);
     }
 
     /**

@@ -7,6 +7,10 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 
+/**
+ * a class representing how the json is going to be sent
+ * @author Mohammad Rimawi
+ */
 public class Json {
     /**
      * Sends a JSON response back to the client through the HTTP exchange.
