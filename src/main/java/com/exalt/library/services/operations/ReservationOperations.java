@@ -1,6 +1,9 @@
 package com.exalt.library.services.operations;
 
 import com.exalt.library.models.Borrower;
+import com.exalt.library.exceptions.BorrowerNotFoundException;
+import com.exalt.library.exceptions.ItemNotFoundException;
+import com.exalt.library.exceptions.ReservationNotFoundException;
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.reservation.Reservation;
 
@@ -18,7 +21,7 @@ public interface ReservationOperations {
      * @param reservations
      * @param id
      * @return a reservation
-     * @throws com.exalt.library.exceptions.ReservationNotFoundException if no reservation was found
+     * @throws ReservationNotFoundException if no reservation was found
      */
     Reservation findReservationById(List<Reservation> reservations, int id);
 
@@ -29,7 +32,7 @@ public interface ReservationOperations {
      * @param borrowerId
      * @param itemId
      * @return the active reservation
-     * @throws com.exalt.library.exceptions.ReservationNotFoundException if it doesn't exist
+     * @throws ReservationNotFoundException if it doesn't exist
      */
     Reservation findActiveReservation(List<Reservation> reservations, int borrowerId, int itemId);
 
@@ -39,7 +42,7 @@ public interface ReservationOperations {
      * @param items
      * @param itemId
      * @return an item if found
-     * @throws com.exalt.library.exceptions.ItemNotFoundException
+     * @throws ItemNotFoundException
      */
     LibraryItem checkForLibraryItem(List<LibraryItem> items, int itemId);
 
@@ -49,7 +52,7 @@ public interface ReservationOperations {
      * @param borrowers
      * @param borrowerId
      * @return borrower if found
-     * @throws com.exalt.library.exceptions.BorrowerNotFoundException if not found
+     * @throws BorrowerNotFoundException if not found
      */
     Borrower checkForBorrower(List<Borrower> borrowers, int borrowerId);
 
@@ -108,7 +111,7 @@ public interface ReservationOperations {
      * @param libraryItem
      * @param borrower
      * @return true if the reservation was closed
-     * @throws com.exalt.library.exceptions.ReservationNotFoundException if no active reservation is found
+     * @throws ReservationNotFoundException if no active reservation is found
      */
     boolean returnItem(List<Reservation> reservations, LibraryItem libraryItem, Borrower borrower);
 

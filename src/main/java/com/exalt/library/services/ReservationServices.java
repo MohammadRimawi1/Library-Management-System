@@ -63,7 +63,7 @@ public class ReservationServices implements ReservationOperations {
      * @param reservations
      * @param id
      * @return a reservation
-     * @throws com.exalt.library.exceptions.ReservationNotFoundException if no reservation was found
+     * @throws ReservationNotFoundException if no reservation was found
      */
     @Override
     public Reservation findReservationById(List<Reservation> reservations, int id) {
