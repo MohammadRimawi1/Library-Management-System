@@ -19,7 +19,11 @@ public class SingletonLibrary {
     /**
      * A Default constructor
      */
-    private SingletonLibrary() { }
+    private SingletonLibrary() {
+        items = new java.util.ArrayList<>();
+        borrowers = new java.util.ArrayList<>();
+        reservations = new java.util.ArrayList<>();
+    }
 
 //    ==== GETTERS ====
     /**

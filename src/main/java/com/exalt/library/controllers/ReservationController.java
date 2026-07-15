@@ -1,7 +1,9 @@
 package com.exalt.library.controllers;
 
 import com.exalt.library.controllers.dto.ReserveRequest;
+import com.exalt.library.models.Borrower;
 import com.exalt.library.models.SingletonLibrary;
+import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.reservation.Reservation;
 import com.exalt.library.services.BorrowerServices;
 import com.exalt.library.services.LibraryItemServices;
@@ -9,9 +11,12 @@ import com.exalt.library.services.ReservationServices;
 import com.exalt.library.services.borrowtype.InHandBorrowStrategyService;
 import com.exalt.library.services.borrowtype.OnlineBorrowStrategyService;
 import com.exalt.library.services.factory.BorrowStrategyFactory;
+import com.exalt.library.util.ApiResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * a reservation controller that gets a request from the client, does a specific job then returns the response
@@ -42,55 +47,100 @@ public class ReservationController  {
 
     /**
      * A method for fetching all the reservations
-     * exists on: http://localhost:8080/api/reservations
+     * exists on: /api/reservations
      * @return
      */
     @GetMapping
-    public List<Reservation> findAll() {
+    public ResponseEntity<Map<String, Object>> findAll() {
         List<Reservation> reservations = SingletonLibrary.getInstance().getReservations();
         reservations.forEach(reservation -> reservationServices.checkAndHandleExpiration(reservations, reservation));
-        return reservations;
+        return ResponseEntity.ok(ApiResponse.success(200, reservations));
     }
 
     /**
      * a method for fetching a specific reservation based on a specific id
-     * exists on: http://localhost:8080/api/reservations/{id}
+     * exists on: /api/reservations/{id}
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    public Reservation findById(@PathVariable int id) {
+    public ResponseEntity<Map<String, Object>> findById(@PathVariable int id) {
         List<Reservation> reservations = SingletonLibrary.getInstance().getReservations();
         Reservation reservation = reservationServices.findReservationById(reservations, id);
         reservationServices.checkAndHandleExpiration(reservations, reservation);
-        return reservation;
+        return ResponseEntity.ok(ApiResponse.success(200, reservation));
     }
 
     /**
      * a method for fetching active reservations
-     * exists on: http://localhost:8080/api/reservations/active?borrowerId={id}&itemId={id}
+     * exists on: /api/reservations/active?borrowerId={id}&itemId={id}
      * @param borrowerId
      * @param itemId
      * @return
      */
     @GetMapping("/active")
-    public Reservation findActive(@RequestParam int borrowerId, @RequestParam int itemId) {
-        return reservationServices.findActiveReservation(SingletonLibrary.getInstance().getReservations(), borrowerId, itemId);
+    public ResponseEntity<Map<String, Object>> findActive(@RequestParam int borrowerId, @RequestParam int itemId) {
+        Reservation reservation = reservationServices.findActiveReservation(SingletonLibrary.getInstance().getReservations(), borrowerId, itemId);
+        return ResponseEntity.ok(ApiResponse.success(200, reservation));
     }
 
     /**
      * a method for creating a serving request for a reservation
-     * exists on: http://localhost:8080/api/reservations
+     * exists on: /api/reservations
      * @param request
      * @return
      */
     @PostMapping
-    public Reservation reserve(@RequestBody ReserveRequest request) {
-        return reservationServices.reserve(
+    public ResponseEntity<Map<String, Object>> reserve(@RequestBody ReserveRequest request) {
+        Reservation reservation = reservationServices.reserve(
                 SingletonLibrary.getInstance().getReservations(),
                 SingletonLibrary.getInstance().getLibraryItems(),
                 SingletonLibrary.getInstance().getBorrowers(),
                 request.getBorrowerId(),
                 request.getItemId());
+        return ResponseEntity.status(201).body(ApiResponse.success(201, reservation));
+    }
+
+    /**
+     * a method for returning an item after being reserved
+     * exists on: /api/reservations/return
+     * @param request
+     * @return
+     */
+    @PostMapping("/return")
+    public ResponseEntity<Map<String, Object>> returnItem(@RequestBody ReserveRequest request) {
+        List<Reservation> reservations = SingletonLibrary.getInstance().getReservations();
+        LibraryItem item = reservationServices.checkForLibraryItem(SingletonLibrary.getInstance().getLibraryItems(), request.getItemId());
+        Borrower borrower = reservationServices.checkForBorrower(SingletonLibrary.getInstance().getBorrowers(), request.getBorrowerId());
+
+        boolean closed = reservationServices.returnItem(reservations, item, borrower);
+        return ResponseEntity.ok(ApiResponse.success(200, Map.of("returned", closed)));
+    }
+
+    /**
+     * a method for claiming a specific reservation
+     * exists on: /api/reservations/{id}/claim
+     * @param id
+     * @return
+     */
+    @PostMapping("/{id}/claim")
+    public ResponseEntity<Map<String, Object>> claim(@PathVariable int id) {
+        Reservation reservation = reservationServices.findReservationById(SingletonLibrary.getInstance().getReservations(), id);
+        Reservation claimed = reservationServices.claimReservation(reservation);
+        return ResponseEntity.ok(ApiResponse.success(200, claimed));
+    }
+
+    /**
+     * a method for canceling a specific reservation
+     * exists on: /api/reservations/{id}
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> cancel(@PathVariable int id) {
+        List<Reservation> reservations = SingletonLibrary.getInstance().getReservations();
+        Reservation reservation = reservationServices.findReservationById(reservations, id);
+        boolean cancelled = reservationServices.cancelReservation(reservations, reservation);
+        return ResponseEntity.ok(ApiResponse.success(200, Map.of("cancelled", cancelled)));
     }
 }
