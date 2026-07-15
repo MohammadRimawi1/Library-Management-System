@@ -10,46 +10,41 @@ import java.util.List;
  * @author Mohammad Rimawi
  */
 public interface BorrowerOperations {
-    //Fixed
     /**
-     * assignBorrower method is used to assign a borrower of type Borrower to the borrowers list
+     * assignBorrower method is used to save a new borrower
      * implemented inside BorrowerServices
-     * @param borrowers
      * @param borrower
      */
-     void assignBorrower(List<Borrower> borrowers, Borrower borrower);
+    void assignBorrower(Borrower borrower);
 
     /**
-     * a method used to print all the borrowers inside the borrower list
+     * a method used to get all the borrowers
      * implemented inside BorrowerServices
-     * @param borrowers
+     * @return the list of all borrowers
      */
-     void printAllBorrowers(List<Borrower> borrowers);
+    List<Borrower> getAllBorrowers();
 
     /**
      * a method used to find a specific borrower based on his/her id
      * implemented inside BorrowerServices
-     * @param borrowers
      * @param id
      * @return return a borrower if he/she exists
      * @throws ItemNotFoundException if the borrower doesn't exist
      */
-     Borrower findBorrowerById(List<Borrower> borrowers, int id);
+    Borrower findBorrowerById(String id);
 
     /**
      * a method for checking if the borrower exists or not
      * implemented inside BorrowerServices
-     * @param borrowers
      * @param id - represents the borrower id
-     * @return - returns true or false based if it exists in the list or not
+     * @return - returns true or false based if it exists in the DB or not
      */
-     boolean borrowerExists(List<Borrower> borrowers, int id);
+    boolean borrowerExists(String id);
 
     /**
-     * a method for checking how many borrowers exists in the borrowers list
+     * a method for checking how many borrowers exist
      * implemented inside BorrowerServices
-     * @param borrowers
-     * @return - the size as long
+     * @return - the count
      */
-     int getBorrowerCount(List<Borrower> borrowers); //Fixed
+    int getBorrowerCount();
 }

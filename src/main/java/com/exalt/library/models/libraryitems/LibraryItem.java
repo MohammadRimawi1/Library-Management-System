@@ -1,27 +1,29 @@
 package com.exalt.library.models.libraryitems;
 
 import com.exalt.library.models.Author;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 /**
  * A class that defines the items in a library
  * there is a story or a book
  * @author Mohammad Rimawi
  */
+@Document(collection = "library_items")
 public abstract class LibraryItem {
 
-    private final int id; // Defines the identity number for a book or a story
-    // #TODO: a counter to automatically assigns an id for the book, ITS THE JOB OF THE DB
-    private static int count = 1; // Defines the counter that we will increment #TODO: Update Later
+    @Id
+    private String id; // Defines the identity number for a book or a story
     private String title; // Defines the title for a book/story
     private Author author; // Defines the author of a specific book/story
     private boolean isAvailable; // Defines if the book is available or not
 
     /**
      * A Default constructor
-     * automatically increments the counter for the id and sets the availability to true
+     * sets the availability to true
      */
     public LibraryItem() {
-        this.id = generate();
         this.isAvailable = true;
     }
 
@@ -31,7 +33,7 @@ public abstract class LibraryItem {
      * a method for getting the id value
      * @return the id
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -85,12 +87,4 @@ public abstract class LibraryItem {
         isAvailable = available;
     }
 //    ==== SETTERS ====
-
-    /**
-     * A synchronized generator so we get no duplicates
-     * @return - an int representing the value of the current counter
-     */
-    private static synchronized int generate() {
-        return count++;
-    } //TODO: Delete this method when working with the DB, also, it violates SRP
 }

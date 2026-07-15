@@ -2,6 +2,9 @@ package com.exalt.library.models.reservation;
 
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.libraryitems.LibraryItem;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.Date;
 
@@ -11,11 +14,13 @@ import java.util.Date;
  * it keeps track of the reservation life date
  * @author Mohammad Rimawi
  */
+@Document(collection = "reservations")
 public class Reservation {
-    private final int id; // Represents the id for an author
-    // #TODO: a counter to automatically assigns an id for the book, ITS THE JOB OF THE DB
-    private static int count = 1; // Defines the counter that we will increment #TODO: Update Later
+    @Id
+    private String id; // Represents the id for a reservation
+    @DocumentReference
     private LibraryItem libraryItem; // Defines the item that will be reserved by the borrower
+    @DocumentReference
     private Borrower borrower; // Defines the borrower that will reserve a specific item
     private Date startDate; // Defines the start time of the reservation
     private Date availableFrom; // Defines if the item is available so we can count the time of the reservation
@@ -24,10 +29,8 @@ public class Reservation {
 
     /**
      * A default constructor
-     * automatically increments the counter for the id
      */
     public Reservation() {
-        this.id = generate(); // TODO: To assign the ID value from the DB
         this.status = ReservationStatus.WAITING;
     }
 
@@ -36,7 +39,7 @@ public class Reservation {
      * a method for getting the id of the reservation
      * @return
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -133,14 +136,6 @@ public class Reservation {
         this.status = status;
     }
     //    ==== SETTERS ====
-
-    /**
-     * A synchronized generator so we get no duplicates
-     * @return - an int representing the value of the current counter
-     */
-    public static synchronized int generate() {
-        return count++;
-    } //TODO: Delete this method when working with the DB, also, it violates SRP
 
     @Override
     public String toString() {

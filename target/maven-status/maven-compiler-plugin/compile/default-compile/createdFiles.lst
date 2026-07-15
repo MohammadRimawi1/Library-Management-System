@@ -14,12 +14,14 @@ com\exalt\library\controllers\dto\CreateLibraryItemRequest.class
 com\exalt\library\models\libraryitems\physicalitems\StoryPhysical.class
 com\exalt\library\models\libraryitems\onlineitems\BookOnline.class
 com\exalt\library\services\operations\LibraryItemOperations.class
+com\exalt\library\repositories\BorrowerRepository.class
 com\exalt\library\exceptions\BorrowerNotFoundException.class
 com\exalt\library\services\operations\ReservationOperations.class
 com\exalt\library\services\operations\BorrowerOperations.class
 com\exalt\library\models\libraryitems\physicalitems\BookPhysical.class
 com\exalt\library\controllers\LibraryItemController.class
 com\exalt\library\models\libraryitems\onlineitems\OnlineItem.class
+com\exalt\library\repositories\LibraryItemRepository.class
 com\exalt\library\Main.class
 com\exalt\library\services\borrowtype\OnlineBorrowStrategyService.class
 com\exalt\library\controllers\dto\CreateBorrowerRequest.class
@@ -29,6 +31,7 @@ com\exalt\library\controllers\dto\ReserveRequest.class
 com\exalt\library\models\libraryitems\physicalitems\PhysicalItem.class
 com\exalt\library\services\BorrowerServices.class
 com\exalt\library\controllers\handler\GlobalExceptionHandler.class
+com\exalt\library\repositories\ReservationRepository.class
 com\exalt\library\services\LibraryItemServices.class
 com\exalt\library\controllers\dto\AuthorRequest.class
 com\exalt\library\services\strategies\Reservable.class

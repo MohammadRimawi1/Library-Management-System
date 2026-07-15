@@ -2,14 +2,12 @@ package com.exalt.library.controllers;
 
 import com.exalt.library.controllers.dto.CreateBorrowerRequest;
 import com.exalt.library.models.Borrower;
-import com.exalt.library.models.SingletonLibrary;
 import com.exalt.library.services.BorrowerServices;
 import com.exalt.library.util.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,16 +18,13 @@ import java.util.Map;
 @RequestMapping("/api/borrowers")
 public class BorrowerController {
     private final BorrowerServices borrowerServices; // Defines the borrower services
-    private final SingletonLibrary library; // defines the singleton library
 
     /**
      * constructor injection
      * @param borrowerServices
-     * @param library
      */
-    public BorrowerController(BorrowerServices borrowerServices, SingletonLibrary library) {
+    public BorrowerController(BorrowerServices borrowerServices) {
         this.borrowerServices = borrowerServices;
-        this.library = library;
     }
 
     /**
@@ -39,8 +34,7 @@ public class BorrowerController {
      */
     @GetMapping
     public ResponseEntity<Map<String, Object>> findAll() {
-        List<Borrower> borrowers = library.getBorrowers();
-        return ResponseEntity.ok(ApiResponse.success(200, borrowers));
+        return ResponseEntity.ok(ApiResponse.success(200, borrowerServices.getAllBorrowers()));
     }
 
     /**
@@ -50,7 +44,7 @@ public class BorrowerController {
      */
     @GetMapping("/count")
     public ResponseEntity<Map<String, Object>> count() {
-        int count = borrowerServices.getBorrowerCount(library.getBorrowers());
+        int count = borrowerServices.getBorrowerCount();
         return ResponseEntity.ok(ApiResponse.success(200, count));
     }
 
@@ -61,8 +55,8 @@ public class BorrowerController {
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> findById(@PathVariable int id) {
-        Borrower borrower = borrowerServices.findBorrowerById(library.getBorrowers(), id);
+    public ResponseEntity<Map<String, Object>> findById(@PathVariable String id) {
+        Borrower borrower = borrowerServices.findBorrowerById(id);
         return ResponseEntity.ok(ApiResponse.success(200, borrower));
     }
 
@@ -76,7 +70,7 @@ public class BorrowerController {
     public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody CreateBorrowerRequest request) {
         Borrower borrower = new Borrower();
         borrower.setName(request.getName());
-        borrowerServices.assignBorrower(library.getBorrowers(), borrower);
+        borrowerServices.assignBorrower(borrower);
 
         return ResponseEntity.status(201).body(ApiResponse.success(201, borrower));
     }
