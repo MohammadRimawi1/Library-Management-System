@@ -6,12 +6,14 @@ import com.exalt.library.services.strategies.BorrowStrategy;
 import com.exalt.library.services.strategies.Reservable;
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.libraryitems.physicalitems.PhysicalItem;
+import org.springframework.stereotype.Component;
 
 /**
  * Strategy borrowing in hand
  * implements both BorrowStrategy and Reservable interfaces
  * @author Mohammad Rimawi
  */
+@Component
 public class InHandBorrowStrategyService implements BorrowStrategy, Reservable {
 
     /**

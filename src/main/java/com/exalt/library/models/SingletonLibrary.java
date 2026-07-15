@@ -2,6 +2,7 @@ package com.exalt.library.models;
 
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.reservation.Reservation;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -10,16 +11,16 @@ import java.util.List;
  * Contains a list of library items, borrowers, and loans
  * @author Mohammad Rimawi
  */
+@Component
 public class SingletonLibrary {
-    private static volatile SingletonLibrary instance; // Defines the single shared instance of the library
     private List<LibraryItem> items; // Defines a list containing library items
     private List<Borrower> borrowers; // Defines a list containing the borrowers
     private List<Reservation> reservations; // Defines a list containing the reservations
 
     /**
-     * A Default constructor
+     * Constructor Injection
      */
-    private SingletonLibrary() {
+    public SingletonLibrary() {
         items = new java.util.ArrayList<>();
         borrowers = new java.util.ArrayList<>();
         reservations = new java.util.ArrayList<>();
@@ -76,23 +77,4 @@ public class SingletonLibrary {
         this.reservations = reservations;
     }
     //    ==== SETTERS ====
-
-    /**
-     * a method for getting the instance of the library
-     * if there is an existing one, then you can't create another following the singleton design pattern principle
-     * it is multi-thread safe
-     * @return a single instance from the SingletonLibrary
-     */
-    public static SingletonLibrary getInstance() {
-        SingletonLibrary result = instance;
-        if(result == null) {
-            synchronized (SingletonLibrary.class) {
-                result = instance;
-                if (result == null) {
-                    instance = result = new SingletonLibrary();
-                }
-            }
-        }
-        return result;
-    }
 }

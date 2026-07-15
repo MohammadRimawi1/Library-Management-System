@@ -6,10 +6,12 @@ import com.exalt.library.exceptions.ItemUnavailableException;
 import com.exalt.library.exceptions.ReservationNotFoundException;
 import com.exalt.library.util.ApiResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * a class representing the exception handling for common possible errors
@@ -48,5 +50,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneric(Exception e) {
         return ResponseEntity.status(500).body(ApiResponse.error(500, "Internal Server Error", e.getMessage()));
+    }
+
+    /**
+     * catches validation failures from @Valid on request DTOs
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException e) {
+        String message = e.getBindingResult().getFieldErrors().stream()
+                .map(err -> err.getField() + ": " + err.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+        return ResponseEntity.status(400).body(ApiResponse.error(400, "Bad Request", message));
     }
 }

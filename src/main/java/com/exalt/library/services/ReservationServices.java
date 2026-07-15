@@ -11,6 +11,7 @@ import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.libraryitems.onlineitems.OnlineItem;
 import com.exalt.library.models.reservation.Reservation;
 import com.exalt.library.models.reservation.ReservationStatus;
+import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -21,41 +22,23 @@ import java.util.List;
  * implements the interface ReservationOperations
  * @author Mohammad Rimawi
  */
+@Service
 public class ReservationServices implements ReservationOperations {
-    LibraryItemOperations libraryItemOperations; // Defines the library item operations
-    BorrowerOperations borrowerOperations; // Defines the borrower operations
-    BorrowStrategyFactory borrowStrategyFactory; // Defines the borrower strategy factory
+    private final LibraryItemOperations libraryItemOperations; // Defines the library item operations
+    private final BorrowerOperations borrowerOperations; // Defines the borrower operations
+    private final BorrowStrategyFactory borrowStrategyFactory; // Defines the borrower strategy factory
 
     /**
-     * a default constructor for instantiation
-     */
-    public ReservationServices() { }
-
-//    ==== SETTERS ====
-    /**
-     * a method for setting the library item operations in the reservation services
+     * constructor injection
      * @param libraryItemOperations
-     */
-    public void setLibraryItemOperations(LibraryItemOperations libraryItemOperations) {
-        this.libraryItemOperations = libraryItemOperations;
-    }
-
-    /**
-     * a method for setting the borrower operations in the reservation services
      * @param borrowerOperations
-     */
-    public void setBorrowerOperations(BorrowerOperations borrowerOperations) {
-        this.borrowerOperations = borrowerOperations;
-    }
-
-    /**
-     * a method for setting the borrower strategy factory in the reservation services
      * @param borrowStrategyFactory
      */
-    public void setBorrowStrategyFactory(BorrowStrategyFactory borrowStrategyFactory) {
+    public ReservationServices(LibraryItemOperations libraryItemOperations, BorrowerOperations borrowerOperations, BorrowStrategyFactory borrowStrategyFactory) {
+        this.libraryItemOperations = libraryItemOperations;
+        this.borrowerOperations = borrowerOperations;
         this.borrowStrategyFactory = borrowStrategyFactory;
     }
-//    ==== SETTERS ====
 
     /**
      * a method used to find a specific reservation based on its id

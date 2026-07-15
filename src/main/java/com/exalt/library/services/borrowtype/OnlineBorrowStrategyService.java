@@ -4,11 +4,13 @@ import com.exalt.library.models.reservation.Reservation;
 import com.exalt.library.models.reservation.ReservationStatus;
 import com.exalt.library.services.strategies.BorrowStrategy;
 import com.exalt.library.models.libraryitems.LibraryItem;
+import org.springframework.stereotype.Component;
 
 /**
  * strategy borrowing online
  * @author Mohammad Rimawi
  */
+@Component
 public class OnlineBorrowStrategyService implements BorrowStrategy {
     /**
      * a method for activating an existing reservation - online items are

@@ -12,6 +12,7 @@ import com.exalt.library.services.borrowtype.InHandBorrowStrategyService;
 import com.exalt.library.services.borrowtype.OnlineBorrowStrategyService;
 import com.exalt.library.services.factory.BorrowStrategyFactory;
 import com.exalt.library.util.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,24 +26,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/reservations")
 public class ReservationController  {
-    ReservationServices reservationServices = initializeReservationServices();
+    private final ReservationServices reservationServices; // defines the reservation services
+    private final SingletonLibrary library; // defines the singleton library
 
     /**
-     * a method for initializing the reservation services, where we can use the logic it delivers
-     * @return the reservation services
+     * constructor injection
+     * @param reservationServices
+     * @param library
      */
-    private ReservationServices initializeReservationServices() {
-        ReservationServices reservationServices = new ReservationServices();
-
-        BorrowStrategyFactory factory = new BorrowStrategyFactory();
-        factory.setInHandStrategy(new InHandBorrowStrategyService());
-        factory.setOnlineStrategy(new OnlineBorrowStrategyService());
-
-        reservationServices.setLibraryItemOperations(new LibraryItemServices());
-        reservationServices.setBorrowerOperations(new BorrowerServices());
-        reservationServices.setBorrowStrategyFactory(factory);
-
-        return reservationServices;
+    public ReservationController(ReservationServices reservationServices, SingletonLibrary library) {
+        this.reservationServices = reservationServices;
+        this.library = library;
     }
 
     /**
@@ -52,7 +46,7 @@ public class ReservationController  {
      */
     @GetMapping
     public ResponseEntity<Map<String, Object>> findAll() {
-        List<Reservation> reservations = SingletonLibrary.getInstance().getReservations();
+        List<Reservation> reservations = library.getReservations();
         reservations.forEach(reservation -> reservationServices.checkAndHandleExpiration(reservations, reservation));
         return ResponseEntity.ok(ApiResponse.success(200, reservations));
     }
@@ -65,7 +59,7 @@ public class ReservationController  {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> findById(@PathVariable int id) {
-        List<Reservation> reservations = SingletonLibrary.getInstance().getReservations();
+        List<Reservation> reservations = library.getReservations();
         Reservation reservation = reservationServices.findReservationById(reservations, id);
         reservationServices.checkAndHandleExpiration(reservations, reservation);
         return ResponseEntity.ok(ApiResponse.success(200, reservation));
@@ -80,7 +74,7 @@ public class ReservationController  {
      */
     @GetMapping("/active")
     public ResponseEntity<Map<String, Object>> findActive(@RequestParam int borrowerId, @RequestParam int itemId) {
-        Reservation reservation = reservationServices.findActiveReservation(SingletonLibrary.getInstance().getReservations(), borrowerId, itemId);
+        Reservation reservation = reservationServices.findActiveReservation(library.getReservations(), borrowerId, itemId);
         return ResponseEntity.ok(ApiResponse.success(200, reservation));
     }
 
@@ -91,11 +85,11 @@ public class ReservationController  {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Map<String, Object>> reserve(@RequestBody ReserveRequest request) {
+    public ResponseEntity<Map<String, Object>> reserve(@Valid @RequestBody ReserveRequest request) {
         Reservation reservation = reservationServices.reserve(
-                SingletonLibrary.getInstance().getReservations(),
-                SingletonLibrary.getInstance().getLibraryItems(),
-                SingletonLibrary.getInstance().getBorrowers(),
+                library.getReservations(),
+                library.getLibraryItems(),
+                library.getBorrowers(),
                 request.getBorrowerId(),
                 request.getItemId());
         return ResponseEntity.status(201).body(ApiResponse.success(201, reservation));
@@ -108,10 +102,10 @@ public class ReservationController  {
      * @return
      */
     @PostMapping("/return")
-    public ResponseEntity<Map<String, Object>> returnItem(@RequestBody ReserveRequest request) {
-        List<Reservation> reservations = SingletonLibrary.getInstance().getReservations();
-        LibraryItem item = reservationServices.checkForLibraryItem(SingletonLibrary.getInstance().getLibraryItems(), request.getItemId());
-        Borrower borrower = reservationServices.checkForBorrower(SingletonLibrary.getInstance().getBorrowers(), request.getBorrowerId());
+    public ResponseEntity<Map<String, Object>> returnItem(@Valid @RequestBody ReserveRequest request) {
+        List<Reservation> reservations = library.getReservations();
+        LibraryItem item = reservationServices.checkForLibraryItem(library.getLibraryItems(), request.getItemId());
+        Borrower borrower = reservationServices.checkForBorrower(library.getBorrowers(), request.getBorrowerId());
 
         boolean closed = reservationServices.returnItem(reservations, item, borrower);
         return ResponseEntity.ok(ApiResponse.success(200, Map.of("returned", closed)));
@@ -125,7 +119,7 @@ public class ReservationController  {
      */
     @PostMapping("/{id}/claim")
     public ResponseEntity<Map<String, Object>> claim(@PathVariable int id) {
-        Reservation reservation = reservationServices.findReservationById(SingletonLibrary.getInstance().getReservations(), id);
+        Reservation reservation = reservationServices.findReservationById(library.getReservations(), id);
         Reservation claimed = reservationServices.claimReservation(reservation);
         return ResponseEntity.ok(ApiResponse.success(200, claimed));
     }
@@ -138,7 +132,7 @@ public class ReservationController  {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> cancel(@PathVariable int id) {
-        List<Reservation> reservations = SingletonLibrary.getInstance().getReservations();
+        List<Reservation> reservations = library.getReservations();
         Reservation reservation = reservationServices.findReservationById(reservations, id);
         boolean cancelled = reservationServices.cancelReservation(reservations, reservation);
         return ResponseEntity.ok(ApiResponse.success(200, Map.of("cancelled", cancelled)));

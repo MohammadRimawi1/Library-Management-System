@@ -2,38 +2,29 @@ package com.exalt.library.services.factory;
 
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.libraryitems.onlineitems.OnlineItem;
+import com.exalt.library.services.borrowtype.InHandBorrowStrategyService;
+import com.exalt.library.services.borrowtype.OnlineBorrowStrategyService;
 import com.exalt.library.services.strategies.BorrowStrategy;
+import org.springframework.stereotype.Component;
 
 /**
  * a class representing the borrow strategy factory which uses the factory design pattern
  * @author Mohammad Rimawi
  */
+@Component
 public class BorrowStrategyFactory {
-    private BorrowStrategy inHandStrategy; // defines the in hand strategy
-    private BorrowStrategy onlineStrategy; // defines the online strategy
+    private final BorrowStrategy inHandStrategy; // defines the in hand strategy
+    private final BorrowStrategy onlineStrategy; // defines the online strategy
 
     /**
-     * a default constructor
-     */
-    public BorrowStrategyFactory() { }
-
-//    ==== SETTERS ====
-    /**
-     * a method for setting the in hand strategy
+     * constructor injection
      * @param inHandStrategy
-     */
-    public void setInHandStrategy(BorrowStrategy inHandStrategy) {
-        this.inHandStrategy = inHandStrategy;
-    }
-
-    /**
-     * a method for setting the online strategy
      * @param onlineStrategy
      */
-    public void setOnlineStrategy(BorrowStrategy onlineStrategy) {
+    public BorrowStrategyFactory(InHandBorrowStrategyService inHandStrategy, OnlineBorrowStrategyService onlineStrategy) {
+        this.inHandStrategy = inHandStrategy;
         this.onlineStrategy = onlineStrategy;
     }
-//    ==== SETTERS ====
 
     /**
      * a method for choosing between the strategies

@@ -1,13 +1,19 @@
 package com.exalt.library.controllers.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+
 /**
  * a class representing the request for a library item
  * @author Mohammad Rimawi
  */
 public class CreateLibraryItemRequest {
+    @NotBlank(message = "Type is required!")
     private String type; // Defines the type
+    @NotBlank(message = "Title is required!")
     private String title; // Defines the title
     private Integer numOfCopies; // only used for physical items, Integer so it can be null
+    @Valid
     private AuthorRequest author; // Represents the author request
 
 //    ==== GETTERS ====
