@@ -15,11 +15,7 @@ public class ApiResponse {
      * @return
      */
     public static Map<String, Object> success(int status, Object data) {
-        return Map.of(
-                "status", status,
-                "timestamp", Instant.now().toString(),
-                "data", data
-        );
+        return Map.of("status", status, "timestamp", Instant.now().toString(), "data", data);
     }
 
     /**
@@ -30,11 +26,6 @@ public class ApiResponse {
      * @return
      */
     public static Map<String, Object> error(int status, String error, String message) {
-        return Map.of(
-                "status", status,
-                "timestamp", Instant.now().toString(),
-                "error", error,
-                "message", message
-        );
+        return Map.of("status", status, "timestamp", Instant.now().toString(), "error", error, "message", message);
     }
 }
