@@ -2,7 +2,6 @@ package com.exalt.library.controllers;
 
 import com.exalt.library.controllers.dto.CreateLibraryItemRequest;
 import com.exalt.library.models.Author;
-import com.exalt.library.models.SingletonLibrary;
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.libraryitems.physicalitems.PhysicalItem;
 import com.exalt.library.services.LibraryItemServices;
@@ -12,7 +11,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,16 +21,13 @@ import java.util.Map;
 @RequestMapping("/api/library-items")
 public class LibraryItemController {
     private final LibraryItemServices libraryItemServices; // Defines the library item services
-    private final SingletonLibrary library; // defines the singleton library
 
     /**
      * constructor injection
      * @param libraryItemServices
-     * @param library
      */
-    public LibraryItemController(LibraryItemServices libraryItemServices, SingletonLibrary library) {
+    public LibraryItemController(LibraryItemServices libraryItemServices) {
         this.libraryItemServices = libraryItemServices;
-        this.library = library;
     }
 
     /**
@@ -42,8 +37,7 @@ public class LibraryItemController {
      */
     @GetMapping
     public ResponseEntity<Map<String, Object>> findAll() {
-        List<LibraryItem> libraryItems = library.getLibraryItems();
-        return ResponseEntity.ok(ApiResponse.success(200, libraryItems));
+        return ResponseEntity.ok(ApiResponse.success(200, libraryItemServices.getAllItems()));
     }
 
     /**
@@ -53,8 +47,8 @@ public class LibraryItemController {
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> findById(@PathVariable int id) {
-        LibraryItem libraryItem = libraryItemServices.findItemById(library.getLibraryItems(), id);
+    public ResponseEntity<Map<String, Object>> findById(@PathVariable String id) {
+        LibraryItem libraryItem = libraryItemServices.findItemById(id);
         return ResponseEntity.ok(ApiResponse.success(200, libraryItem));
     }
 
@@ -84,7 +78,7 @@ public class LibraryItemController {
             libraryItem.setAuthor(author);
         }
 
-        libraryItemServices.addItem(library.getLibraryItems(), libraryItem);
+        libraryItemServices.addItem(libraryItem);
 
         return ResponseEntity.status(201).body(ApiResponse.success(201, libraryItem));
     }

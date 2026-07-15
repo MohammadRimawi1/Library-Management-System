@@ -2,6 +2,7 @@ package com.exalt.library.services.borrowtype;
 
 import com.exalt.library.models.reservation.Reservation;
 import com.exalt.library.models.reservation.ReservationStatus;
+import com.exalt.library.repositories.LibraryItemRepository;
 import com.exalt.library.services.strategies.BorrowStrategy;
 import com.exalt.library.services.strategies.Reservable;
 import com.exalt.library.models.libraryitems.LibraryItem;
@@ -15,6 +16,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class InHandBorrowStrategyService implements BorrowStrategy, Reservable {
+    private final LibraryItemRepository libraryItemRepository; // Defines the library item repository
+
+    /**
+     * Constructor injection
+     * @param libraryItemRepository
+     */
+    public InHandBorrowStrategyService(LibraryItemRepository libraryItemRepository) {
+        this.libraryItemRepository = libraryItemRepository;
+    }
 
     /**
      * a method for reducing the available copies of a physical item by one,
@@ -31,6 +41,7 @@ public class InHandBorrowStrategyService implements BorrowStrategy, Reservable {
         if (remaining == 0) {
             physicalItem.setAvailable(false);
         }
+        libraryItemRepository.save(physicalItem);
     }
 
     /**

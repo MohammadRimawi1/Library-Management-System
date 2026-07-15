@@ -1,29 +1,30 @@
 package com.exalt.library.controllers.dto;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * a class representing the request for a reservation
  * @author Mohammad Rimawi
  */
 public class ReserveRequest {
-    @Min(value = 1, message = "Must be a valid ID!")
-    private int borrowerId; // defines The borrower ID
-    @Min(value = 1, message = "Must be a valid ID!")
-    private int itemId; // defines the item ID
+    @NotBlank(message = "Id is required")
+    private String borrowerId; // defines The borrower ID
+    @NotBlank(message = "Id is required")
+    private String itemId; // defines the item ID
 
 //    ==== GETTERS ====
     /**
      * a method for getting the borrower id
      * @return
      */
-    public int getBorrowerId() { return borrowerId; }
+    public String getBorrowerId() { return borrowerId; }
 
     /**
      * a method for getting the item id
      * @return
      */
-    public int getItemId() { return itemId; }
+    public String getItemId() { return itemId; }
 //    ==== GETTERS ====
 
 //    ==== SETTERS ====
@@ -32,12 +33,12 @@ public class ReserveRequest {
      * a method for setting the borrower id
      * @param borrowerId
      */
-    public void setBorrowerId(int borrowerId) { this.borrowerId = borrowerId; }
+    public void setBorrowerId(String borrowerId) { this.borrowerId = borrowerId; }
 
     /**
      * a method for setting the item id
      * @param itemId
      */
-    public void setItemId(int itemId) { this.itemId = itemId; }
+    public void setItemId(String itemId) { this.itemId = itemId; }
 //    ==== SETTERS ====
 }

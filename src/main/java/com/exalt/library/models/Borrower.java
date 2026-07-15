@@ -1,21 +1,26 @@
 package com.exalt.library.models;
+
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * A class representing the library borrower
  * Each borrower has a unique id, they also have names
  * @author Mohammad Rimawi
  */
+@Document(collection = "borrowers")
 public class Borrower {
-    private final int id; // Defines the identity number for a borrower
-    // #TODO: a counter to automatically assigns an id for the book, ITS THE JOB OF THE DB
-    private static int count = 1; // Defines the counter that we will increment #TODO: Update Later
+    @Id
+    private String id; // Defines the identity number for a borrower
+    @NotBlank(message = "Name is required!")
     private String name; // Defines the name of the borrower
 
     /**
      * A default constructor
-     * automatically increments the counter for the id
      */
     public Borrower() {
-        this.id = generate(); // TODO: To assign the ID value from the DB
+
     }
 
 //    ==== GETTERS ====
@@ -23,7 +28,7 @@ public class Borrower {
      * a method for getting the id value
      * @return the id
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -46,14 +51,6 @@ public class Borrower {
         this.name = name;
     }
 //    ==== SETTERS ====
-
-    /**
-     * A synchronized generator so we get no duplicates
-     * @return - an int representing the value of the current counter
-     */
-    public static synchronized int generate() {
-        return count++;
-    } //TODO: Delete this method when working with the DB, also, it violates SRP
 
     @Override
     public String toString() {

@@ -1,79 +1,76 @@
 package com.exalt.library.services;
 
-import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.exceptions.BorrowerNotFoundException;
 import com.exalt.library.models.Borrower;
+import com.exalt.library.repositories.BorrowerRepository;
 import com.exalt.library.services.operations.BorrowerOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
- * a class representing the services of the borrower
- * it implements the borrower operations
+ * a class representing the services for the borrower
+ * implements the interface BorrowerOperations
  * @author Mohammad Rimawi
  */
 @Service
 public class BorrowerServices implements BorrowerOperations {
-    /**
-     * A default constructor for instantiation
-     */
-    public BorrowerServices() { }
+    private final BorrowerRepository borrowerRepository; // Defines the borrower repository
 
     /**
-     * assignBorrower method is used to assign a borrower of type Borrower to the borrowers list
-     * @param borrowers
-     * @param borrower
+     * constructor injection
+     * @param borrowerRepository
      */
-    @Override
-    public void assignBorrower(List<Borrower> borrowers, Borrower borrower) {
-        borrowers.add(borrower); //This adds the borrower to the borrowers list
+    public BorrowerServices(BorrowerRepository borrowerRepository) {
+        this.borrowerRepository = borrowerRepository;
     }
 
     /**
-     * a method used to print all the borrowers inside the borrower list
-     * @param borrowers
+     * a method for saving a new borrower
+     * @param borrower
      */
     @Override
-    public void printAllBorrowers(List<Borrower> borrowers) {
-        borrowers.stream() // this turns the borrowers into a stream
-                .forEach(borrower -> System.out.println(borrower)); //terminal operation for performing an action on each element of the stream
+    public void assignBorrower(Borrower borrower) {
+        borrowerRepository.save(borrower);
+    }
+
+    /**
+     * a method for getting all the borrowers
+     * @return the list of all borrowers
+     */
+    @Override
+    public List<Borrower> getAllBorrowers() {
+        return borrowerRepository.findAll();
     }
 
     /**
      * a method used to find a specific borrower based on his/her id
-     * @param borrowers
      * @param id
-     * @return return a borrower if he/she exists
-     * @throws ItemNotFoundException if the borrower doesn't exist
+     * @return the borrower if found
+     * @throws BorrowerNotFoundException if no borrower matches the id
      */
     @Override
-    public Borrower findBorrowerById(List<Borrower> borrowers, int id) {
-        return borrowers.stream() // this turns the borrowers into a stream
-                .filter(borrower -> borrower.getId() == id) // This filters the stream and gets what matches the condition
-                .findFirst() // This returns an optional describing the first element of the stream
-                .orElseThrow(() -> new BorrowerNotFoundException("Borrower was not found!")); // This should throw an exception if there was no borrower found
+    public Borrower findBorrowerById(String id) {
+        return borrowerRepository.findById(id)
+                .orElseThrow(() -> new BorrowerNotFoundException("Borrower not found"));
     }
 
     /**
      * a method for checking if the borrower exists or not
-     * @param borrowers
-     * @param id - represents the borrower id
-     * @return - returns true or false based if it exists in the list or not
+     * @param id
+     * @return true or false based on whether it exists
      */
     @Override
-    public boolean borrowerExists(List<Borrower> borrowers, int id) {
-        return borrowers.stream() // this turns the borrowers into a stream
-                .anyMatch(borrower -> borrower.getId() == id); //check if any element in the stream matches the condition
+    public boolean borrowerExists(String id) {
+        return borrowerRepository.existsById(id);
     }
 
     /**
-     * a method for checking how many borrowers exists in the borrowers list
-     * @param borrowers
-     * @return - the size as long
+     * a method for checking how many borrowers exist
+     * @return the count
      */
     @Override
-    public int getBorrowerCount(List<Borrower> borrowers) {
-        return borrowers.size(); //Gets the size of the list
-    } //Fixed
+    public int getBorrowerCount() {
+        return (int) borrowerRepository.count();
+    }
 }
