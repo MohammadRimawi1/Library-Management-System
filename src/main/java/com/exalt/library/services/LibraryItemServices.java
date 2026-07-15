@@ -3,6 +3,7 @@ package com.exalt.library.services;
 import com.exalt.library.services.operations.LibraryItemOperations;
 import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.models.libraryitems.LibraryItem;
+import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
  * it implements the Library Item operations
  * @author Mohammad Rimawi
  */
+@Service
 public class LibraryItemServices implements LibraryItemOperations {
 
     /**

@@ -8,6 +8,7 @@ import com.exalt.library.models.libraryitems.physicalitems.PhysicalItem;
 import com.exalt.library.services.LibraryItemServices;
 import com.exalt.library.services.factory.LibraryItemFactory;
 import com.exalt.library.util.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/library-items")
 public class LibraryItemController {
-    private LibraryItemServices libraryItemServices = new LibraryItemServices(); // defines the library item services
+    private final LibraryItemServices libraryItemServices; // Defines the library item services
+    private final SingletonLibrary library; // defines the singleton library
+
+    /**
+     * constructor injection
+     * @param libraryItemServices
+     * @param library
+     */
+    public LibraryItemController(LibraryItemServices libraryItemServices, SingletonLibrary library) {
+        this.libraryItemServices = libraryItemServices;
+        this.library = library;
+    }
 
     /**
      * a method for fetching all the library items
@@ -30,7 +42,7 @@ public class LibraryItemController {
      */
     @GetMapping
     public ResponseEntity<Map<String, Object>> findAll() {
-        List<LibraryItem> libraryItems = SingletonLibrary.getInstance().getLibraryItems();
+        List<LibraryItem> libraryItems = library.getLibraryItems();
         return ResponseEntity.ok(ApiResponse.success(200, libraryItems));
     }
 
@@ -42,7 +54,7 @@ public class LibraryItemController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> findById(@PathVariable int id) {
-        LibraryItem libraryItem = libraryItemServices.findItemById(SingletonLibrary.getInstance().getLibraryItems(), id);
+        LibraryItem libraryItem = libraryItemServices.findItemById(library.getLibraryItems(), id);
         return ResponseEntity.ok(ApiResponse.success(200, libraryItem));
     }
 
@@ -53,7 +65,7 @@ public class LibraryItemController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Map<String, Object>> create(@RequestBody CreateLibraryItemRequest request) {
+    public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody CreateLibraryItemRequest request) {
         if (request.getType() == null) {
             throw new IllegalArgumentException("Missing required field: type");
         }
@@ -72,7 +84,7 @@ public class LibraryItemController {
             libraryItem.setAuthor(author);
         }
 
-        libraryItemServices.addItem(SingletonLibrary.getInstance().getLibraryItems(), libraryItem);
+        libraryItemServices.addItem(library.getLibraryItems(), libraryItem);
 
         return ResponseEntity.status(201).body(ApiResponse.success(201, libraryItem));
     }

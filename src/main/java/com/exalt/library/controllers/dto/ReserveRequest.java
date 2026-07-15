@@ -1,11 +1,15 @@
 package com.exalt.library.controllers.dto;
 
+import jakarta.validation.constraints.Min;
+
 /**
  * a class representing the request for a reservation
  * @author Mohammad Rimawi
  */
 public class ReserveRequest {
+    @Min(value = 1, message = "Must be a valid ID!")
     private int borrowerId; // defines The borrower ID
+    @Min(value = 1, message = "Must be a valid ID!")
     private int itemId; // defines the item ID
 
 //    ==== GETTERS ====

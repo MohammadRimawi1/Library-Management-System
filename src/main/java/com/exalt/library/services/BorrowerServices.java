@@ -4,6 +4,7 @@ import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.exceptions.BorrowerNotFoundException;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.services.operations.BorrowerOperations;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * it implements the borrower operations
  * @author Mohammad Rimawi
  */
+@Service
 public class BorrowerServices implements BorrowerOperations {
     /**
      * A default constructor for instantiation

@@ -1,10 +1,13 @@
 package com.exalt.library.controllers.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 /**
  * a class representing the request for a borrower
  * @author Mohammad Rimawi
  */
 public class CreateBorrowerRequest {
+    @NotBlank(message = "Name is required!")
     private String name; // Represents the name of the borrower
 
 //    ==== GETTER ====
