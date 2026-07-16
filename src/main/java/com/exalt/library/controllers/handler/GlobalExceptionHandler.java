@@ -64,4 +64,15 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining(", "));
         return ResponseEntity.status(400).body(ApiResponse.error(400, "Bad Request", message));
     }
+
+    /**
+     * catches method argument fails type coercion
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Map<String, Object>> handleTypeMismatch(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException e) {
+        String message = "Invalid value '" + e.getValue() + "' for parameter '" + e.getName() + "'";
+        return ResponseEntity.status(400).body(ApiResponse.error(400, "Bad Request", message));
+    }
 }

@@ -7,7 +7,6 @@ com\exalt\library\models\reservation\Reservation.class
 com\exalt\library\util\ApiResponse.class
 com\exalt\library\models\Author.class
 com\exalt\library\controllers\BorrowerController.class
-com\exalt\library\models\SingletonLibrary.class
 com\exalt\library\exceptions\ItemUnavailableException.class
 com\exalt\library\models\libraryitems\LibraryItem.class
 com\exalt\library\controllers\dto\CreateLibraryItemRequest.class

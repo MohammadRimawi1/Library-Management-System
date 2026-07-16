@@ -6,6 +6,7 @@ import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.exceptions.ReservationNotFoundException;
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.reservation.Reservation;
+import com.exalt.library.models.reservation.ReservationStatus;
 
 import java.util.List;
 
@@ -117,4 +118,18 @@ public interface ReservationOperations {
      * @throws IllegalStateException if the reservation isn't in READY status
      */
     Reservation claimReservation(Reservation reservation);
+
+    /**
+     * A method for retrieving reservations for a specific borrower
+     * @param borrowerId
+     * @return
+     */
+    List<Reservation> findReservationsByBorrower(String borrowerId);
+
+    /**
+     * a method for retrieving reservations with a specific status
+     * @param status
+     * @return
+     */
+    List<Reservation> findReservationsByStatus(ReservationStatus status);
 }
