@@ -4,6 +4,7 @@ import com.exalt.library.controllers.dto.ReserveRequest;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.reservation.Reservation;
+import com.exalt.library.models.reservation.ReservationStatus;
 import com.exalt.library.services.ReservationServices;
 import com.exalt.library.util.ApiResponse;
 import jakarta.validation.Valid;
@@ -64,6 +65,29 @@ public class ReservationController  {
     public ResponseEntity<Map<String, Object>> findActive(@RequestParam String borrowerId, @RequestParam String itemId) {
         Reservation reservation = reservationServices.findActiveReservation(borrowerId, itemId);
         return ResponseEntity.ok(ApiResponse.success(200, reservation));
+    }
+
+    /**
+     * A method for fetching the reservations for a specific borrower
+     * @param borrowerId
+     * @return
+     */
+    @GetMapping("/borrower/{borrowerId}")
+    public ResponseEntity<Map<String, Object>> findReservationByBorrower(@PathVariable String borrowerId) {
+        List<Reservation> reservations = reservationServices.findReservationsByBorrower(borrowerId);
+        return ResponseEntity.ok(ApiResponse.success(200, reservations));
+    }
+
+    /**
+     * A method for fetching the reservations with a specific status
+     * @param status
+     * @return
+     */
+    @GetMapping("/status/{status}")
+    public ResponseEntity<Map<String, Object>> findReservationsByStatus(@PathVariable String status) {
+        ReservationStatus reservationStatus = ReservationStatus.valueOf(status.toUpperCase());
+        List<Reservation> reservations = reservationServices.findReservationsByStatus(reservationStatus);
+        return ResponseEntity.ok(ApiResponse.success(200, reservations));
     }
 
     /**

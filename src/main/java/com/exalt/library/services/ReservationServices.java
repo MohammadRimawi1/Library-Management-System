@@ -237,6 +237,26 @@ public class ReservationServices implements ReservationOperations {
     }
 
     /**
+     * A method for retrieving reservations for a specific borrower
+     * @param borrowerId
+     * @return
+     */
+    @Override
+    public List<Reservation> findReservationsByBorrower(String borrowerId) {
+        return reservationRepository.findByBorrowerId(borrowerId);
+    }
+
+    /**
+     * a method for retrieving reservations with a specific status
+     * @param status
+     * @return
+     */
+    @Override
+    public List<Reservation> findReservationsByStatus(ReservationStatus status) {
+        return reservationRepository.findByStatus(status);
+    }
+
+    /**
      * helper so findNextWaitingReservation's throwing behavior doesn't blow up closeReservation
      * when there's simply nobody waiting
      */
