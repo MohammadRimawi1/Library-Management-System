@@ -1,6 +1,6 @@
 package com.exalt.library.controllers;
 
-import com.exalt.library.controllers.dto.ReserveRequest;
+import com.exalt.library.controllers.dto.ReserveDTO;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.reservation.Reservation;
@@ -93,27 +93,24 @@ public class ReservationController  {
     /**
      * a method for creating a serving request for a reservation
      * exists on: /api/reservations
-     * @param request
+     * @param reserveDTO
      * @return
      */
     @PostMapping
-    public ResponseEntity<Map<String, Object>> reserve(@Valid @RequestBody ReserveRequest request) {
-        Reservation reservation = reservationServices.reserve(request.getBorrowerId(), request.getItemId());
+    public ResponseEntity<Map<String, Object>> reserve(@RequestBody ReserveDTO reserveDTO) {
+        Reservation reservation = reservationServices.reserve(reserveDTO);
         return ResponseEntity.status(201).body(ApiResponse.success(201, reservation));
     }
 
     /**
      * a method for returning an item after being reserved
      * exists on: /api/reservations/return
-     * @param request
+     * @param reserveDTO
      * @return
      */
     @PostMapping("/return")
-    public ResponseEntity<Map<String, Object>> returnItem(@Valid @RequestBody ReserveRequest request) {
-        LibraryItem item = reservationServices.checkForLibraryItem(request.getItemId());
-        Borrower borrower = reservationServices.checkForBorrower(request.getBorrowerId());
-
-        boolean closed = reservationServices.returnItem(item, borrower);
+    public ResponseEntity<Map<String, Object>> returnItem(@RequestBody ReserveDTO reserveDTO) {
+        boolean closed = reservationServices.returnItem(reserveDTO);
         return ResponseEntity.ok(ApiResponse.success(200, Map.of("returned", closed)));
     }
 

@@ -1,5 +1,6 @@
 package com.exalt.library.services.operations;
 
+import com.exalt.library.controllers.dto.ReserveDTO;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.exceptions.BorrowerNotFoundException;
 import com.exalt.library.exceptions.ItemNotFoundException;
@@ -63,11 +64,10 @@ public interface ReservationOperations {
     /**
      * a method used to let a borrower reserve a specific item regardless of its availability
      * implemented inside ReservationServices
-     * @param borrowerId
-     * @param itemId
+     * @param reserveDTO
      * @return
      */
-    Reservation reserve(String borrowerId, String itemId);
+    Reservation reserve(ReserveDTO reserveDTO);
 
     /**
      * a method for checking the next waiting reservation for an item
@@ -103,12 +103,11 @@ public interface ReservationOperations {
     /**
      * a method which returns a borrowed item and closes its active reservation
      * implemented inside ReservationServices
-     * @param libraryItem
-     * @param borrower
+     * @param reserveDTO
      * @return true if the reservation was closed
      * @throws ReservationNotFoundException if no active reservation is found
      */
-    boolean returnItem(LibraryItem libraryItem, Borrower borrower);
+    boolean returnItem(ReserveDTO reserveDTO);
 
     /**
      * a method for a borrower to claim their READY reservation

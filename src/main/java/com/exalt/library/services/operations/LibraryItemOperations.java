@@ -1,5 +1,6 @@
 package com.exalt.library.services.operations;
 
+import com.exalt.library.controllers.dto.LibraryItemDTO;
 import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.models.libraryitems.LibraryItem;
 
@@ -18,11 +19,11 @@ public interface LibraryItemOperations {
     List<LibraryItem> getAllItems();
 
     /**
-     * a method is used to add an item of type LibraryItem to the books list
-     * implemented inside LibraryItemServices
-     * @param item
+     * a method for creating a library item from a validated request
+     * @param libraryItemDTO
+     * @return the created item
      */
-    void addItem(LibraryItem item);
+    LibraryItem createItem(LibraryItemDTO libraryItemDTO);
 
     /**
      * a method used to print all the LibraryItems inside the items list
