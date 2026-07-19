@@ -1,5 +1,6 @@
 package com.exalt.library.services;
 
+import com.exalt.library.controllers.dto.ReserveDTO;
 import com.exalt.library.repositories.BorrowerRepository;
 import com.exalt.library.repositories.LibraryItemRepository;
 import com.exalt.library.repositories.ReservationRepository;
@@ -14,6 +15,7 @@ import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.libraryitems.onlineitems.OnlineItem;
 import com.exalt.library.models.reservation.Reservation;
 import com.exalt.library.models.reservation.ReservationStatus;
+import com.exalt.library.validation.ReserveValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -110,14 +112,16 @@ public class ReservationServices implements ReservationOperations {
      * a method used to let a borrower reserve a specific item.
      * if the item is available, the reservation is activated immediately (this replaces the old "loan" path)
      * if not, the reservation is queued as WAITING until the item comes back
-     * @param borrowerId
-     * @param itemId
+     * @param reserveDTO
      * @return the created reservation
      */
     @Override
-    public Reservation reserve(String borrowerId, String itemId) {
-        LibraryItem item = checkForLibraryItem(itemId);
-        Borrower borrower = checkForBorrower(borrowerId);
+    public Reservation reserve(ReserveDTO reserveDTO) {
+        ReserveValidator.validate(reserveDTO);
+
+        LibraryItem item = checkForLibraryItem(reserveDTO.itemId());
+        Borrower borrower = checkForBorrower(reserveDTO.borrowerId());
+
 
         if (item instanceof OnlineItem) {
             throw new IllegalArgumentException("Online items cannot be reserved — they are always available");
@@ -207,13 +211,17 @@ public class ReservationServices implements ReservationOperations {
 
     /**
      * a method which returns a borrowed item and closes its active reservation
-     * @param libraryItem
-     * @param borrower
+     * @param reserveDTO
      * @return true if the reservation was closed
      * @throws ReservationNotFoundException if no active reservation is found
      */
     @Override
-    public boolean returnItem(LibraryItem libraryItem, Borrower borrower) {
+    public boolean returnItem(ReserveDTO reserveDTO) {
+        ReserveValidator.validate(reserveDTO);
+
+        LibraryItem libraryItem = checkForLibraryItem(reserveDTO.itemId());
+        Borrower borrower = checkForBorrower(reserveDTO.borrowerId());
+
         Reservation reservation = findActiveReservation(borrower.getId(), libraryItem.getId());
         closeReservation(reservation, libraryItem);
 

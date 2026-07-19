@@ -1,9 +1,14 @@
 package com.exalt.library.services;
 
+import com.exalt.library.controllers.dto.LibraryItemDTO;
+import com.exalt.library.models.Author;
+import com.exalt.library.models.libraryitems.physicalitems.PhysicalItem;
 import com.exalt.library.repositories.LibraryItemRepository;
+import com.exalt.library.services.factory.LibraryItemFactory;
 import com.exalt.library.services.operations.LibraryItemOperations;
 import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.models.libraryitems.LibraryItem;
+import com.exalt.library.validation.LibraryItemValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -36,12 +41,27 @@ public class LibraryItemServices implements LibraryItemOperations {
     }
 
     /**
-     * a method is used to add an item of type LibraryItem to the items repository
-     * @param item
+     * a method for creating a library item from a validated request
+     * @param libraryItemDTO
+     * @return the created item
      */
     @Override
-    public void addItem(LibraryItem item) {
-        libraryItemRepository.save(item);
+    public LibraryItem createItem(LibraryItemDTO libraryItemDTO) {
+        LibraryItemValidator.validate(libraryItemDTO);
+
+        LibraryItem item = LibraryItemFactory.create(libraryItemDTO.type());
+        item.setTitle(libraryItemDTO.title());
+
+        if (item instanceof PhysicalItem physicalItem && libraryItemDTO.numOfCopies() != null) {
+            physicalItem.setNumOfCopies(libraryItemDTO.numOfCopies());
+        }
+
+        Author author = new Author();
+        author.setName(libraryItemDTO.author().name());
+        author.setNationality(libraryItemDTO.author().nationality());
+        item.setAuthor(author);
+
+        return libraryItemRepository.save(item);
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.exalt.library.controllers;
 
-import com.exalt.library.controllers.dto.CreateBorrowerRequest;
+import com.exalt.library.controllers.dto.BorrowerDTO;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.services.BorrowerServices;
 import com.exalt.library.util.ApiResponse;
@@ -63,14 +63,12 @@ public class BorrowerController {
     /**
      * a method for creating a borrower
      * /api/borrowers
-     * @param request
+     * @param borrowerDTO
      * @return
      */
     @PostMapping
-    public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody CreateBorrowerRequest request) {
-        Borrower borrower = new Borrower();
-        borrower.setName(request.getName());
-        borrowerServices.assignBorrower(borrower);
+    public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody BorrowerDTO borrowerDTO) {
+        Borrower borrower = borrowerServices.createBorrower(borrowerDTO);
 
         return ResponseEntity.status(201).body(ApiResponse.success(201, borrower));
     }

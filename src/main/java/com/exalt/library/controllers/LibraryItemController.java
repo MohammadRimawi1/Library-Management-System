@@ -1,6 +1,6 @@
 package com.exalt.library.controllers;
 
-import com.exalt.library.controllers.dto.CreateLibraryItemRequest;
+import com.exalt.library.controllers.dto.LibraryItemDTO;
 import com.exalt.library.models.Author;
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.libraryitems.physicalitems.PhysicalItem;
@@ -55,31 +55,13 @@ public class LibraryItemController {
     /**
      * a method for creating a library item
      * exists on: /api/library-items
-     * @param request
+     * @param libraryItemDTO
      * @return
      */
     @PostMapping
-    public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody CreateLibraryItemRequest request) {
-        if (request.getType() == null) {
-            throw new IllegalArgumentException("Missing required field: type");
-        }
+    public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody LibraryItemDTO libraryItemDTO) {
+        LibraryItem item = libraryItemServices.createItem(libraryItemDTO);
 
-        LibraryItem libraryItem = LibraryItemFactory.create(request.getType());
-        libraryItem.setTitle(request.getTitle());
-
-        if (libraryItem instanceof PhysicalItem physicalItem && request.getNumOfCopies() != null) {
-            physicalItem.setNumOfCopies(request.getNumOfCopies());
-        }
-
-        if (request.getAuthor() != null) {
-            Author author = new Author();
-            author.setName(request.getAuthor().getName());
-            author.setNationality(request.getAuthor().getNationality());
-            libraryItem.setAuthor(author);
-        }
-
-        libraryItemServices.addItem(libraryItem);
-
-        return ResponseEntity.status(201).body(ApiResponse.success(201, libraryItem));
+        return ResponseEntity.status(201).body(ApiResponse.success(201, item));
     }
 }
