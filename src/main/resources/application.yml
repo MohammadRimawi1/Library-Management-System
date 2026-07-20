@@ -1,6 +1,9 @@
 server:
-  port: 8080
+  port: ${PORT}
 
 Spring:
   mongodb:
-    uri: mongodb+srv://mohammadrimawi47_db_user:ZSUVXZkFFsIAwzdE@cluster0.yab3irw.mongodb.net/library_ms?appName=Cluster0
+    uri: ${MONGO_URI}
+
+library:
+  librarian-registration-key: ${LIBRARIAN_REG_KEY}
