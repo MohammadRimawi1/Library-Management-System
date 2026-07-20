@@ -2,9 +2,6 @@ package com.exalt.library.models.reservation;
 
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.libraryitems.LibraryItem;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;

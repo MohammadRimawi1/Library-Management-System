@@ -1,10 +1,6 @@
 package com.exalt.library.models.libraryitems;
 
 import com.exalt.library.models.Author;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

@@ -37,11 +37,11 @@ public class LibraryItemValidator {
         }
 
         if (libraryItemDTO.description() != null && !Validator.size(libraryItemDTO.description(), 0, 1000)) {
-            throw new IllegalArgumentException("Description must not exceed 1000 characters");
+            throw new IllegalArgumentException("Description must not exceed 2000 characters");
         }
 
-        if (libraryItemDTO.language() != null && !Validator.size(libraryItemDTO.language(), 2, 30)) {
-            throw new IllegalArgumentException("Language must be between 2 and 30 characters");
+        if (libraryItemDTO.language() != null && !Validator.size(libraryItemDTO.language(), 2, 50)) {
+            throw new IllegalArgumentException("Language must be between 2 and 50 characters");
         }
 
         if(!Validator.notNull(libraryItemDTO.author())) {
