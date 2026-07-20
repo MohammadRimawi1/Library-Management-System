@@ -1,6 +1,6 @@
 package com.exalt.library.services.operations;
 
-import com.exalt.library.controllers.dto.BorrowerDTO;
+import com.exalt.library.dto.BorrowerDTO;
 import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.models.Borrower;
 

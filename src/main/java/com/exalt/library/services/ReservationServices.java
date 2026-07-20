@@ -1,8 +1,6 @@
 package com.exalt.library.services;
 
-import com.exalt.library.controllers.dto.ReserveDTO;
-import com.exalt.library.repositories.BorrowerRepository;
-import com.exalt.library.repositories.LibraryItemRepository;
+import com.exalt.library.dto.ReserveDTO;
 import com.exalt.library.repositories.ReservationRepository;
 import com.exalt.library.services.operations.BorrowerOperations;
 import com.exalt.library.services.operations.LibraryItemOperations;

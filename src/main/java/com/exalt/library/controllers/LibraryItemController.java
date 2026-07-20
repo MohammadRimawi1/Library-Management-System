@@ -1,11 +1,8 @@
 package com.exalt.library.controllers;
 
-import com.exalt.library.controllers.dto.LibraryItemDTO;
-import com.exalt.library.models.Author;
+import com.exalt.library.dto.LibraryItemDTO;
 import com.exalt.library.models.libraryitems.LibraryItem;
-import com.exalt.library.models.libraryitems.physicalitems.PhysicalItem;
 import com.exalt.library.services.LibraryItemServices;
-import com.exalt.library.services.factory.LibraryItemFactory;
 import com.exalt.library.util.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

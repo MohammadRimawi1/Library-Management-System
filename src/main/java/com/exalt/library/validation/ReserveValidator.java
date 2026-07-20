@@ -1,6 +1,6 @@
 package com.exalt.library.validation;
 
-import com.exalt.library.controllers.dto.ReserveDTO;
+import com.exalt.library.dto.ReserveDTO;
 
 /**
  * a class for validating reservation fields

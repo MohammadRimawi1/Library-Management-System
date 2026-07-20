@@ -1,4 +1,4 @@
-package com.exalt.library.controllers.handler;
+package com.exalt.library.exceptions.handler;
 
 import com.exalt.library.exceptions.BorrowerNotFoundException;
 import com.exalt.library.exceptions.ItemNotFoundException;

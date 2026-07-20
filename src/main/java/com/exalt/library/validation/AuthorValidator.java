@@ -1,6 +1,6 @@
 package com.exalt.library.validation;
 
-import com.exalt.library.controllers.dto.AuthorDTO;
+import com.exalt.library.dto.AuthorDTO;
 
 /**
  * a class for validating author fields
@@ -29,6 +29,9 @@ public class AuthorValidator {
         }
         if(!Validator.size(authorDTO.nationality(), 2, 100)) {
             throw new IllegalArgumentException("Nationality must be between 2 and 100 characters");
+        }
+        if (authorDTO.birthDate() != null && !Validator.isPastOrPresent(authorDTO.birthDate())) {
+            throw new IllegalArgumentException("Birth date must be in the past");
         }
     }
 }

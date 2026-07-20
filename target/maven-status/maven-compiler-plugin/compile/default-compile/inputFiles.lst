@@ -1,12 +1,12 @@
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\controllers\BorrowerController.java
-C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\controllers\dto\AuthorRequest.java
-C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\controllers\dto\CreateBorrowerRequest.java
-C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\controllers\dto\CreateLibraryItemRequest.java
-C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\controllers\dto\ReserveRequest.java
-C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\controllers\handler\GlobalExceptionHandler.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\controllers\LibraryItemController.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\controllers\ReservationController.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\dto\AuthorDTO.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\dto\BorrowerDTO.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\dto\LibraryItemDTO.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\dto\ReserveDTO.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\exceptions\BorrowerNotFoundException.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\exceptions\handler\GlobalExceptionHandler.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\exceptions\ItemNotFoundException.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\exceptions\ItemUnavailableException.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\exceptions\ReservationNotFoundException.java
@@ -38,3 +38,8 @@ C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\c
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\services\strategies\BorrowStrategy.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\services\strategies\Reservable.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\util\ApiResponse.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\validation\AuthorValidator.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\validation\BorrowerValidator.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\validation\LibraryItemValidator.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\validation\ReserveValidator.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\validation\Validator.java

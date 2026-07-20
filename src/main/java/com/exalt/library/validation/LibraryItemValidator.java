@@ -1,6 +1,6 @@
 package com.exalt.library.validation;
 
-import com.exalt.library.controllers.dto.LibraryItemDTO;
+import com.exalt.library.dto.LibraryItemDTO;
 
 /**
  * a class for validating libraryitem fields
@@ -34,6 +34,14 @@ public class LibraryItemValidator {
 
         if (libraryItemDTO.numOfCopies() != null && !Validator.between(libraryItemDTO.numOfCopies(), 0, 1000)) {
             throw new IllegalArgumentException("Enter a valid number of copies");
+        }
+
+        if (libraryItemDTO.description() != null && !Validator.size(libraryItemDTO.description(), 0, 1000)) {
+            throw new IllegalArgumentException("Description must not exceed 1000 characters");
+        }
+
+        if (libraryItemDTO.language() != null && !Validator.size(libraryItemDTO.language(), 2, 30)) {
+            throw new IllegalArgumentException("Language must be between 2 and 30 characters");
         }
 
         if(!Validator.notNull(libraryItemDTO.author())) {

@@ -1,6 +1,6 @@
 package com.exalt.library.services;
 
-import com.exalt.library.controllers.dto.LibraryItemDTO;
+import com.exalt.library.dto.LibraryItemDTO;
 import com.exalt.library.models.Author;
 import com.exalt.library.models.libraryitems.physicalitems.PhysicalItem;
 import com.exalt.library.repositories.LibraryItemRepository;
@@ -51,6 +51,8 @@ public class LibraryItemServices implements LibraryItemOperations {
 
         LibraryItem item = LibraryItemFactory.create(libraryItemDTO.type());
         item.setTitle(libraryItemDTO.title());
+        item.setDescription(libraryItemDTO.description());
+        item.setLanguage(libraryItemDTO.language());
 
         if (item instanceof PhysicalItem physicalItem && libraryItemDTO.numOfCopies() != null) {
             physicalItem.setNumOfCopies(libraryItemDTO.numOfCopies());
@@ -59,6 +61,7 @@ public class LibraryItemServices implements LibraryItemOperations {
         Author author = new Author();
         author.setName(libraryItemDTO.author().name());
         author.setNationality(libraryItemDTO.author().nationality());
+        author.setBirthDate(libraryItemDTO.author().birthDate());
         item.setAuthor(author);
 
         return libraryItemRepository.save(item);
