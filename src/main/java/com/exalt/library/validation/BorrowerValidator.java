@@ -1,6 +1,6 @@
 package com.exalt.library.validation;
 
-import com.exalt.library.controllers.dto.BorrowerDTO;
+import com.exalt.library.dto.BorrowerDTO;
 
 /**
  * a class for validating borrower fields
@@ -23,6 +23,19 @@ public class BorrowerValidator {
         }
         if (!Validator.size(borrowerDTO.name(), 2, 100)) {
             throw new IllegalArgumentException("Name must be between 2 and 100 characters");
+        }
+        if (!Validator.notBlank(borrowerDTO.email())) {
+            throw new IllegalArgumentException("Email is required");
+        }
+        if (!Validator.isValidEmail(borrowerDTO.email())) {
+            throw new IllegalArgumentException("Please enter a valid email");
+        }
+
+        if (!Validator.notBlank(borrowerDTO.phoneNumber())) {
+            throw new IllegalArgumentException("Phone number is required");
+        }
+        if (!Validator.isValidPhoneNumber(borrowerDTO.phoneNumber())) {
+            throw new IllegalArgumentException("Invalid phone number format. Use E.164 format (e.g., +1234567890)");
         }
     }
 }

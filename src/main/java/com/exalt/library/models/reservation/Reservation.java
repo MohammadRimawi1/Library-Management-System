@@ -2,6 +2,9 @@ package com.exalt.library.models.reservation;
 
 import com.exalt.library.models.Borrower;
 import com.exalt.library.models.libraryitems.LibraryItem;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -18,10 +21,13 @@ import java.util.Date;
 public class Reservation {
     @Id
     private String id; // Represents the id for a reservation
+
     @DocumentReference
     private LibraryItem libraryItem; // Defines the item that will be reserved by the borrower
+
     @DocumentReference
     private Borrower borrower; // Defines the borrower that will reserve a specific item
+
     private Date startDate; // Defines the start time of the reservation
     private Date availableFrom; // Defines if the item is available so we can count the time of the reservation
     private Date endDate; // Defines when the reservation date ends

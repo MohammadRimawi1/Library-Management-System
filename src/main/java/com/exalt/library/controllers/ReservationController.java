@@ -1,13 +1,10 @@
 package com.exalt.library.controllers;
 
-import com.exalt.library.controllers.dto.ReserveDTO;
-import com.exalt.library.models.Borrower;
-import com.exalt.library.models.libraryitems.LibraryItem;
+import com.exalt.library.dto.ReserveDTO;
 import com.exalt.library.models.reservation.Reservation;
 import com.exalt.library.models.reservation.ReservationStatus;
 import com.exalt.library.services.ReservationServices;
 import com.exalt.library.util.ApiResponse;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

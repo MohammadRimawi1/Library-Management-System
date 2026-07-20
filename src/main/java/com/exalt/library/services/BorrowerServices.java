@@ -1,6 +1,6 @@
 package com.exalt.library.services;
 
-import com.exalt.library.controllers.dto.BorrowerDTO;
+import com.exalt.library.dto.BorrowerDTO;
 import com.exalt.library.exceptions.BorrowerNotFoundException;
 import com.exalt.library.models.Borrower;
 import com.exalt.library.repositories.BorrowerRepository;
@@ -35,8 +35,17 @@ public class BorrowerServices implements BorrowerOperations {
     @Override
     public Borrower createBorrower(BorrowerDTO borrowerDTO) {
         BorrowerValidator.validate(borrowerDTO);
+
+        if (borrowerRepository.existsByEmail(borrowerDTO.email())) {
+            throw new IllegalArgumentException("A borrower with this email already exists");
+        }
+
         Borrower borrower = new Borrower();
+
         borrower.setName(borrowerDTO.name());
+        borrower.setEmail(borrowerDTO.email());
+        borrower.setPhoneNumber(borrowerDTO.phoneNumber());
+
         return borrowerRepository.save(borrower);
     }
 

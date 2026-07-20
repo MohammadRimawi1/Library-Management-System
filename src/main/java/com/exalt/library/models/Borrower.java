@@ -1,6 +1,8 @@
 package com.exalt.library.models;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,15 +15,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Borrower {
     @Id
     private String id; // Defines the identity number for a borrower
-    @NotBlank(message = "Name is required!")
     private String name; // Defines the name of the borrower
+    private String email; // Defines the email of the borrower
+    private String phoneNumber; // Defines the phone number of the borrower
 
     /**
      * A default constructor
      */
-    public Borrower() {
-
-    }
+    public Borrower() { }
 
 //    ==== GETTERS ====
     /**
@@ -39,10 +40,25 @@ public class Borrower {
     public String getName() {
         return name;
     }
+
+    /**
+     * a method for getting the email
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * a method for getting the phone number
+     * @return the phone number
+     */
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 //    ==== GETTERS ====
 
 //    ==== SETTERS ====
-
     /**
      * a method for setting the name of the borrower
      * @param name
@@ -50,13 +66,31 @@ public class Borrower {
     public void setName(String name) {
         this.name = name;
     }
-//    ==== SETTERS ====
+
+    /**
+     * a method for setting the email of the borrower
+     * @param email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * a method for setting the phone number of the borrower
+     * @param phoneNumber
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+    //    ==== SETTERS ====
 
     @Override
     public String toString() {
-        return "Borrower: {" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
+        return "Borrower{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 }

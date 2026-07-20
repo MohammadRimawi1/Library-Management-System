@@ -1,6 +1,10 @@
 package com.exalt.library.models;
 
-import org.springframework.data.annotation.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
+
+import java.time.LocalDate;
 
 /**
  * a class representing the author of a book, defines his/her name and nationality
@@ -10,6 +14,7 @@ import org.springframework.data.annotation.Id;
 public class Author {
     private String name; // represents the name of the author
     private String nationality; // represents the nationality of the author
+    private LocalDate birthDate; // represents the birthdate of the author
 
     /**
      * A default constructor
@@ -32,7 +37,15 @@ public class Author {
     public String getNationality() {
         return nationality;
     }
-//    ==== GETTERS ====
+
+    /**
+     * a method for getting the birthdate
+     * @return
+     */
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+    //    ==== GETTERS ====
 
 //    ==== SETTERS ====
 
@@ -52,13 +65,21 @@ public class Author {
         this.nationality = nationality;
     }
 
-//    ==== SETTERS ====
+    /**
+     * a method for setting the birthdate
+     * @param birthDate
+     */
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+    //    ==== SETTERS ====
 
     @Override
     public String toString() {
         return "Author{" +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", nationality='" + nationality + '\'' +
+                ", birthDate='" + birthDate + '\'' +
                 '}';
     }
 }

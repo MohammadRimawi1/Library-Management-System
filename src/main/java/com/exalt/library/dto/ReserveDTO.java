@@ -1,7 +1,4 @@
-package com.exalt.library.controllers.dto;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+package com.exalt.library.dto;
 
 /**
  * A record representing the Data Transfer Object for a reservation.

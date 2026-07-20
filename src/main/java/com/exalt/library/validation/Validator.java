@@ -1,5 +1,7 @@
 package com.exalt.library.validation;
 
+import java.time.LocalDate;
+
 /**
  * a class containing simple, reusable validation checks
  * that can be called manually wherever needed
@@ -79,5 +81,32 @@ public class Validator {
      */
     public static boolean isValidItemType(String value) {
         return matches(value, "BookPhysical|StoryPhysical|BookOnline|StoryOnline");
+    }
+
+    /**
+     * checks that a string looks like a valid email address
+     * @param value
+     * @return
+     */
+    public static boolean isValidEmail(String value) {
+        return matches(value, "^[\\w.+-]+@[\\w-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    /**
+     * checks that a string looks like a valid phone number in E.164 format
+     * @param value
+     * @return
+     */
+    public static boolean isValidPhoneNumber(String value) {
+        return matches(value, "^\\+?[1-9]\\d{6,14}$");
+    }
+
+    /**
+     * checks that a date is in the past (or today)
+     * @param date
+     * @return
+     */
+    public static boolean isPastOrPresent(LocalDate date) {
+        return date != null && !date.isAfter(LocalDate.now());
     }
 }

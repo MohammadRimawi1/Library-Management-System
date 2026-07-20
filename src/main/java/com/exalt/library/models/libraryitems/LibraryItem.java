@@ -1,9 +1,12 @@
 package com.exalt.library.models.libraryitems;
 
 import com.exalt.library.models.Author;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 /**
  * A class that defines the items in a library
@@ -18,6 +21,8 @@ public abstract class LibraryItem {
     private String title; // Defines the title for a book/story
     private Author author; // Defines the author of a specific book/story
     private boolean isAvailable; // Defines if the book is available or not
+    private String description; // Defines the description of a book
+    private String language; // Defines the language of the book
 
     /**
      * A Default constructor
@@ -60,6 +65,22 @@ public abstract class LibraryItem {
     public boolean isAvailable() {
         return isAvailable;
     }
+
+    /**
+     * a method for getting the description
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * a method for getting the language
+     * @return the language
+     */
+    public String getLanguage() {
+        return language;
+    }
     //    ==== GETTERS ====
 
 //    ==== SETTERS ====
@@ -86,5 +107,21 @@ public abstract class LibraryItem {
     public void setAvailable(boolean available) {
         isAvailable = available;
     }
-//    ==== SETTERS ====
+
+    /**
+     * a method for setting the description
+     * @param description
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * a method for setting the language
+     * @param language
+     */
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+    //    ==== SETTERS ====
 }

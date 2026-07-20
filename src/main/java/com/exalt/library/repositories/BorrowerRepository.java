@@ -8,4 +8,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  * Provides standard CRUD operations inherited from MongoRepository
  */
 public interface BorrowerRepository extends MongoRepository<Borrower, String> {
+    /**
+     * a method for checking if the email exists
+     * @param email
+     * @return
+     */
+    boolean existsByEmail(String email);
 }

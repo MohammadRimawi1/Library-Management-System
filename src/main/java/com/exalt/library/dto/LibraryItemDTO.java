@@ -1,7 +1,4 @@
-package com.exalt.library.controllers.dto;
-
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+package com.exalt.library.dto;
 
 /**
  * A record representing the Data Transfer Object for a LibraryItem.
@@ -15,5 +12,7 @@ public record LibraryItemDTO(
         String type,
         String title,
         Integer numOfCopies,
+        String description,
+        String language,
         AuthorDTO author
 ) {}
