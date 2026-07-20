@@ -1,10 +1,12 @@
 com\exalt\library\services\factory\LibraryItemFactory.class
 com\exalt\library\models\reservation\Reservation.class
+com\exalt\library\repositories\UserRepository.class
 com\exalt\library\controllers\BorrowerController.class
 com\exalt\library\exceptions\ItemUnavailableException.class
 com\exalt\library\models\libraryitems\physicalitems\StoryPhysical.class
 com\exalt\library\models\libraryitems\onlineitems\BookOnline.class
 com\exalt\library\models\users\Borrower.class
+com\exalt\library\services\UserServices.class
 com\exalt\library\validation\LibraryItemValidator.class
 com\exalt\library\validation\BorrowerValidator.class
 com\exalt\library\dto\LibraryItemDTO.class
@@ -20,6 +22,8 @@ com\exalt\library\services\borrowtype\OnlineBorrowStrategyService.class
 com\exalt\library\services\borrowtype\InHandBorrowStrategyService.class
 com\exalt\library\dto\BorrowerDTO.class
 com\exalt\library\validation\AuthorValidator.class
+com\exalt\library\exceptions\UserNotFoundException.class
+com\exalt\library\dto\RegisterDTO.class
 com\exalt\library\models\libraryitems\physicalitems\PhysicalItem.class
 com\exalt\library\repositories\ReservationRepository.class
 com\exalt\library\services\strategies\Reservable.class
@@ -41,6 +45,7 @@ com\exalt\library\services\operations\ReservationOperations.class
 com\exalt\library\repositories\LibraryItemRepository.class
 com\exalt\library\exceptions\handler\GlobalExceptionHandler.class
 com\exalt\library\exceptions\ItemNotFoundException.class
+com\exalt\library\services\operations\UserOperations.class
 com\exalt\library\validation\ReserveValidator.class
 com\exalt\library\services\BorrowerServices.class
 com\exalt\library\services\LibraryItemServices.class
