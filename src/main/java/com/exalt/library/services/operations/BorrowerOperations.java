@@ -2,7 +2,7 @@ package com.exalt.library.services.operations;
 
 import com.exalt.library.dto.BorrowerDTO;
 import com.exalt.library.exceptions.ItemNotFoundException;
-import com.exalt.library.models.Borrower;
+import com.exalt.library.models.users.Borrower;
 
 import java.util.List;
 

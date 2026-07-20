@@ -1,3 +1,4 @@
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\config\MongoSchemaValidatorRunner.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\controllers\BorrowerController.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\controllers\LibraryItemController.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\controllers\ReservationController.java
@@ -12,7 +13,6 @@ C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\c
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\exceptions\ReservationNotFoundException.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\Main.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\models\Author.java
-C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\models\Borrower.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\models\libraryitems\LibraryItem.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\models\libraryitems\onlineitems\BookOnline.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\models\libraryitems\onlineitems\OnlineItem.java
@@ -22,6 +22,9 @@ C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\c
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\models\libraryitems\physicalitems\StoryPhysical.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\models\reservation\Reservation.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\models\reservation\ReservationStatus.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\models\users\Borrower.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\models\users\Role.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\models\users\User.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\repositories\BorrowerRepository.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\repositories\LibraryItemRepository.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\repositories\ReservationRepository.java

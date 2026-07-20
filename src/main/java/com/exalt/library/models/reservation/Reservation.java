@@ -1,6 +1,6 @@
 package com.exalt.library.models.reservation;
 
-import com.exalt.library.models.Borrower;
+import com.exalt.library.models.users.Borrower;
 import com.exalt.library.models.libraryitems.LibraryItem;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

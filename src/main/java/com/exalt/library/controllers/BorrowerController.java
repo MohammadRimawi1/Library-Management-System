@@ -1,7 +1,7 @@
 package com.exalt.library.controllers;
 
 import com.exalt.library.dto.BorrowerDTO;
-import com.exalt.library.models.Borrower;
+import com.exalt.library.models.users.Borrower;
 import com.exalt.library.services.BorrowerServices;
 import com.exalt.library.util.ApiResponse;
 import jakarta.validation.Valid;

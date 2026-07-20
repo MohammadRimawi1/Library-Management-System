@@ -1,0 +1,15 @@
+package com.exalt.library.repositories;
+
+import com.exalt.library.models.users.User;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+import java.util.Optional;
+
+/**
+ * Repository interface for managing User documents in MongoDB.
+ * Provides standard CRUD operations inherited from MongoRepository
+ */
+public interface UserRepository extends MongoRepository<User, String> {
+    Optional<User> findByEmail(String email);
+    boolean existsByEmail(String email);
+}
