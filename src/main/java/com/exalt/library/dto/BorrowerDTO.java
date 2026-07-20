@@ -7,6 +7,5 @@ package com.exalt.library.dto;
  */
 public record BorrowerDTO(
         String name,
-        String email,
         String phoneNumber
 ) {}

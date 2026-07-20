@@ -8,7 +8,7 @@ import com.exalt.library.services.operations.ReservationOperations;
 import com.exalt.library.services.strategies.BorrowStrategy;
 import com.exalt.library.services.factory.BorrowStrategyFactory;
 import com.exalt.library.exceptions.ReservationNotFoundException;
-import com.exalt.library.models.Borrower;
+import com.exalt.library.models.users.Borrower;
 import com.exalt.library.models.libraryitems.LibraryItem;
 import com.exalt.library.models.libraryitems.onlineitems.OnlineItem;
 import com.exalt.library.models.reservation.Reservation;

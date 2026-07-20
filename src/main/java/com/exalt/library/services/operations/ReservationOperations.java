@@ -1,7 +1,7 @@
 package com.exalt.library.services.operations;
 
 import com.exalt.library.dto.ReserveDTO;
-import com.exalt.library.models.Borrower;
+import com.exalt.library.models.users.Borrower;
 import com.exalt.library.exceptions.BorrowerNotFoundException;
 import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.exceptions.ReservationNotFoundException;

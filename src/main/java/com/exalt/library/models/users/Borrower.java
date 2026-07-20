@@ -1,4 +1,4 @@
-package com.exalt.library.models;
+package com.exalt.library.models.users;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,7 +13,6 @@ public class Borrower {
     @Id
     private String id; // Defines the identity number for a borrower
     private String name; // Defines the name of the borrower
-    private String email; // Defines the email of the borrower
     private String phoneNumber; // Defines the phone number of the borrower
 
     /**
@@ -39,14 +38,6 @@ public class Borrower {
     }
 
     /**
-     * a method for getting the email
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
      * a method for getting the phone number
      * @return the phone number
      */
@@ -65,14 +56,6 @@ public class Borrower {
     }
 
     /**
-     * a method for setting the email of the borrower
-     * @param email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
      * a method for setting the phone number of the borrower
      * @param phoneNumber
      */
@@ -86,7 +69,6 @@ public class Borrower {
         return "Borrower{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }

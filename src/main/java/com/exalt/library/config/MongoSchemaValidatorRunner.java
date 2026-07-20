@@ -46,17 +46,13 @@ public class MongoSchemaValidatorRunner implements CommandLineRunner {
 
         Document schema = new Document("$jsonSchema", new Document()
                 .append("bsonType", "object")
-                .append("required", java.util.List.of("name", "email"))
+                .append("required", java.util.List.of("name"))
                 .append("properties", new Document()
                         .append("name", new Document()
                                 .append("bsonType", "string")
                                 .append("minLength", 2)
                                 .append("maxLength", 100)
                                 .append("description", "must be a string between 2 and 100 characters"))
-                        .append("email", new Document()
-                                .append("bsonType", "string")
-                                .append("pattern", "^[\\w.+-]+@[\\w-]+\\.[a-zA-Z]{2,}$")
-                                .append("description", "must be a valid email address"))
                 )
         );
 
