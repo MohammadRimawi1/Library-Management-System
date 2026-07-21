@@ -64,10 +64,11 @@ public interface ReservationOperations {
     /**
      * a method used to let a borrower reserve a specific item regardless of its availability
      * implemented inside ReservationServices
-     * @param reserveDTO
+     * @param borrowerId
+     * @param itemId
      * @return
      */
-    Reservation reserve(ReserveDTO reserveDTO);
+    Reservation reserve(String borrowerId, String itemId);
 
     /**
      * a method for checking the next waiting reservation for an item
@@ -103,11 +104,12 @@ public interface ReservationOperations {
     /**
      * a method which returns a borrowed item and closes its active reservation
      * implemented inside ReservationServices
-     * @param reserveDTO
+     * @param borrowerId
+     * @param itemId
      * @return true if the reservation was closed
      * @throws ReservationNotFoundException if no active reservation is found
      */
-    boolean returnItem(ReserveDTO reserveDTO);
+    boolean returnItem(String borrowerId, String itemId);
 
     /**
      * a method for a borrower to claim their READY reservation

@@ -1,14 +1,13 @@
 package com.exalt.library.exceptions.handler;
 
-import com.exalt.library.exceptions.BorrowerNotFoundException;
-import com.exalt.library.exceptions.ItemNotFoundException;
-import com.exalt.library.exceptions.ItemUnavailableException;
-import com.exalt.library.exceptions.ReservationNotFoundException;
+import com.exalt.library.exceptions.*;
 import com.exalt.library.util.ApiResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,7 +24,7 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-    @ExceptionHandler({ReservationNotFoundException.class, BorrowerNotFoundException.class, ItemNotFoundException.class})
+    @ExceptionHandler({ReservationNotFoundException.class, BorrowerNotFoundException.class, ItemNotFoundException.class, UserNotFoundException.class})
     public ResponseEntity<Map<String, Object>> handleNotFound(RuntimeException e) {
         return ResponseEntity.status(404).body(ApiResponse.error(404, "Not Found", e.getMessage()));
     }
@@ -70,9 +69,19 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-    @ExceptionHandler(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<Map<String, Object>> handleTypeMismatch(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException e) {
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Map<String, Object>> handleTypeMismatch(MethodArgumentTypeMismatchException e) {
         String message = "Invalid value '" + e.getValue() + "' for parameter '" + e.getName() + "'";
         return ResponseEntity.status(400).body(ApiResponse.error(400, "Bad Request", message));
+    }
+
+    /**
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException e) {
+        return ResponseEntity.status(403).body(ApiResponse.error(403, "Forbidden", e.getMessage()));
     }
 }

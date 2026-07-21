@@ -1,11 +1,9 @@
 package com.exalt.library.services;
 
-import com.exalt.library.dto.BorrowerDTO;
 import com.exalt.library.exceptions.BorrowerNotFoundException;
 import com.exalt.library.models.users.Borrower;
 import com.exalt.library.repositories.BorrowerRepository;
 import com.exalt.library.services.operations.BorrowerOperations;
-import com.exalt.library.validation.BorrowerValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,23 +23,6 @@ public class BorrowerServices implements BorrowerOperations {
      */
     public BorrowerServices(BorrowerRepository borrowerRepository) {
         this.borrowerRepository = borrowerRepository;
-    }
-
-    /**
-     * a method for creating a borrower
-     * @param borrowerDTO
-     * @return
-     */
-    @Override
-    public Borrower createBorrower(BorrowerDTO borrowerDTO) {
-        BorrowerValidator.validate(borrowerDTO);
-
-        Borrower borrower = new Borrower();
-
-        borrower.setName(borrowerDTO.name());
-        borrower.setPhoneNumber(borrowerDTO.phoneNumber());
-
-        return borrowerRepository.save(borrower);
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.exalt.library.services.operations;
 
-import com.exalt.library.dto.BorrowerDTO;
 import com.exalt.library.exceptions.ItemNotFoundException;
 import com.exalt.library.models.users.Borrower;
 
@@ -11,13 +10,6 @@ import java.util.List;
  * @author Mohammad Rimawi
  */
 public interface BorrowerOperations {
-
-    /**
-     * a method for creating a borrower
-     * @param borrowerDTO
-     * @return
-     */
-    Borrower createBorrower(BorrowerDTO borrowerDTO);
 
     /**
      * a method used to get all the borrowers
