@@ -3,8 +3,12 @@ package com.exalt.library.controllers;
 import com.exalt.library.dto.ReserveDTO;
 import com.exalt.library.models.reservation.Reservation;
 import com.exalt.library.models.reservation.ReservationStatus;
+import com.exalt.library.models.users.User;
 import com.exalt.library.services.ReservationServices;
+import com.exalt.library.services.UserServices;
 import com.exalt.library.util.ApiResponse;
+import com.exalt.library.util.SecurityUtils;
+import com.exalt.library.validation.ReserveValidator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,13 +23,15 @@ import java.util.Map;
 @RequestMapping("/api/reservations")
 public class ReservationController  {
     private final ReservationServices reservationServices; // defines the reservation services
+    private final UserServices userServices; // defines the reservation services
 
     /**
      * constructor injection
      * @param reservationServices
      */
-    public ReservationController(ReservationServices reservationServices) {
+    public ReservationController(ReservationServices reservationServices, UserServices userServices) {
         this.reservationServices = reservationServices;
+        this.userServices = userServices;
     }
 
     /**
@@ -95,7 +101,11 @@ public class ReservationController  {
      */
     @PostMapping
     public ResponseEntity<Map<String, Object>> reserve(@RequestBody ReserveDTO reserveDTO) {
-        Reservation reservation = reservationServices.reserve(reserveDTO);
+        ReserveValidator.validate(reserveDTO);
+
+        User currentUser = userServices.findByEmail(SecurityUtils.getCurrentUserEmail());
+        Reservation reservation = reservationServices.reserve(currentUser.getBorrower().getId(), reserveDTO.itemId());
+
         return ResponseEntity.status(201).body(ApiResponse.success(201, reservation));
     }
 
@@ -107,7 +117,11 @@ public class ReservationController  {
      */
     @PostMapping("/return")
     public ResponseEntity<Map<String, Object>> returnItem(@RequestBody ReserveDTO reserveDTO) {
-        boolean closed = reservationServices.returnItem(reserveDTO);
+        ReserveValidator.validate(reserveDTO);
+
+        User currentUser = userServices.findByEmail(SecurityUtils.getCurrentUserEmail());
+        boolean closed = reservationServices.returnItem(currentUser.getBorrower().getId(), reserveDTO.itemId());
+
         return ResponseEntity.ok(ApiResponse.success(200, Map.of("returned", closed)));
     }
 

@@ -1,6 +1,9 @@
+com\exalt\library\controllers\AuthController.class
 com\exalt\library\services\factory\LibraryItemFactory.class
 com\exalt\library\models\reservation\Reservation.class
 com\exalt\library\repositories\UserRepository.class
+com\exalt\library\security\JwtAuthFilter.class
+com\exalt\library\validation\LoginValidator.class
 com\exalt\library\controllers\BorrowerController.class
 com\exalt\library\exceptions\ItemUnavailableException.class
 com\exalt\library\models\libraryitems\physicalitems\StoryPhysical.class
@@ -8,7 +11,6 @@ com\exalt\library\models\libraryitems\onlineitems\BookOnline.class
 com\exalt\library\models\users\Borrower.class
 com\exalt\library\services\UserServices.class
 com\exalt\library\validation\LibraryItemValidator.class
-com\exalt\library\validation\BorrowerValidator.class
 com\exalt\library\dto\LibraryItemDTO.class
 com\exalt\library\repositories\BorrowerRepository.class
 com\exalt\library\services\operations\BorrowerOperations.class
@@ -17,11 +19,12 @@ com\exalt\library\controllers\LibraryItemController.class
 com\exalt\library\validation\Validator.class
 com\exalt\library\config\MongoSchemaValidatorRunner.class
 com\exalt\library\models\libraryitems\onlineitems\OnlineItem.class
+com\exalt\library\dto\LoginDTO.class
 com\exalt\library\Main.class
 com\exalt\library\services\borrowtype\OnlineBorrowStrategyService.class
 com\exalt\library\services\borrowtype\InHandBorrowStrategyService.class
-com\exalt\library\dto\BorrowerDTO.class
 com\exalt\library\validation\AuthorValidator.class
+com\exalt\library\validation\RegisterValidator.class
 com\exalt\library\exceptions\UserNotFoundException.class
 com\exalt\library\dto\RegisterDTO.class
 com\exalt\library\models\libraryitems\physicalitems\PhysicalItem.class
@@ -30,12 +33,15 @@ com\exalt\library\services\strategies\Reservable.class
 com\exalt\library\models\reservation\ReservationStatus.class
 com\exalt\library\dto\ReserveDTO.class
 com\exalt\library\exceptions\ReservationNotFoundException.class
+com\exalt\library\services\JwtService.class
 com\exalt\library\services\factory\BorrowStrategyFactory.class
 com\exalt\library\models\libraryitems\onlineitems\StoryOnline.class
 com\exalt\library\services\strategies\BorrowStrategy.class
 com\exalt\library\util\ApiResponse.class
 com\exalt\library\models\Author.class
 com\exalt\library\models\libraryitems\LibraryItem.class
+com\exalt\library\config\SecurityBeansConfig.class
+com\exalt\library\config\SecurityConfig.class
 com\exalt\library\models\users\User.class
 com\exalt\library\dto\AuthorDTO.class
 com\exalt\library\services\operations\LibraryItemOperations.class

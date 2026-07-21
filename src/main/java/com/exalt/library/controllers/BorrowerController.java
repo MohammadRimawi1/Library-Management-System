@@ -1,10 +1,8 @@
 package com.exalt.library.controllers;
 
-import com.exalt.library.dto.BorrowerDTO;
 import com.exalt.library.models.users.Borrower;
 import com.exalt.library.services.BorrowerServices;
 import com.exalt.library.util.ApiResponse;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,18 +57,4 @@ public class BorrowerController {
         Borrower borrower = borrowerServices.findBorrowerById(id);
         return ResponseEntity.ok(ApiResponse.success(200, borrower));
     }
-
-    /**
-     * a method for creating a borrower
-     * /api/borrowers
-     * @param borrowerDTO
-     * @return
-     */
-    @PostMapping
-    public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody BorrowerDTO borrowerDTO) {
-        Borrower borrower = borrowerServices.createBorrower(borrowerDTO);
-
-        return ResponseEntity.status(201).body(ApiResponse.success(201, borrower));
-    }
-
 }
