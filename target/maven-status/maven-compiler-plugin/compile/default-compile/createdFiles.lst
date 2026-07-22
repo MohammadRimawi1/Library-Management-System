@@ -1,3 +1,4 @@
+com\exalt\library\util\SecurityUtils.class
 com\exalt\library\controllers\AuthController.class
 com\exalt\library\services\factory\LibraryItemFactory.class
 com\exalt\library\models\reservation\Reservation.class
@@ -11,11 +12,13 @@ com\exalt\library\models\libraryitems\onlineitems\BookOnline.class
 com\exalt\library\models\users\Borrower.class
 com\exalt\library\services\UserServices.class
 com\exalt\library\validation\LibraryItemValidator.class
+com\exalt\library\security\JwtAccessDeniedHandler.class
 com\exalt\library\dto\LibraryItemDTO.class
 com\exalt\library\repositories\BorrowerRepository.class
 com\exalt\library\services\operations\BorrowerOperations.class
 com\exalt\library\models\libraryitems\physicalitems\BookPhysical.class
 com\exalt\library\controllers\LibraryItemController.class
+com\exalt\library\security\JwtAuthEntryPoint.class
 com\exalt\library\validation\Validator.class
 com\exalt\library\config\MongoSchemaValidatorRunner.class
 com\exalt\library\models\libraryitems\onlineitems\OnlineItem.class
@@ -28,12 +31,14 @@ com\exalt\library\validation\RegisterValidator.class
 com\exalt\library\exceptions\UserNotFoundException.class
 com\exalt\library\dto\RegisterDTO.class
 com\exalt\library\models\libraryitems\physicalitems\PhysicalItem.class
+com\exalt\library\security\UserPrincipal.class
 com\exalt\library\repositories\ReservationRepository.class
 com\exalt\library\services\strategies\Reservable.class
 com\exalt\library\models\reservation\ReservationStatus.class
 com\exalt\library\dto\ReserveDTO.class
 com\exalt\library\exceptions\ReservationNotFoundException.class
 com\exalt\library\services\JwtService.class
+com\exalt\library\security\AppUserDetailsService.class
 com\exalt\library\services\factory\BorrowStrategyFactory.class
 com\exalt\library\models\libraryitems\onlineitems\StoryOnline.class
 com\exalt\library\services\strategies\BorrowStrategy.class
