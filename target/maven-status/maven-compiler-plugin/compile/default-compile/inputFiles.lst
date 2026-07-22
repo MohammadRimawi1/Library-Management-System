@@ -34,7 +34,11 @@ C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\c
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\repositories\LibraryItemRepository.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\repositories\ReservationRepository.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\repositories\UserRepository.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\security\AppUserDetailsService.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\security\JwtAccessDeniedHandler.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\security\JwtAuthEntryPoint.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\security\JwtAuthFilter.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\security\UserPrincipal.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\services\BorrowerServices.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\services\borrowtype\InHandBorrowStrategyService.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\services\borrowtype\OnlineBorrowStrategyService.java
@@ -51,6 +55,7 @@ C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\c
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\services\strategies\Reservable.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\services\UserServices.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\util\ApiResponse.java
+C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\util\SecurityUtils.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\validation\AuthorValidator.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\validation\LibraryItemValidator.java
 C:\Users\t-mohammad.rimawi\Desktop\Library Management System\LMS\src\main\java\com\exalt\library\validation\LoginValidator.java
